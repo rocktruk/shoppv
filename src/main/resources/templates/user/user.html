@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+    <title>商城</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/reset_m.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/index.css}">
+</head>
+
+<body>
+    <div class="pg-mayilian pg-ofmy">
+    	<div class="topbanner text-center" style="height: 150px;">
+            <div class="avatar"><img th:src="@{images/user-logo-003.png}" alt=""></div>
+            <div><span th:text="${userName}"></span></div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a th:href="@{/userInfo}">个人信息<img th:src="@{images/icon_cards.png}" alt="" style="float: right;width: 16px;margin-top: 4px;"></a>
+            </div>
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">
+                    会员升级
+                    <div class="shengjiicon">
+                        <span>A</span>
+                        <span>B</span>
+                        <span>C</span>
+                        <span>D</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a th:href="@{/order}">订单</a>
+            </div>
+            <div class="border-bot cardcell item-arrow">
+                <a href="">钱包</a>
+            </div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">安全中心</a>
+            </div>
+            <div class="border-bot cardcell item-arrow">
+                <a href="">设置</a>
+            </div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">客服</a>
+            </div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">官方微博</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">商城</a>
+            </div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">技术支持</a>
+            </div>
+        </div>
+    </div>
+    <div id="menu">
+            <ul>
+                <li><a th:href="@{index}"><font class="iconfont">&#xe612;</font><span class="inco_txt">首页</span></a></li>
+                <li><a th:href="@{classified}"><font class="iconfont">&#xe660;</font><span class="inco_txt">分类</span></a></li>
+                <li><a th:href="@{shoppingCar}"><font class="iconfont index">&#xe63e;</font><span class="inco_txt">购物车</span></a></li>
+                <li><a th:href="@{user}"><font class="iconfont">&#xe62e;</font><span class="inco_txt">我的</span></a></li>
+            </ul>
+    </div>
+    <script type="text/javascript" th:src="@{js/index/jquery-1.11.3.min.js}" ></script>
+    <script th:src="@{js/menu.js}"></script>
+    <script>
+				$(function(){
+					var oBtn = document.getElementById("menu");
+					var uLi = oBtn.getElementsByTagName("a");
+					uLi[3].className = "red";
+				});
+	</script>
+</body>
+
+</html>

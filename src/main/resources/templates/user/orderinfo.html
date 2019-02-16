@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>订单详情</title>
+        <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <link th:href="@{css/orderInfo/style.css}" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+
+
+        <section class="aui-flexView">
+            <header class="aui-navBar aui-navBar-fixed">
+                <a href="javascript:;" class="aui-navBar-item">
+                    <i class="icon icon-return"></i>
+                </a>
+                <div class="aui-center">
+                    <span class="aui-center-title">订单详情</span>
+                </div>
+                <a href="javascript:;" class="aui-navBar-item">
+                    <i class="icon icon-sys"></i>
+                </a>
+            </header>
+            <section class="aui-scrollView">
+                <div class="aui-flex aui-flex-context">
+                    <div class="aui-flex-box">
+                        <h2>交易成功</h2>
+                        <!--<h3><span th:text="${order.desc}" th:unless="${order.desc!=null}"></span></h3>-->
+                    </div>
+                    <div class="aui-assemble-img">
+                        <img th:src="@{images/orderInfo/time.png}" alt="">
+                    </div>
+                </div>
+                <div class="aui-flex">
+                    <div class="aui-address-img">
+                        <img th:src="@{images/orderInfo/add.png}" alt="">
+                    </div>
+                    <div class="aui-flex-box">
+                        <h4>李嘉桦 18519232894</h4>
+                        <h5>北京市 海淀区 北三环西路43号2号院爱科技大厦6层</h5>
+                    </div>
+                </div>
+                <div class="divHeight"></div>
+                <div class="aui-flex b-line">
+                    <div class="aui-address-logo">
+                        <img th:src="@{images/orderInfo/user-logo-003.png}" alt="">
+                    </div>
+                    <div class="aui-flex-box">
+                        <h5>自营旗舰店</h5>
+                    </div>
+                    <div class="aui-address-arrow"></div>
+                </div>
+                <div class="aui-flex aui-flex-four">
+                    <div class="aui-flex-add">
+                        <img th:src="@{images/orderInfo/ad-001.png}" alt="">
+                    </div>
+                    <div class="aui-flex-box">
+                        <p>烫金羽毛小清新晴雨伞二用学生黑胶韩国创意折叠防晒遮阳太阳伞女 黑色</p>
+                        <p class="b-line" style="color:#999">黑色 共1件</p>
+                    </div>
+                </div>
+                <div class="aui-flex aui-flex-four" style="padding-top:0">
+                    <div class="aui-flex-box">
+                        <button>申请退款</button>
+                        <button class="aui-btn-line">拼团详情</button>
+                    </div>
+                </div>
+                <div class="aui-flex b-line">
+                    <div class="aui-flex-box">
+                        <h6>需付款: <em>￥1</em> <i>(免运费)</i></h6>
+                    </div>
+                </div>
+                <div class="aui-list-box">
+                    <a href="javascript:;" class="aui-flex aui-flex-right">
+                        <div class="aui-flex-icon-img">
+                            <img th:src="@{images/orderInfo/icon-news.png}" alt="">
+                        </div>
+                        <div class="aui-flex-box">
+                            <h4>联系卖家</h4>
+                        </div>
+                    </a>
+                    <a href="javascript:;" class="aui-flex">
+                        <div class="aui-flex-icon-img">
+                            <img th:src="@{images/orderInfo/icon-phone.png}" alt="">
+                        </div>
+                        <div class="aui-flex-box">
+                            <h4>拨打电话</h4>
+                        </div>
+                    </a>
+                </div>
+                <div class="divHeight"></div>
+                <div class="aui-flex">
+                    <div class="aui-flex-box">
+                        <h4>订单编号: <em>78302164057630000088</em></h4>
+                        <h4>支付方式: <em>线上支付</em></h4>
+                        <h4>下单时间: <em>2018-11-22 23:12:22</em></h4>
+                        <h4>拼单时间: <em>2018-11-22 23:12:22</em></h4>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+    </body>
+</html>

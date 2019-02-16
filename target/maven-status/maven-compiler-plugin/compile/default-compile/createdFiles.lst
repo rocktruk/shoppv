@@ -1,0 +1,12 @@
+com/online/mall/shoppv/repository/IExpandJpaRepository.class
+com/online/mall/shoppv/control/ShopControl.class
+com/online/mall/shoppv/ShoppingApplication.class
+com/online/mall/shoppv/repository/factory/ExpandJpaRepositoryFactoryBean$ExpandJpaRepositoryFactory.class
+com/online/mall/shoppv/control/GoodsControl.class
+com/online/mall/shoppv/control/CustomControl.class
+com/online/mall/shoppv/JpaConfiguration.class
+com/online/mall/shoppv/entity/Customer.class
+com/online/mall/shoppv/repository/factory/ExpandJpaRepositoryFactoryBean.class
+com/online/mall/shoppv/service/CustomerService.class
+com/online/mall/shoppv/repository/CustomerRepository.class
+com/online/mall/shoppv/repository/impl/ExpandJpaRepositoryImpl.class

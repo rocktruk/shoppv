@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+	<title>商品详情</title>
+	<link rel="stylesheet" type="text/css" th:href="@{css/reset_m.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+	<link rel="stylesheet" th:href="@{css/swiper.min.css}">
+</head>
+<body>
+	<div class="pg-goodsdetail">
+		<div class="goods-basic">
+			<div class="goodswiper">
+				<div class="swiper-container">
+				    <div class="swiper-wrapper">
+				      	<div class="swiper-slide"><img th:src="@{images/goodspic.png}" alt=""></div>
+				      	<div class="swiper-slide"><img th:src="@{images/goodspic.png}" alt=""></div>
+				      	<div class="swiper-slide"><img th:src="@{images/goodspic.png}" alt=""></div>
+				    </div>
+				    <div class="swiper-pagination"></div>
+				</div>
+			</div>
+			<div class="border-bot">
+				<h1 class="goodsname">商品名称简介商品名称简介商品名称简介商品名称简介商品名称简介商品名称简介</h1>
+				<h1 class="goodsprice"><span>1299.00</span>899.00</h1>
+			</div>
+			<div class="clearfix buynum">
+				<span class="fl">已选</span>
+				<div class="fr changenum">
+					<a href="javascript:;" class="fl reducebtn disabled"></a>
+					<input type="text" class="fl numbox" value="1" />
+					<a href="javascript:;" class="fl addbtn"></a>
+				</div>
+			</div>
+		</div>
+		<div class="blockH"></div>
+		<div class="goodsdesc">
+			其他其他其他其他其他其他
+		</div>
+		<div class="buybtn"><button>立即购买</button></div>
+	</div>
+	<script th:src="@{js/swiper.min.js}"></script>
+	<script>
+    var swiper = new Swiper('.swiper-container', {
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'fraction',
+        renderFraction: function (currentClass, totalClass) {
+          	return '<span class="' + currentClass + '"></span>' +
+                '/' +'<span class="' + totalClass + '"></span>';
+        	},
+      	},
+    });
+  	</script>
+</body>
+</html>

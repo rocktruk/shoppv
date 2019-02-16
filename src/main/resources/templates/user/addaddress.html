@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+	<title>新建地址</title>
+	<link rel="stylesheet" type="text/css" th:href="@{css/reset_m.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+    <link th:href="@{css/address/layout.min.css}" rel="stylesheet" />
+    <link th:href="@{css/address/scs.min.css}" rel="stylesheet" />
+    <style>
+    /*#myAddrs {
+        width: 90%;
+        font-size: 16px;
+        border: 1px solid #bababa;
+        border-radius: 4px;
+        padding: 10px;
+        margin-top: 10px;
+        color: gray;
+    }*/
+    </style>
+</head>
+<body>
+	<div class="pg-addresslist">
+		<div class="blockH"></div>
+		<div class="card">
+			<div class="cardcell">
+				<div class="inputtxt">
+					<p>收货人姓名</p>
+					<p>
+						<input type="text" placeholder="收货人姓名">
+					</p>
+				</div>
+				<div class="inputtxt">
+					<p>联系方式</p>
+					<p>
+						<input type="text" placeholder="手机号码">
+					</p>
+				</div>
+                <div class="inputtxt">
+                	<p>所在地区</p>
+                    <p>
+        				<input type="text" readonly placeholder="省、市、区" id="myAddrs" name="addr" data-key="4-84-1298" value="" />
+                     </p>
+    			</div>
+				<!--<div class="selectarea">
+					<p>所在地区</p>
+					<p>
+						<select name="" id="" style="width: 100%;">
+							<option value="">选择省</option>
+						</select>
+					</p>
+					<p class="clearfix">
+						<select name="" id="" class="fl">
+							<option value="">选择市</option>
+						</select>
+						<select name="" id="" class="fr">
+							<option value="">选择县</option>
+						</select>
+					</p>
+				</div>-->
+				<div class="inputtxt">
+					<p>详细地址（街道、楼牌号等）</p>
+					<p>
+						<input type="text" placeholder="请输入您的详细地址">
+					</p>
+				</div>
+			</div>
+			<a href="javascript:;" class="btn-block">保存</a>
+		</div>
+	</div>
+    <script th:src="@{js/address/jquery.min.js}"></script>
+    <script th:src="@{js/address/jquery.scs.min.js}"></script>
+    <script th:src="@{js/address/CNAddrArr.min.js}"></script>
+    <script>
+    $(function() {
+        /**
+         * 通过数组id获取地址列表数组
+         *
+         * @param {Number} id
+         * @return {Array} 
+         */ 
+        function getAddrsArrayById(id) {
+            var results = [];
+            if (addr_arr[id] != undefined)
+                addr_arr[id].forEach(function(subArr) {
+                    results.push({
+                        key: subArr[0],
+                        val: subArr[1]
+                    });
+                });
+            else {
+                return;
+            }
+            return results;
+        }
+        /**
+         * 通过开始的key获取开始时应该选中开始数组中哪个元素
+         *
+         * @param {Array} StartArr
+         * @param {Number|String} key
+         * @return {Number} 
+         */         
+        function getStartIndexByKeyFromStartArr(startArr, key) {
+            var result = 0;
+            if (startArr != undefined)
+                startArr.forEach(function(obj, index) {
+                    if (obj.key == key) {
+                        result = index;
+                        return false;
+                    }
+                });
+            return result;
+        }
+
+        //bind the click event for 'input' element
+        $("#myAddrs").click(function() {
+            var PROVINCES = [],
+                startCities = [],
+                startDists = [];
+            //Province data，shall never change.
+            addr_arr[0].forEach(function(prov) {
+                PROVINCES.push({
+                    key: prov[0],
+                    val: prov[1]
+                });
+            });
+            //init other data.
+            var $input = $(this),
+                dataKey = $input.attr("data-key"),
+                provKey = 1, //default province 北京
+                cityKey = 36, //default city 北京
+                distKey = 37, //default district 北京东城区
+                distStartIndex = 0, //default 0
+                cityStartIndex = 0, //default 0
+                provStartIndex = 0; //default 0
+
+            if (dataKey != "" && dataKey != undefined) {
+                var sArr = dataKey.split("-");
+                if (sArr.length == 3) {
+                    provKey = sArr[0];
+                    cityKey = sArr[1];
+                    distKey = sArr[2];
+
+                } else if (sArr.length == 2) { //such as 台湾，香港 and the like.
+                    provKey = sArr[0];
+                    cityKey = sArr[1];
+                }
+                startCities = getAddrsArrayById(provKey);
+                startDists = getAddrsArrayById(cityKey);
+                provStartIndex = getStartIndexByKeyFromStartArr(PROVINCES, provKey);
+                cityStartIndex = getStartIndexByKeyFromStartArr(startCities, cityKey);
+                distStartIndex = getStartIndexByKeyFromStartArr(startDists, distKey);
+            }
+            var navArr = [{//3 scrollers, and the title and id will be as follows:
+                title: "省",
+                id: "scs_items_prov"
+            }, {
+                title: "市",
+                id: "scs_items_city"
+            }, {
+                title: "区",
+                id: "scs_items_dist"
+            }];
+            SCS.init({
+                navArr: navArr,
+                onOk: function(selectedKey, selectedValue) {
+                    $input.val(selectedValue).attr("data-key", selectedKey);
+                }
+            });
+            var distScroller = new SCS.scrollCascadeSelect({
+                el: "#" + navArr[2].id,
+                dataArr: startDists,
+                startIndex: distStartIndex
+            });
+            var cityScroller = new SCS.scrollCascadeSelect({
+                el: "#" + navArr[1].id,
+                dataArr: startCities,
+                startIndex: cityStartIndex,
+                onChange: function(selectedItem, selectedIndex) {
+                    distScroller.render(getAddrsArrayById(selectedItem.key), 0); //re-render distScroller when cityScroller change
+                }
+            });
+            var provScroller = new SCS.scrollCascadeSelect({
+                el: "#" + navArr[0].id,
+                dataArr: PROVINCES,
+                startIndex: provStartIndex,
+                onChange: function(selectedItem, selectedIndex) { //re-render both cityScroller and distScroller when provScroller change
+                    cityScroller.render(getAddrsArrayById(selectedItem.key), 0);
+                    distScroller.render(getAddrsArrayById(cityScroller.getSelectedItem().key), 0);
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

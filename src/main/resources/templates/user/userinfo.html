@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+    <title>我的信息</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/reset_m.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+</head>
+
+<body>
+    <div class="pg-ofmy">
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">
+                    <div class="flex" style="justify-content: space-between;">
+                        <span>头像</span>
+                        <img th:src="@{images/avatar.png}" alt=""  width="50" height="50">
+                    </div>
+                </a>
+            </div>
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">昵称<span class="fr fontgray fontsmall">小青年</span></a>
+            </div>
+            <!--<div class="border-bot cardcell item-arrow">-->
+            <!--    <a href="#">我的二维码<img th:src="@{images/icon_cards.png}" alt="" style="float: right;width: 16px;margin-top: 4px;"></a>-->
+            <!--</div>-->
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">性别<span class="fr fontgray fontsmall">男</span></a>
+            </div>
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">地区<span class="fr fontgray fontsmall">北京</span></a>
+            </div>
+            <div class="border-bot cardcell item-arrow">
+                <a href="#">个性签名<span class="fr fontgray fontsmall">小青年儿</span></a>
+            </div>
+        </div>
+        <div class="blockH"></div>
+        <div class="card">
+            <div class="border-bot cardcell item-arrow">
+                <a th:href="@{address}">地址管理</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
