@@ -27,9 +27,6 @@ public class Customer {
 	@Column(name="OPEN_ID")
 	private String openId;
 	
-	@Column(name="DEFT_SHOP_ADDR")
-	private String dftShopAddr;
-	
 	@Column(name="LST_UPD_TIME")
 	private Date lstUpdTime;
 
@@ -65,13 +62,6 @@ public class Customer {
 		this.openId = openId;
 	}
 
-	public String getDftShopAddr() {
-		return dftShopAddr;
-	}
-
-	public void setDftShopAddr(String dftShopAddr) {
-		this.dftShopAddr = dftShopAddr;
-	}
 
 	public Date getLstUpdTime() {
 		return lstUpdTime;

@@ -2,6 +2,7 @@ package com.online.mall.shoppv.control;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -115,5 +116,19 @@ public class CustomControl {
 		return response;
 	}
 	
+	@RequestMapping("/getUser")
+	@ResponseBody
+	public Map<String, String> search(HttpServletRequest request,@RequestBody Map<String,String> params)
+	{
+		Map<String, String> response = new HashMap<String, String>();
+		Optional<Customer> cus = cusService.findCusById(Long.parseLong(params.get("id")));
+		response.put("respCode", "111111");
+		cus.map(c -> {
+			response.put("cus_id", c.getName());
+			response.put("respCode", "000000");
+			return response;
+		});
+		return response;
+	}
 	
 }

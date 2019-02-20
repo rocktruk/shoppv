@@ -17,7 +17,7 @@ public interface CustomerRepository extends IExpandJpaRepository<Customer, Long>
 	
 	@Modifying
 	@Transactional
-	@Query(value="insert into Custom value(?,?,?,?,?,?)",nativeQuery = true)
-	int addCustomer(long id,String channelType,String name,String openId,String dftShopAddr,Date lstUpdTime);
+	@Query(value="insert into Custom value(?,?,?,?,?)",nativeQuery = true)
+	int addCustomer(long id,String channelType,String name,String openId,Date lstUpdTime);
 	
 }

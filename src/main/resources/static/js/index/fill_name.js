@@ -81,6 +81,9 @@ $(function(){
 	var $ul_box = $(".Integral_mall .integ_box .integ_right ul.integ_main");
 	var $p_con = $(".Integral_mall .integ_box .integ_left ul.integ_ul li.integ_li p");
 	var index = 0;
+	$li_btn[0].classList.add("integ_back");
+	$li_btn[0].classList.remove("topline");
+	$ul_box[0].style.display="block";
 	$li_btn.bind("click",function(){
 		$(this).addClass("integ_back").siblings().removeClass("integ_back");
 		index = $(this).index();
