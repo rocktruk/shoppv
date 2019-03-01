@@ -1,0 +1,95 @@
+html{
+	font-size:10px;/* 62.5% */
+}
+@media only screen and (min-width:481px){
+	html{
+		font-size:15.04px !important;/*15.04/16 =94% */
+	}
+}
+@media only screen and (min-width:561px){
+	html{
+		font-size:17.44px !important;/*17.44/16 = 109% */
+	}
+}
+@media only screen and (min-width:641px){
+	html{
+		font-size:20px !important;/*20/16 =125% */
+	}
+}
+body{
+	max-width:750px;
+	margin:auto;
+}
+
+/*=============================================*/
+
+/*header*/
+.xx-header{
+	height: 3.9rem;
+	line-height: 3.9rem;
+	max-width:750px;
+	z-index: 2;
+}
+
+.search input{
+outline:none;
+}
+.xx-nav-tabs {
+height: 5.2rem;
+line-height: 5.2rem;
+}
+.xx-nav-tabs li{
+float:left;
+width:25%;
+}
+.xx-nav-tabs li a{
+height: 5.2rem;
+border-bottom:.5rem solid transparent;
+}
+.xx-nav-tabs li a.active{
+color:#ffc971;
+border-bottom:.5rem solid #ffc971;
+}
+.w-35rem{
+width:35rem;
+}
+/* End header */
+/*=============================================*/
+
+.bg-f8{
+	background-color:#f8f8f8;
+}
+.goodslist{
+	width:35rem;
+}
+.goodslist li{
+	/*width:16.9rem;*/
+	/*margin:auto;*/
+
+}
+.goodslist li img{
+ 	display: block;
+  	max-width: 100%;
+  	height: auto;
+  	height: 17.2rem;
+
+}
+
+
+
+/*footer*/
+footer{
+	max-width: 750px;
+	box-shadow:0px -.2rem  .75rem   #ccc;
+}
+
+/*公用样式 有针对的补充 */
+.hover-text-red:hover .iconfont{
+	color:red;
+}
+
+/*试验*/
+.aaa{
+	
+
+}

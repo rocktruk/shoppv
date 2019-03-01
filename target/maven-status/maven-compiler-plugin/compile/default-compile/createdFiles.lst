@@ -1,3 +1,4 @@
+com/online/mall/shoppv/repository/GoodsWithoutDetailRepository.class
 com/online/mall/shoppv/repository/GoodsRepository.class
 com/online/mall/shoppv/repository/IExpandJpaRepository.class
 com/online/mall/shoppv/entity/ReceiveAddress.class
@@ -19,9 +20,11 @@ com/online/mall/shoppv/JpaConfiguration.class
 com/online/mall/shoppv/service/GoodsService.class
 com/online/mall/shoppv/service/ShoppingCarService.class
 com/online/mall/shoppv/entity/Customer.class
+com/online/mall/shoppv/entity/GoodsWithoutDetail.class
 com/online/mall/shoppv/repository/factory/ExpandJpaRepositoryFactoryBean.class
 com/online/mall/shoppv/service/CustomerService.class
 com/online/mall/shoppv/configure/UploadPathStaticConfig.class
+com/online/mall/shoppv/common/util/IdGenerater.class
 com/online/mall/shoppv/repository/MasterTransRepository.class
 com/online/mall/shoppv/repository/CustomerRepository.class
 com/online/mall/shoppv/entity/ShoppingCar.class

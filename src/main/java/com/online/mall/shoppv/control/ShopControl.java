@@ -18,4 +18,14 @@ public class ShopControl {
 		return "indexwithsearch";
 	}
 	
+	/**
+	 * 购物车
+	 * @return
+	 */
+	@RequestMapping("/shoppingCar")
+	public String shoppingCar()
+	{
+		return "goods/shoppingcar";
+	}
+	
 }

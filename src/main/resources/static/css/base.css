@@ -1,0 +1,617 @@
+body,div,header,footer,nav,p,h1,h2,h3,h4,h5,h6,ul,ol,dl,dt,dd,li,hr,table,aside{
+	padding:0;
+	margin:0;
+}
+body{
+	font-family:"Microsoft Yahei",sans-serif;
+}
+*{
+	/*移动端专用*/
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	/*清除高亮*/
+	tap-highlight-color:transparent;
+	-webkit-tap-highlight-color:transparent;
+
+}
+
+body,div{
+	display: block;
+}
+a{
+	text-decoration:none;
+	color:#333;
+}
+a:hover, a:focus {
+   text-decoration:none;
+}
+li{
+	list-style: none;
+}
+input{
+	/*清除移动端表单样式。内阴影*/
+	border:none;
+	outline:none;
+	appearance:none;
+	-webkit-appearance:none;
+}
+/*=====================公用样式之位置信息================================*/
+/*  定位 与浮动  位置信息 */
+.relative{
+	position: relative;
+}
+.absolute{
+	position: absolute;
+}
+.absolute-auto{
+	position: absolute;
+	top:0;right:0;bottom:0;left:0;margin:auto;
+}
+.absolute-right{
+	position:absolute;
+	right:0;
+}
+.absolute-top-0{
+	top:0;
+}
+.fixed-top{
+	position: fixed;
+	top:0;
+
+}
+.fixed-bottom{
+	position: fixed;
+	bottom:0;
+}
+/* 清除浮动 定位 与 浮动 */
+.clear{
+	clear: both;
+}
+.clearfix:before,
+.clearfix:after{
+	height: 0;
+	clear:both;
+	content:" ";
+	display: block;
+}
+.clearfix{
+	*zoom:1;
+}
+/* end 清除浮动*/
+
+/*左右浮动 */
+.xjp-pull-left{
+	float:left;
+}
+.xjp-pull-right{
+	float:right;
+}
+
+/*===============公用样式位置信息================================*/
+/************公用 样式之 display信息 ***********/
+/* 显示 隐藏*/
+.content-box{
+	box-sizing:content-box;
+	-webkit-box-sizing:content-box;
+}
+.xjp-inline-block{
+	display: inline-block;
+}
+.xjp-block{
+	display: block;
+}
+.xjp-hide{
+	display: none;
+}
+.xjp-show{
+	display: block;
+}
+
+/* End 显示 隐藏*/
+/************公用 样式之 display信息 ***********/
+/*=============================================================*/
+
+/******************************************************************/
+/* width and height公用样式之宽高*/
+.width-auto{
+	width:100%;
+}
+.w-1rem{
+	width:1rem;
+}
+.h-1rem{
+	height: 1rem;
+}
+.line-height-1rem{
+	line-height: 1rem;
+}
+.h-1px{
+	height: 1px;
+	line-height: 1px;
+}
+/*23.5系列*/
+.w-23d5rem{
+	width:23.5rem;
+}
+/*25.6系列*/
+.w-25d6rem{
+	width:25.6rem;
+}
+/**/
+/*End width and height公用样式之宽高*/
+/******************************************************************/
+
+/* margin and padding 公用样式之 初始化 归零*/
+/* margin-0;*/
+.margin-auto{
+	margin:auto;
+}
+.margin-0{
+	margin:0;
+}
+.margin-left-0{
+	margin-left:0;
+}
+.margin-right-0{
+	margin-right:0;
+}
+.margin-top-0{
+	margin-top:0;
+}
+.margin-bottom-0{
+	margin-bottom:0;
+}
+/**/
+
+/*.padding-0*/
+.padding-0{
+	padding:0;
+}
+.padding-left-0{
+	padding-left:0;
+}
+.padding-right-0{
+	padding-right:0;
+}
+.padding-top-0{
+	padding-top:0;
+}
+.padding-bottom-0{
+	padding-bottom:0;
+}
+/*.padding-0*/
+
+
+
+.border-none{
+	border:none;
+}
+/* margin and padding border 初始化 归零*/
+/*====================================================================*/
+
+
+
+/* margin and padding 公用样式*/
+/*0.5系列 */
+.margin-top-d5rem{
+	margin-top:.5rem;
+}
+.margin-bottom-d5rem{
+	margin-bottom:.5rem;
+}
+.margin-right-d5rem{
+	margin-right:.5rem;
+}
+/*0.75系列 */
+.margin-top-d75rem{
+	margin-top:.75rem;
+}
+.margin-bottom-d75rem{
+	margin-bottom:.75rem;
+}
+/*.9系列*/
+.margin-d9rem{
+	margin:.9rem;
+}
+/*1.0系列 */
+.margin-top-bottom-1rem{
+	margin-top:1rem;
+	margin-bottom:1rem;
+}
+.margin-top-1rem{
+	margin-top:1rem;
+}
+.margin-bottom-1rem{
+	margin-bottom:1rem;
+}
+.margin-right-1rem{
+	margin-right:1rem;
+}
+
+/*1.2系列 */
+.margin-top-1d2rem{
+	margin-top:1.2rem;
+}
+/*1.25系列 */
+.margin-top-bottom-1d25rem{
+	margin-top:1.25rem;
+	margin-bottom:1.25rem;
+}
+
+.margin-left-right-1d25rem{
+	margin-left:1.25rem;
+	margin-right:1.25rem;
+}
+.margin-top-1d25rem{
+	margin-top:1.25rem;
+}
+.margin-bottom-1d25rem{
+	margin-bottom :1.25rem;
+}
+.margin-left-1d25rem{
+	margin-left:1.25rem;
+}
+.margin-right-1d25rem{
+	margin-right: 1.25rem;
+}
+
+/*1.5系列 */
+.margin-1d5rem{
+	margin:1.25rem;
+}
+
+.margin-top-bottom-1d5rem{
+	margin-top:1.5rem;
+	margin-bottom:1.5rem;
+}
+.margin-top-1d5rem{
+	margin-top:1.5rem;
+}
+.margin-left-1d5rem{
+	margin-left:1.5rem;
+}
+/*1.6系列 */
+.margin-top-bottom-1d6rem{
+	margin-top:1.6rem;
+	margin-bottom:1.6rem;
+}
+.margin-bottom-1d6rem{
+	margin-bottom:1.6rem;
+}
+.margin-left-1d6rem{
+	margin-left:1.6rem;
+
+}
+
+.margin-right-1d6rem{
+	margin-right:1.6rem;
+}
+/*2.0系列 */
+.margin-top-bottom-2rem{
+	margin-top:2rem;
+	margin-bottom:2rem;
+}
+.margin-top-2rem{
+	margin-top:2rem;
+}
+.margin-bottom-2rem{
+	margin-bottom:2rem;
+}
+.margin-left-2rem{
+	margin-left:2rem;
+}
+/*3.9系列*/
+.margin-top-3d9rem{
+	margin-top:3.9rem;
+}
+/*4.0系列*/
+/*5.0系列*/
+.margin-bottom-5rem{
+	margin-bottom:5rem;
+}
+/*6.0系列*/
+.margin-bottom-6rem{
+	margin-bottom:6rem;
+}
+/*--------------------------------------------------*/
+
+/* margin and padding 公用样式*/
+/*0.5系列 */
+
+.padding-top-bottom-d5rem{
+	padding-top:.5rem;
+	padding-bottom:.5rem;
+}
+
+.padding-bottom-d5rem{
+	padding-bottom:.5rem;
+}
+/*0.75系列 */
+.padding-left-right-d75rem{
+	padding-left:.75rem;
+	padding-right:.75rem;
+}
+.padding-top-d75rem{
+	padding-top:.75rem;
+}
+
+/*0.8系列*/
+.padding-bottom-d8rem{
+	padding-bottom:.8rem;
+}
+/*0.9系列*/
+.padding-top-bottom-d9rem{
+	padding-top:.9rem;
+	padding-bottom:.9rem;
+}
+/*1.0系列 */
+.padding-1rem{
+	padding:1rem;
+}
+.padding-top-bottom-1rem{
+	padding-top:1rem;
+	padding-bottom:1rem;
+}
+.padding-left-right-1rem{
+	padding-left:1rem;
+	padding-right:1rem;
+}
+.padding-top-1rem{
+	padding-top:1rem;
+}
+.padding-bottom-1rem{
+	padding-bottom:1rem;
+}
+.padding-left-1rem{
+	padding-left:1rem;
+}
+.padding-right-1rem{
+	padding-right:1rem;
+}
+/*1.2系列 */
+.padding-top-1d2rem{
+	padding-top:1.2rem;
+}
+/*1.25系列 */
+.padding-top-bottom-1d25rem{
+	padding-top:1.25rem;
+	padding-bottom:1.25rem;
+}
+.padding-top-1d25rem{
+	padding-top:1.25rem;
+}
+.padding-bottom-1d25rem{
+	padding-bottom :1.25rem;
+}
+/*1.5系列 */
+.padding-1d5rem{
+	padding:1.25rem;
+}
+.padding-left-1d5rem{
+	padding-left:1.5rem;
+}
+.padding-top-bottom-1d5rem{
+	padding-top:1.5rem;
+	padding-bottom:1.5rem;
+}
+/*1.6系列 */
+.padding-top-bottom-1d6rem{
+	padding-top:1.6rem;
+	padding-bottom:1.6rem;
+}
+.padding-top-1d6rem{
+	padding-top:1.6rem;
+}
+.padding-bottom-1d6rem{
+	padding-bottom:1.6rem;
+}
+.padding-left-1d6rem{
+	padding-left:1.6rem;
+}
+.padding-right-1d6rem{
+	padding-right:1.6rem;
+}
+/*1.8系列*/
+.padding-top-bottom-1d8rem{
+	padding-top:1.8rem;
+	padding-bottom:1.8rem;
+}
+/*2.0系列 */
+.padding-top-2rem{
+	padding-top:2rem;
+}
+.padding-left-2rem{
+	padding-left:2rem;
+}
+/*3.9系列*/
+.padding-top-3d9rem{
+	padding-top:3.9rem;
+}
+/*4系列*/
+.padding-left-4rem{
+	padding-left:4rem;
+}
+/*5系列*/
+.padding-left-5rem{
+	padding-left:5rem;
+}
+/*6.0系列*/
+.padding-bottom-6rem{
+	padding-bottom:6rem;
+}
+
+/*  margin and padding 公用样式之 margin padding 结束*/
+/***********************************************************************/
+
+
+/* =================================================================*/
+/*font-公用样式之字体样式*/
+
+.font-weight-700{
+	font-weight: 700;
+}
+.font-weight-600{
+	font-weight: 600;
+}
+.font-weight-500{
+	font-weight: 500;
+}
+.font-weight-400{
+	font-weight: 400;
+}
+
+
+.font-size-d8rem{
+	font-size:.8rem;
+}
+.font-size-d9rem{
+	font-size:.9rem;
+}
+.font-size-1rem{
+	font-size:1rem;
+}
+.font-size-1d1rem{
+	font-size:1.1rem;
+}
+.font-size-1d2rem{
+	font-size:1.2rem;
+}
+.font-size-1d5rem{
+	font-size:1.5rem;
+}
+.font-size-2d5rem{
+	font-size:2.5rem;
+}
+/**/
+
+.iconfont{
+ 	top: 1px;
+  	display: inline-block;
+  	line-height: 1;
+}
+
+/************************************************************/
+/*文本对齐方式*/
+.vertical-middle{
+	vertical-align: middle;
+}
+/* color 公用样式之字体颜色 背景颜色 */
+/*常用*/
+/* fff 系列*/
+.bg-white{
+	background-color: #fff;
+}
+.text-white{
+	color:#fff;
+}
+.hover-bg-white:hover{
+	background: #fff;
+}
+.hover-text-white:hover{
+	color:#fff;
+}
+.bg-ccc{
+	background-color: #ccc;
+}
+
+/*red 系列*/
+.bg-red{
+	background-color:red;
+}
+.text-red{
+	color:red  !important;
+}
+.hover-bg-red:hover{
+	background: red !important;
+}
+.hover-text-red:hover{
+	color:red  !important;
+}
+.bg-f5{
+	background-color:#f5f5f5;
+}
+.bg-bbb{
+	background-color:#bbb;
+}
+.text-bbb{
+	color:#bbb;
+}
+
+
+/* End 常用*/
+
+.bg-ff6853{
+	background-color:#ff6853;
+}
+.bg-6fb9fe{
+	background-color:#6fb9fe;
+}
+.bg-59dc87{
+	background-color:#59dc87;
+}
+.bg-d6852f{
+	background-color:#d6852f;
+}
+.bg-ff9a30{
+	background-color:#ff9a30;
+}
+.bg-ffd229{
+	background-color:#ffd229;
+}
+.bg-fd976c{
+	background-color:#fd976c;
+}
+.bg-8594d9{
+	background-color:#8594d9;
+}
+/*End color 公用样式之字体颜色 背景颜色 */
+
+/* End color*/
+/*==========================================================*/
+/*=======================================================================*/
+/*border 与 outline */
+.border{
+
+}
+
+.outline{
+
+}
+.border-radius-d5rem{
+	border-radius:.5rem;
+}
+/*End  border 与 outline */
+/*================================================================================*/
+
+
+/*表单验证 /*获取焦点与失去焦点时，不同状态的class*/*/
+.focus{
+	border:0px;
+}
+.blur{
+	border:1px solid red;
+}
+.text-default{
+	color:#fff;
+}
+.xjp-bg-default{
+	background-color:#000;
+}
+.header-height-default{
+	height: 35px;
+	line-height: 35px;
+}
+
+/*公共样式之  a 元素的删除线*/
+.text-decoration-overline{line-through
+	text-decoration: overline;
+}
+.text-decoration-line-through{
+	text-decoration: line-through;
+}
+
+.z-index-1000{
+	z-index: 1000;
+}

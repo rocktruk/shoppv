@@ -9,11 +9,13 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Table(name="GOODS")
 @Entity
 public class Goods {
+
 
 	@Id
 	private String id;
@@ -24,16 +26,14 @@ public class Goods {
 	@Column(name="BRAND")
 	private String brand;
 
-	@Column(name="GOODS_DESC")
-	private String goodsDesc;
-	
-	@Column(name="DETAIL")
-	private String detail;
-	
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name="INVENTORY",columnDefinition="blob")
-	private byte[] inventory;
+	@Column(name="DETAIL",columnDefinition="blob")
+	private byte[] detail;
+	
+	
+	@Column(name="INVENTORY")
+	private long inventory;
 	
 	@Column(name="STATUS")
 	private String status;
@@ -42,11 +42,26 @@ public class Goods {
 	private String imgPath;
 	
 	@Column(name="GOODS_MENU_ID")
-	private String goodsMenuId;
+	private int goodsMenuId;
 	
 	@Column(name="SPECIFICATION")
 	private String specification;
 
+	@Column(name="title")
+	private String title;
+	
+	@Column(name="MONTH_SALES")
+	private long monthSales;
+	
+	@Column(name="TOTAL_SALES")
+	private long totalSales;
+	
+	@Column(name="BANNER_IMGES")
+	private String banerImages;
+	
+	@Transient
+	private String banners;
+	
 	public String getId() {
 		return id;
 	}
@@ -70,28 +85,21 @@ public class Goods {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
+	
 
-	public String getGoodsDesc() {
-		return goodsDesc;
-	}
-
-	public void setGoodsDesc(String goodsDesc) {
-		this.goodsDesc = goodsDesc;
-	}
-
-	public String getDetail() {
+	public byte[] getDetail() {
 		return detail;
 	}
 
-	public void setDetail(String detail) {
+	public void setDetail(byte[] detail) {
 		this.detail = detail;
 	}
 
-	public byte[] getInventory() {
+	public long getInventory() {
 		return inventory;
 	}
 
-	public void setInventory(byte[] inventory) {
+	public void setInventory(long inventory) {
 		this.inventory = inventory;
 	}
 
@@ -111,11 +119,11 @@ public class Goods {
 		this.imgPath = imgPath;
 	}
 
-	public String getGoodsMenuId() {
+	public int getGoodsMenuId() {
 		return goodsMenuId;
 	}
 
-	public void setGoodsMenuId(String goodsMenuId) {
+	public void setGoodsMenuId(int goodsMenuId) {
 		this.goodsMenuId = goodsMenuId;
 	}
 
@@ -126,6 +134,47 @@ public class Goods {
 	public void setSpecification(String specification) {
 		this.specification = specification;
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public long getMonthSales() {
+		return monthSales;
+	}
+
+	public void setMonthSales(long monthSales) {
+		this.monthSales = monthSales;
+	}
+
+	public long getTotalSales() {
+		return totalSales;
+	}
+
+	public void setTotalSales(long totalSales) {
+		this.totalSales = totalSales;
+	}
+
+	public String getBanerImages() {
+		return banerImages;
+	}
+
+	public void setBanerImages(String banerImages) {
+		this.banerImages = banerImages;
+	}
+
+	public String getBanners() {
+		return banners;
+	}
+
+	public void setBanners(String banners) {
+		this.banners = banners;
+	}
+	
 	
 	
 }

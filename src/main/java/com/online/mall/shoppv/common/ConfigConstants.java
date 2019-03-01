@@ -32,4 +32,30 @@ public class ConfigConstants {
 	public static final String DELIVER_STATUS_WAITCOLLECT = "deliver.status.waitcollect";
 	//已收货
 	public static final String DELIVER_STATUS_COLLECTED = "deliver.status.collected";
+	
+	public static final String GOODS_KIND = "goodsMenu";
+	
+	//商品列表展示方式
+	public static final String GOODSLS_SORT = "goodsls.sort";
+	
+	public static final String GOODSLS_SORT_PRICE = "goodsls.sort.price";
+	
+	public static final String GOODSLS_SORT_ALL = "goodsls.sort.all";
+	
+	public static final String GOODSLS_SORT_SALES = "goodsls.sort.sales";
+	
+	//升序降序
+	public static final String GOODSLS_SORT_PRICE_ASC = "goodsls.sort.price.asc";
+	
+	public static final String GOODSLS_SORT_PRICE_DESC = "goodsls.sort.price.desc";
+	//商品下架
+	public static final String GOODS_STATUS_SOLTOUT = "goods.status.soltout";
+	//商品在售
+	public static final String GOODS_STATUS_STAYON = "goods.status.stayon";
+	//商品待售
+	public static final String GOODS_STATUS_TOSALE = "goods.status.tosale";
+	
+	
 }
+
+

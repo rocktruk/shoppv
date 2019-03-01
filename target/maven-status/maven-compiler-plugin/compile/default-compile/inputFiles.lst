@@ -1,6 +1,7 @@
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/ShoppingCarRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/MasterTrans.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/service/CustomerService.java
+/Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/GoodsWithoutDetail.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/factory/ExpandJpaRepositoryFactoryBean.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/GoodsMenuRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/GoodsMenu.java
@@ -19,6 +20,7 @@
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/GoodsRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/ShoppingOrder.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/ReceiveAddressRepository.java
+/Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/common/util/IdGenerater.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/ShoppingCar.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/ShoppingOrderRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/configure/UploadPathStaticConfig.java
@@ -26,6 +28,7 @@
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/JpaConfiguration.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/Customer.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/control/GoodsControl.java
+/Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/GoodsWithoutDetailRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/ShoppingApplication.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/service/ShoppingCarService.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/control/ShopControl.java

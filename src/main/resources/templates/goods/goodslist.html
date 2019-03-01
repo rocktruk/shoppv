@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- 页面窗口自动调整到设备宽度，并禁止用户缩放页面 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+
+	<!-- 忽略将页面中的数字识别为电话号码 -->
+  	<meta name="format-detection" content="telephone=no"/>
+  	<!-- 忽略对邮箱地址的识别 -->
+	<meta name="format-detection" content="email=no"/>
+	<!-- 忽略识别页面中的地址 -->
+	<meta name="format-detection" content="adress=no"/>
+	<!-- 渲染械 -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+
+	
+	<title>龙鑫商城</title>
+	<!-- 引入 bootstrap css 文件 -->
+	<link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{iconfont/list/iconfont.css}">
+	<link rel="stylesheet" th:href="@{css/base.css}">
+	<link rel="stylesheet" th:href="@{css/goods.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/ui.css}">
+	<link rel="stylesheet" th:href="@{css/index.css}">
+	<link rel="stylesheet" th:href="@{font-awesome/css/font-awesome.min.css}">
+<style type="text/css">
+.sprite-icon{
+	display:inline-block;
+	background:url("../images/index/jd-sprites.png") no-repeat;
+	background-size:200px 200px;
+}
+</style>
+</head>
+<body>
+<!-- 引入 js 库文件 -->
+<script type="text/javascript" th:src='@{js/list/jquery-3.2.1.min.js}'></script>
+<script type="text/javascript" th:src='@{js/list/bootstrap.min.js}'></script>
+	<!-- 正文 -->
+	<div class="container-fluid padding-0 ">
+		<!-- =======header ======== -->
+		<div class="wf-search" id="search">
+				<header>
+					<div class="search">
+						<form action="">	
+							<span class="sprite-icon"></span>
+							<input id="query" type="search" placeholder="搜索商品">
+						</form>
+					</div>
+				</header>
+			</div>
+		<!-- =======End header ======== -->
+		<!-- ************************************** -->
+		<!-- 商品列表 -->
+		<div class="goods margin-top-3d9rem margin-bottom-6rem">
+			<ul class="xx-nav-tabs xx-nav">
+				<li class="text-center">
+					<a th:href="@{goodsls(sort=all,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
+				</li>
+				<!--<li class="text-center"><a th:href="@{goodsls}?sort=" class="xjp-inline-block font-size-1d2rem">人气</a></li>-->
+				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>
+				<li class="text-center"><a th:href="@{goodsls(sort=price,goodsMenu=${goods},isasc=${isAsc})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'price'}? 'active' : ''">价格<i class="fa " th:classappend="${isAsc == null? 'fa-unsorted':(isAsc == 'asc'? 'fa-sort-asc':'fa-sort-desc')}"></i></a></li>
+			</ul>
+			<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="">
+				<ul class="clearfix  goodslist  margin-auto" id="goods_list">
+					<li class="col-xs-6 padding-0 margin-bottom-d75rem" th:each="product:${goodsLs}" >
+						<a th:href="@{goodsInfo(goodsId=${product.getId()})}">
+							<img th:src="@{${product.getImgPath()}}" th:alt="${product.getTitle()}" th:title="${product.getTitle()}">
+						</a>
+						<div class="font-size-1rem ">
+							<p class="margin-top-bottom-1rem "><a th:href='@{goodsInfo(goodsMenu=${product.getId()})}' th:text="${product.getTitle()}"></a></p>
+							<p class="text-red"><span class="font-size-d8rem">￥</span><span class="font-weight-700" th:text="${product.getPrice()}"></span></p>
+						</div>
+					</li>
+				</ul>
+				<div id="loading" style="text-align: center;display:none;padding-top: 3px;"><i class="fa fa-refresh"><span>玩命加载中...</span></i></div>
+			</section>
+		</div>
+		
+		<!-- 商品列表 -->
+	<!-- ************************************************* -->
+		<div class="tab-bar tab-bottom" id="footer">
+				<a class="tab-button " th:href="@{index}"><i class="tab-button-icon icon icon-home"></i><span class="tab-button-txt">首页</span></a>
+				<a class="tab-button " th:href="@{classified}"><i class="tab-button-icon icon icon-post"></i><span class="tab-button-txt">分类</span></a>
+				<a class="tab-button " th:href="@{shoppingCar}"><i class="tab-button-icon icon icon-car"></i><span class="tab-button-txt">购物</span></a>
+				<a class="tab-button " th:href="@{user}"><i class="tab-button-icon icon icon-myme"></i><span class="tab-button-txt">我的</span></a>
+			</div>
+	</div>
+	<div id="back_top">
+		<a href="#"><img th:src="@{images/index/xqq/the_top.png}" /></a>
+	</div>
+	<input id="sort" type="hidden" th:value="${sort}"/>
+	<input id="goodsMenu" type="hidden" th:value="${goods}"/>
+	<input id="isasc" type="hidden" th:value="${isAsc}"/>
+	<input id="index" type="hidden"/>
+	<input id="hasNext" type="hidden"/>
+	<input id="queryIng" type="hidden"/>
+	<script type="text/javascript" th:src="@{js/nav-tab/aui-tab.js}"></script>
+	<script type="text/javascript" th:src="@{js/index/top.js}" ></script>
+	<script type="text/javascript">
+		$(function(){
+		
+			$('#index').val(1);
+		});
+		
+		$("#query").on('keypress',function(e) {
+                var keycode = e.keyCode;
+                var searchName = $(this).val();
+                if(keycode=='13') {
+                    e.preventDefault();  
+                    //请求搜索接口
+                    
+                }
+         });
+         (function(window) {
+		    // 获取当前滚动条的位置 
+		    function getScrollTop() { 
+		        var scrollTop = 0; 
+		        if (document.documentElement && document.documentElement.scrollTop) { 
+		            scrollTop = document.documentElement.scrollTop; 
+		        } else if (document.body) { 
+		            scrollTop = document.body.scrollTop; 
+		        } 
+		        return scrollTop; 
+		    } 
+		
+		    // 获取当前可视范围的高度 
+		    function getClientHeight() { 
+		        var clientHeight = 0; 
+		        if (document.body.clientHeight && document.documentElement.clientHeight) { 
+		            clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight); 
+		        } 
+		        else { 
+		            clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight); 
+		        } 
+		        return clientHeight; 
+		    } 
+		
+		    // 获取文档完整的高度 
+		    function getScrollHeight() { 
+		        return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
+		    }
+		
+		    var _text = $('#loading'),
+		      _container = $('#goods_list');
+		
+		    // 节流函数
+		    var throttle = function(method, context){
+		      clearTimeout(method.tId);
+		      method.tId = setTimeout(function(){
+		        method.call(context);
+		      }, 300);
+		    }
+		
+		    function fetchData() {
+		        setTimeout(function() {
+		        	var index = $('#index').val();
+		        	var data = {"sort":$('#sort').val(),"goodsMenu":$('#goodsMenu').val(),"isAsc":$('#isasc').val(),"index":index};
+		        	$.ajax({
+		        		data: JSON.stringify(data),
+		        		url:  "/loadGoods",
+		        		type: "POST",
+		        		contentType:"application/json",
+		        		success:function(data){
+		        			_text.css('display',"none");
+		        			$('#queryIng').val('false');
+		        			if (data.length > 0)
+		        			{
+		        				$('#index').val(Number(index)+Number(1));
+		        			}else
+		        			{
+		        				$("#hasNext").val('false');
+		        			}
+		        			for (k in data){
+		        				_container.append('<li class="col-xs-6 padding-0 margin-bottom-d75rem"><a href="goodsInfo?goodsMenu="'+data[k].id+'"><img src="'+data[k].imgPath+'" alt="'+data[k].title+'" title="'+data[k].title+'"></a>'
+		        				+'<div class="font-size-1rem "><p class="margin-top-bottom-1rem "><a href="goodsInfo?goodsMenu="'+data[k].id+'">'+data[k].title+'</a></p>'
+		        				+'<p class="text-red"><span class="font-size-d8rem">￥</span><span class="font-weight-700">'+data[k].price+'</span></p></div></li>');
+		        			}
+		        		},
+		        		error:function(msg)
+		        		{
+		        			console.log(msg);
+		        		}
+		        	});
+		        }, 5000);
+		    }
+		
+		    window.onscroll = function() {
+		      if($('#hasNext').val()=='false'||$('#queryIng').val()=='true')
+		      {
+		      		return;
+		      }
+		      if (getScrollTop() + getClientHeight() >= getScrollHeight()) {
+		          _text.css('display',"block");
+		          throttle(fetchData);
+		          $('#queryIng').val('true');
+		      }
+		    };
+		
+		})(window);
+         
+         
+	</script>
+</body>
+</html>

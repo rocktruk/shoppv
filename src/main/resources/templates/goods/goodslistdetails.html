@@ -1,0 +1,297 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- 页面窗口自动调整到设备宽度，并禁止用户缩放页面 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+
+	<!-- 忽略将页面中的数字识别为电话号码 -->
+  	<meta name="format-detection" content="telephone=no"/>
+  	<!-- 忽略对邮箱地址的识别 -->
+	<meta name="format-detection" content="email=no"/>
+	<!-- 忽略识别页面中的地址 -->
+	<meta name="format-detection" content="adress=no"/>
+	<!-- 渲染械 -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+
+	
+	<title>龙鑫商城</title>
+	<!-- 引入 bootstrap css 文件 -->
+	<link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{iconfont/list/iconfont.css}">
+	<link rel="stylesheet" th:href="@{css/base.css}">
+	<link rel="stylesheet" th:href="@{css/goodslist-details.css}">
+</head>
+<body>
+<!-- 引入 js 库文件 -->
+<script type="text/javascript" th:src='@{js/list/jquery-3.2.1.js}'></script>
+<script type="text/javascript" th:src='@{js/list/bootstrap.js}'></script>
+<script type="text/javascript" th:src='@{js/list/vue.js}'></script>
+	<!-- 正文 -->
+	<div class="container-fluid padding-0 goodslist-details">
+		<!-- =======header ======== -->
+		<nav class="relative fixed-top width-auto details-nav nav-tabs tab">
+			<div class="xx-nav-tabs xx-nav text-center padding-left-1rem relative">
+				<!--<span class="glyphicon glyphicon-chevron-left xjp-pull-left font-size-1d2rem"></span>-->
+				<a href="#goodslist_details_goods" class="xjp-inline-block  font-size-1d2rem padding-bottom-d8rem margin-left-right-1d25rem active" data-toggle="tab"><span>商品</span></a>
+				<a href="#profile" class="xjp-inline-block  font-size-1d2rem padding-bottom-d8rem margin-left-right-1d25rem" data-toggle="tab">详情</a>
+				<a href="#messages" class="xjp-inline-block 	font-size-1d2rem padding-bottom-d8rem margin-left-right-1d25rem" data-toggle="tab">评价</a>
+				<!--<span class="glyphicon glyphicon-circle-arrow-up xjp-pull-right font-size-1d2rem padding-right-1rem"></span>-->
+			</div>
+		</nav>
+
+		<!-- 标签页，目前只有商品页 -->
+		<div class="tab-content " style="margin-top:1.8rem">
+			<!-- 商品页 -->
+			<div role="tabpanel" class="tab-pane active" id="goodslist_details_goods">
+
+				<!-- 这是轮播图 -->
+				<section class="xx-banner xx-top-banner banner carousel slide margin-bottom-1rem margin-top-3d9rem" id="top_banner" data-ride="carousel">
+					<!-- banner tabs -->
+					<ol class="carousel-indicators absolute-right">
+					    <li data-target="#top_banner" th:data-slide-to="${bannerState.index}" th:each="banner,bannerState:${product.banners}" th:classappend="bannerState.index==0?active:''"></li>
+					</ol>
+					<!--End banner tabs -->
+					<!-- banner inner  -->
+					<div class="carousel-inner" role="listbox">
+					   	<div class="item active" th:each="banner,bannerState:${product.banners}" th:classappend="bannerState.index==0?active:''">
+					      	<img th:src="@{${banner}}" th:alt="${product.title}">
+					     	<div class="carousel-caption">
+					     		<p></p>
+					    	</div>
+					    </div>
+					</div>
+					<!--End banner inner  -->
+					<!-- banner arrow -->
+					<div class="banner-arrow">
+						<a class="left carousel-control xjp-hide" href="#top_banner" id="left_arrow" role="button" data-slide="prev" >
+						    <!-- <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> -->
+						    <span class="sr-only">Previous</span>
+						</a>
+						<a class="right carousel-control xjp-hide" id="right_arrow" href="#top_banner" role="button" data-slide="next" >
+						    <!-- <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> -->
+						    <span class="sr-only">Next</span>
+						</a>
+					</div>
+					
+					<!-- End banner arrow -->
+				</section>
+				<!-- 轮播图的补充信息 -->
+				<div class="padding-left-1rem font-size-1rem border-line-1px-ec">
+					<p class="margin-bottom-1rem"><a href="javascript:void(0)" th:text="${product.getTitle()}"></a></p>
+					<p class="margin-bottom-1rem text-red"><span>￥</span><span th:text="${product.getPrice()}"></span></p>
+					
+				</div>
+				<!-- 这是商品页的 轮播 图 -->
+				<!-- 去团购 
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec">
+						<div class="pull-left">团购</div>
+						<div class="padding-left-2rem xjp-inline-block text-white" >	
+							<span class="bg-ff5f3d padding-left-right-d75rem padding-top-bottom-d5rem img-rounded">该商品支持团购</span>
+						</div>
+						<div class="pull-right text-e0e0e0"><span class="margin-right-1rem">去团购</span>></div>
+				</section>-->
+				<!-- 领券
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec">
+						<div class="pull-left">领券</div>
+						<div class="padding-left-2rem xjp-inline-block text-white" >	
+							<span class="bg-ff5f3d padding-left-right-d75rem padding-top-bottom-d5rem img-rounded">满299减50</span>
+							<span class="bg-ff5f3d padding-left-right-d75rem padding-top-bottom-d5rem img-rounded">满399减100</span>
+						</div>
+						<div class="pull-right text-e0e0e0"><span class="margin-right-1rem">去领券</span>></div>
+				</section>-->
+				<!-- 促销 
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1rem-f5f5f5f clearfix">
+						<div class="pull-left">促销</div>
+						<div class="padding-left-2rem xjp-inline-block " >
+							<div>
+								<span class="padding-left-right-d75rem padding-top-bottom-d5rem margin-right-d5rem  bg-fff text-ff5f3d border-ff5f3d img-rounded text-white">满折减</span>
+								<span>每满三件商品享受8折优惠</span>
+							</div>	
+							<br />
+							<div class="">
+								<span class="padding-left-right-d75rem padding-top-bottom-d5rem bg-fff text-ff5f3d border-ff5f3d  img-rounded margin-right-1rem text-white">优惠套装</span> <span>最高省</span><span class="text-red">50</span>元
+							</div>
+						</div>
+						<div class="pull-right text-e0e0e0">></div>
+				</section>-->
+
+				<!--<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1rem-f5f5f5f clearfix">
+						<div class="pull-left">已选</div>
+						
+						<div class="pull-right text-e0e0e0">S码></div>
+				</section>-->
+				
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec clearfix">
+						<div class="pull-left font-weight-700">商品评价<span>28</span>条</div>
+						
+						<div class="pull-right text-e0e0e0">查看全部评价</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1rem-f5f5f5f clearfix">
+						<div class="pull-left">
+							<img src="images/xx_goodslist_details_goods-xx_01.png" alt="" class="padding-right-1rem"><span>晨晨</span>
+						</div>
+						<div class="pull-right text-e0e0e0">2017-7-18</div>
+						<div class="padding-top-1rem clear" >
+							东西不错
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec clearfix">
+						<div class="pull-left font-weight-700">提问<span>28</span>条</div>
+						
+						<div class="pull-right text-e0e0e0">查看全部提问</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1rem-f5f5f5f clearfix">
+						<div class="margin-bottom-1rem">
+							<span  class="xjp-inline-block w-40-h-30 margin-right-1rem text-center bg-ffc971 down-caret" >?</span><span>这个东西怎么样啊</span>
+						</div>
+						<!-- <br /> -->
+						<div class="">
+							<span  class="xjp-inline-block w-40-h-30 margin-right-1rem text-center bg-6fb3f7 down-caret" >…</span><span><span>这个东西怎么样啊</span>
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec clearfix">
+						<div class="pull-left font-weight-700"><h3>补充说明</h3></div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec clearfix">
+						<div class="pull-left font-weight-700"><span>商品内容</span></div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec clearfix">
+						<div class="pull-left">钩花镂空文艺短外套</div>
+						<div class="padding-left-2rem pull-left text-center" >	
+							<span class=" padding-left-right-d75rem padding-top-bottom-d5rem img-rounded">1</span>件
+						</div>
+						<div class="pull-right"><span class="">￥</span><span>2000</span></div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec">
+						<div class="text-right ">
+							<p>
+								<span class="margin-right-1rem" >原价</span>
+								<span class="text-decoration-line-through">￥ 2000</span>
+							</p>
+							<p>
+								<span class="margin-right-1rem ">优惠价</span>
+								<span class="text-red">￥ 1780</span>
+							</p>
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-bottom-1d5rem font-size-1rem relative border-line-1px-ec">
+					<p>
+						手洗高洗涤温度40&#8451;，不可漂白，在阴凉处悬挂晾干，熨斗底板高温度110&#8451;，请用中性洗涤液单独反面洗涤，冷水洗涤，不可浸泡，不可机洗，绣花部位不可搓洗，不可刷洗
+					</p>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1px-ec">
+						<h3>消费提示</h3>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-bottom-1rem font-size-1rem relative border-line-1px-ec">
+						<div class="absolute font-weight-700 text-000">有效期</div>
+						<div class="margin-left-9rem xjp-inline-block text-29" >	
+							<span class=" padding-top-bottom-d5rem img-rounded">至购买之日起</span>
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-bottom-1rem font-size-1rem relative border-line-1px-ec">
+						<div class="absolute font-weight-700 text-000">使用时间</div>
+						<div class="margin-left-9rem xjp-inline-block text-29" >	
+							<span class=" padding-top-bottom-d5rem img-rounded">9：00 - 22：00</span>
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-bottom-1rem font-size-1rem relative border-line-1px-ec">
+						<div class="absolute font-weight-700 text-000">使用日期</div>
+						<div class="margin-left-9rem xjp-inline-block text-29" >	
+							<span class=" padding-top-bottom-d5rem img-rounded">所有日期都可使用</span>
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-bottom-1rem font-size-1rem relative border-line-1px-ec">
+						<div class="absolute font-weight-700 text-000">是否需要预约</div>
+						<div class="margin-left-9rem xjp-inline-block text-29" >	
+							<span class=" padding-top-bottom-d5rem img-rounded">无需预约</span>
+						</div>
+				</section>
+
+				<section class="padding-left-right-1rem padding-top-bottom-1d5rem font-size-1rem relative bg-f5 border-line-1px-ec text-center"  style="margin-bottom:5rem">
+						<div class="h-1px text-center bg-bbb" >
+							<span class="xjp-inline-block bg-f5 padding-left-right-1rem text-e0e0e0" >上拉查看详情</span>
+						</div>
+						
+				</section>
+
+			</div>
+			<!-- 轮播 图结束 -->
+			
+			<!-- 商品页 -->
+		    <div role="tabpanel" class="tab-pane" id="profile">这是商品的详细情况</div>
+		    <div role="tabpanel" class="tab-pane" id="messages">.这是商品的评价，只供参考</div>
+		   
+		</div>
+	
+		<!-- ************************************** -->
+		
+	<!-- ************************************************* -->
+	<!-- footer  -->
+		<footer class="fixed-bottom width-auto bg-white z-index-1000" >
+			<ul class="col-xs-5 clearfix padding-0 " >
+				<!-- 关注 -->
+				<li class="relative text-center col-xs-4 padding-0 font-size-1d5rem relative middle">
+					<a href="javascript:void(0)" class="xjp-block line-e0 padding-top-bottom-d9rem" >
+						<span class="glyphicon glyphicon-heart text-red"></span>
+						<p class="font-size-d8rem">关注</p>
+					</a>
+				</li>
+				<!-- 提问 -->
+				<li class="relative text-center col-xs-4 padding-0 font-size-1d5rem">
+					<a href="javascript:void(0)" class="xjp-block line-e0 padding-top-bottom-d9rem">
+						<span class="glyphicon glyphicon-pencil text-bbb"></span>
+						<p class="font-size-d8rem">提问</p>
+					</a>
+				</li>
+				<!-- 店铺 -->
+				<li class="relative text-center col-xs-4 padding-0 font-size-1d5rem">
+					<a href="javascript:void(0)" class="xjp-block hover-text-red padding-top-bottom-d9rem">
+						<span class="glyphicon glyphicon-calendar text-bbb"></span>
+						<p class="font-size-d8rem">店铺</p>
+					</a>
+				</li>
+				<!-- 停车缴费4 -->
+			</ul>
+			<ul class="col-xs-7 padding-0" >
+				<li class="col-xs-6 h-5rem padding-0 text-center bg-ffc971" ><a href="javascript:void(0)" class="font-size-1rem text-white">加入购物车</a></li>
+				<li class="col-xs-6 h-5rem padding-0 text-center bg-ff916f" ><a href="javascript:void(0)" class="font-size-1rem text-white">立即团购</a></li>
+			</ul>
+		</footer>
+	<!--End footer -->
+	</div>
+<!-- <script type="text/javascript" src="js/goods.js"></script> -->
+<script type="text/javascript">
+	$(function(){
+		var touchsPageX = [];
+		$(".carousel").on("touchstart",function(){
+			touchsPageX[0] = event.touches[0].pageX;
+			$(this).find(".carousel-inner").mousemove()
+		})
+		$(".carousel").on("touchend",function(){
+			var changedTouchesPageX = event.changedTouches[0].pageX
+			var Dvalue = changedTouchesPageX - touchsPageX[0];
+			if (Dvalue > 0){
+				console.log($(this).find(".right"))
+				$(this).find(".left").click()
+			}else if (Dvalue < 0){
+				$(this).find(".right").click()
+			}
+		})
+	})
+</script>
+</body>
+</html>
