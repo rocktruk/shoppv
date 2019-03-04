@@ -15,6 +15,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+		<dependency>  
+		    <groupId>org.safehaus.jug</groupId>  
+		    <artifactId>jug</artifactId>  
+		    <version>2.0.0</version>  
+		     <classifier>asl</classifier>  
+		</dependency>
 
     <!--jpa的jar包 ，操作数据库的，类似hibernate-->
         <dependency>
