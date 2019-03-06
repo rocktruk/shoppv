@@ -2,10 +2,10 @@ package com.online.mall.shoppv.repository;
 
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,4 +20,6 @@ public interface CustomerRepository extends IExpandJpaRepository<Customer, Long>
 	@Query(value="insert into Custom value(?,?,?,?,?)",nativeQuery = true)
 	int addCustomer(long id,String channelType,String name,String openId,Date lstUpdTime);
 	
+	@Query("select c from Custom c where c.openId = ?1 and c.channelType = ?2")
+	Optional<Customer> getCustomerWithOpenId(String openId,String channelType);
 }

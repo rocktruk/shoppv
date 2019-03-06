@@ -1,6 +1,6 @@
 package com.online.mall.shoppv.common.util;
 
-import java.util.UUID;
+import org.safehaus.uuid.UUIDGenerator;
 
 public class IdGenerater {
 
@@ -14,7 +14,8 @@ public class IdGenerater {
 	
 	public String goodsIdGenerate()
 	{
-		String id = UUID.randomUUID().toString();
+		UUIDGenerator generator = UUIDGenerator.getInstance();
+		String id = generator.generateTimeBasedUUID().toString();
 		id = GOODS_PREFIX+id.replaceAll("-", "");
 		return id;
 	}

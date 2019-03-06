@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
@@ -100,6 +101,7 @@ public class GoodsService {
 	 * @param index
 	 * @return
 	 */
+	@Cacheable(value="getGoodsWithPage",key="'getGoodsWithPage'+#goodsMenu+#sort+#isAsc+#index")
 	public List<GoodsWithoutDetail> loadGoodsWithPage(int goodsMenu,String sort,String isAsc,int index)
 	{
 		List<GoodsWithoutDetail> ls = new ArrayList<GoodsWithoutDetail>();

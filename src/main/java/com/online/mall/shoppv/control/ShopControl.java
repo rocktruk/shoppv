@@ -37,25 +37,12 @@ public class ShopControl {
 			@Param("open_userid") String open_userid,@Param("phone") String phone,
 			@Param("sign") String sign)
 	{
-		HttpSession session = request.getSession();
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("source", source);
 		map.put("phone", phone);
 		map.put("open_userid", open_userid);
 		map.put("sign", sign);
-		String[] keys = new String[] {"source","phone","open_userid"};
-		boolean flag;
-		try {
-			flag = SignatureUtil.INTANCE.checkSign(map, keys);
-			if(!flag)
-			{
-				log.error("签名校验失败");
-			}
-		} catch (NoSuchAlgorithmException e) {
-			log.error(e.getMessage(),e);
-		}
-		Customer user = new Customer();
-		session.setAttribute(session.getId(), user);
+		
 		return "redirect:index";
 	}
 	

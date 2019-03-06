@@ -21,6 +21,9 @@ public class Customer {
 	@Column(name="CHANNEL_TYPE")
 	private String channelType;
 	
+	@Column(name="PHONE")
+	private String phone;
+	
 	@Column(name="NAME")
 	private String name;
 	
@@ -69,6 +72,14 @@ public class Customer {
 
 	public void setLstUpdTime(Date lstUpdTime) {
 		this.lstUpdTime = lstUpdTime;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 	
