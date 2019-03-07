@@ -27,8 +27,6 @@ public class CacheUtil {
      * 每个cache缺省：10秒超时、最多缓存50000条数据，需要修改可以在构造方法的参数中指定。
      */
     public enum Caches{
-        getUserById(600),          //有效期600秒
-        indexshow(7200,1000),  //首页，有效期2个小时 , 最大容量1000
         getGoodsWithPage(3600,1000),
         ;
         Caches() {

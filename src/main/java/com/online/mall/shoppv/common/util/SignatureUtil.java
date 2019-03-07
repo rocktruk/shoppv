@@ -29,14 +29,11 @@ public class SignatureUtil {
 	public boolean checkSign(Map<String, String> map) throws NoSuchAlgorithmException 
 	{
 		String sign = (String)map.get("sign");
-		map.remove(sign);
-		String s = sortJoin(map);
-		s = s + DictConstantsUtil.INSTANCE.getDictVal("signkey");
-		String check = md5(s);
-		log.info("checksum:"+check+"|sign:"+sign+"|sign string:"+s);
+		map.remove("sign");
+		String check = sign(map);
 		if(!sign.equals(check))
 		{
-			log.error("checksum:"+check+"|sign:"+sign+"|sign string:"+s);
+			log.error("checksum:"+check+"|sign:"+sign);
 			return false;
 		}
 		return true;
@@ -47,11 +44,9 @@ public class SignatureUtil {
 	 */
 	public String sign(Map<String, String> map) throws NoSuchAlgorithmException
 	{
-		String sign = (String)map.get("sign");
-		map.remove(sign);
 		String s = sortJoin(map);
 		s = s + DictConstantsUtil.INSTANCE.getDictVal("signkey");
-		log.info("|sign string:"+s);
+		log.info("sign string:"+s);
 		return md5(s);
 	}
 	
