@@ -1,7 +1,7 @@
 package com.online.mall.shoppv.control;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,14 +14,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.online.mall.shoppv.common.util.SignatureUtil;
 import com.online.mall.shoppv.entity.Customer;
+import com.online.mall.shoppv.entity.ShoppingCar;
+import com.online.mall.shoppv.service.CustomerService;
+import com.online.mall.shoppv.service.ShoppingCarService;
 
 @Controller
 public class ShopControl {
 	
 	private static final Logger log = LoggerFactory.getLogger(ShopControl.class);
 	
+	@Autowired
+	private ShoppingCarService carService;
+	
+	@Autowired
+	private CustomerService userService;
 
 	@RequestMapping("/")
 	/**
@@ -42,7 +49,7 @@ public class ShopControl {
 		map.put("phone", phone);
 		map.put("open_userid", open_userid);
 		map.put("sign", sign);
-		
+		userService.login(request, map);
 		return "redirect:index";
 	}
 	
@@ -58,9 +65,19 @@ public class ShopControl {
 	 * @return
 	 */
 	@RequestMapping("/shoppingCar")
-	public String shoppingCar()
+	public String shoppingCar(HttpServletRequest request)
 	{
-		return "goods/shoppingcar";
+		HttpSession session = request.getSession();
+		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
+		Customer user = (Customer)session.getAttribute(session.getId());
+		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
+		if(ls==null || ls.isEmpty())
+		{
+			return "goods/emptyshopping";
+		}else
+		{
+			return "goods/shoppingcar";
+		}
 	}
 	
 }

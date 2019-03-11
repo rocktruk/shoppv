@@ -77,22 +77,23 @@ public class CustomerService {
 		} catch (NoSuchAlgorithmException e) {
 			log.error(e.getMessage(),e);
 		}
-		session.setAttribute(session.getId(), user);
-		CustomerEvent event = new CustomerEvent(this, user);
+		
+		CustomerEvent event = new CustomerEvent(this, user,session);
 		//异步保存用户信息
 		context.publishEvent(event);
 		return flag;
 	}
 	
 	@Transactional
-	public void saveUser(Customer user)
+	public void saveUser(Customer user,HttpSession session)
 	{
 		Optional<Customer> cus = repository.getCustomerWithOpenId(user.getOpenId(), user.getChannelType());
 		Customer loginUsr = cus.map(c -> {
 			user.setId(c.getId());
 			return user;
 			}).orElse(user);
-		repository.save(loginUsr);
+		Customer result = repository.save(user);
+		session.setAttribute(session.getId(), user);
 	}
 	
 	

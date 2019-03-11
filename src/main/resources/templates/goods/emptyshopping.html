@@ -14,23 +14,29 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<div class="int_title"><span class="int_pic"><img src="images/jifen/left.png"/></span>确认订单</div>
+			<div class="int_title"><span class="int_pic"><img th:src="images/jifen/left.png"/></span>确认订单</div>
 			<div class="m_pwd topline">
 				<div class="empty">
 					<div class="e_content">
 						<img src="images/shopingcart_03.png">
 						<span>购物车空空如也，不如</span>
-						<a href="#" class="e_btn">去首页逛逛</a>
+						<a th:href="@{index}" class="e_btn">去首页逛逛</a>
 					</div>
 				</div>
 			</div>
 			<!--menu  start-->
 				<div id="menu">
+<!-- 					<ul> -->
+<!-- 						<li><a href="javascript:;" class="red"><font class="iconfont">&#xe612;</font><span class="inco_txt">首页</span></a></li> -->
+<!-- 						<li><a href="javascript:;"><font class="iconfont">&#xe660;</font><span class="inco_txt">分类</span></a></li> -->
+<!-- 						<li><a href="javascript:;"><font class="iconfont index">&#xe63e;</font><span class="inco_txt">首页</span></a></li> -->
+<!-- 						<li><a href="javascript:;"><font class="iconfont">&#xe62e;</font><span class="inco_txt">首页</span></a></li> -->
+<!-- 					</ul> -->
 					<ul>
-						<li><a href="javascript:;" class="red"><font class="iconfont">&#xe612;</font><span class="inco_txt">首页</span></a></li>
-						<li><a href="javascript:;"><font class="iconfont">&#xe660;</font><span class="inco_txt">分类</span></a></li>
-						<li><a href="javascript:;"><font class="iconfont index">&#xe63e;</font><span class="inco_txt">首页</span></a></li>
-						<li><a href="javascript:;"><font class="iconfont">&#xe62e;</font><span class="inco_txt">首页</span></a></li>
+						<li><a th:href="@{index}" class="red"><font class="iconfont">&#xe612;</font><span class="inco_txt">首页</span></a></li>
+						<li><a th:href="@{classified}"><font class="iconfont">&#xe660;</font><span class="inco_txt"></span>全部商品</a></li>
+						<li><a th:href="@{shoppingCar}"><font class="iconfont index">&#xe63e;</font><span class="inco_txt">购物车</span></a></li>
+						<li><a th:href="@{user}"><font class="iconfont">&#xe62e;</font><span class="inco_txt">我的</span></a></li>
 					</ul>
 				</div>
 			<!--menu  start-->

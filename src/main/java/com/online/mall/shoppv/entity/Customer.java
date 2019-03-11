@@ -4,10 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 @Table(name="CUSTOM")
@@ -30,7 +34,7 @@ public class Customer {
 	@Column(name="OPEN_ID")
 	private String openId;
 	
-	@Column(name="LST_UPD_TIME")
+	@Column(name="LST_UPD_TIME",insertable=false,updatable=false)
 	private Date lstUpdTime;
 
 	public long getId() {

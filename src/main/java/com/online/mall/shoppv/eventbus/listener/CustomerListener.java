@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,8 @@ public class CustomerListener implements ApplicationListener<CustomerEvent> {
 		try {
 			long start = System.currentTimeMillis();
 			log.debug("开始保存用户信息|"+start);
-			service.saveUser(event.getCus());
+			log.debug(Thread.currentThread().getName());
+			service.saveUser(event.getCus(),event.getSession());
 			log.debug("用户信息保存完成|"+start);
 		}catch (Exception e)
 		{
