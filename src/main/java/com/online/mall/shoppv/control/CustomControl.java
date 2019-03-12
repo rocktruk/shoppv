@@ -48,25 +48,6 @@ public class CustomControl {
 		return "user/userinfo";
 	}
 	
-	/**
-	 * 订单
-	 * @return
-	 */
-	@RequestMapping("/order")
-	public String order()
-	{
-		return "user/order";
-	}
-	
-	/**
-	 * 订单详情
-	 * @return
-	 */
-	@RequestMapping("/orderInfo")
-	public String orderInfo()
-	{
-		return "user/orderinfo";
-	}
 	
 	/**
 	 * 收货地址
@@ -98,37 +79,5 @@ public class CustomControl {
 		return "user/district";
 	}
 	
-	@RequestMapping("/login")
-	@ResponseBody
-	public Map<String, String> login(HttpServletRequest request,@RequestBody Map<String,String> params)
-	{
-		log.info("用户登陆开始："+params.get("name"));
-		Map<String, String> response = new HashMap<String, String>();
-		Customer cus = new Customer();
-		cus.setChannelType(params.get("channelType"));
-		cus.setName(params.get("name"));
-		cus.setOpenId(params.get("openId"));
-		boolean flag = cusService.insertCustomer(cus);
-		if(flag)
-			response.put("respCode", "000000");
-		else
-			response.put("respCode", "111111");
-		return response;
-	}
-	
-	@RequestMapping("/getUser")
-	@ResponseBody
-	public Map<String, String> search(HttpServletRequest request,@RequestBody Map<String,String> params)
-	{
-		Map<String, String> response = new HashMap<String, String>();
-		Optional<Customer> cus = cusService.findCusById(Long.parseLong(params.get("id")));
-		response.put("respCode", "111111");
-		cus.map(c -> {
-			response.put("cus_id", c.getName());
-			response.put("respCode", "000000");
-			return response;
-		});
-		return response;
-	}
 	
 }

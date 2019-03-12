@@ -32,9 +32,32 @@
 		    <artifactId>caffeine</artifactId>
 		    <version>2.6.2</version>
 		</dependency>
-
 		
-		
+		<dependency>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		    <version>1.9.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpcore</artifactId>
+		    <version>4.4.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpcore-nio</artifactId>
+		    <version>4.4.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.5.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpasyncclient</artifactId>
+		    <version>4.1.1</version>
+		</dependency>
     <!--jpa的jar包 ，操作数据库的，类似hibernate-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.common.util.SignatureUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.eventbus.event.CustomerEvent;
@@ -32,6 +33,11 @@ public class CustomerService {
 	@Resource
 	private ApplicationContext context;
 	
+	/**
+	 * 插入客户信息
+	 * @param cus
+	 * @return
+	 */
 	@Transactional
 	public boolean insertCustomer(Customer cus)
 	{
@@ -45,7 +51,11 @@ public class CustomerService {
 		}
 	}
 	
-	
+	/**
+	 * 根据客户号查找用户信息
+	 * @param id
+	 * @return
+	 */
 	public Optional<Customer> findCusById(long id)
 	{
 		Optional<Customer> customer = repository.findById(id);
@@ -58,14 +68,14 @@ public class CustomerService {
 	 * @param req
 	 * @return
 	 */
-	public boolean login(HttpServletRequest request,Map<String,String> req)
+	public boolean login(HttpServletRequest request,Map<String,Object> req)
 	{
 		HttpSession session = request.getSession();
 		Customer user = new Customer();
-		user.setChannelType(req.get("source"));
-		user.setName(req.get("open_userid"));
-		user.setOpenId(req.get("open_userid"));
-		user.setPhone(req.get("phone"));
+		user.setChannelType((String)req.get("source"));
+		user.setName((String)req.get("open_userid"));
+		user.setOpenId((String)req.get("open_userid"));
+		user.setPhone((String)req.get("phone"));
 		boolean flag = false;
 		try {
 			//验证签名
@@ -84,6 +94,11 @@ public class CustomerService {
 		return flag;
 	}
 	
+	/**
+	 * 保存用户信息
+	 * @param user
+	 * @param session
+	 */
 	@Transactional
 	public void saveUser(Customer user,HttpSession session)
 	{
@@ -92,8 +107,8 @@ public class CustomerService {
 			user.setId(c.getId());
 			return user;
 			}).orElse(user);
-		Customer result = repository.save(user);
-		session.setAttribute(session.getId(), user);
+		Customer result = repository.save(loginUsr);
+		SessionUtil.setAttribute(session,session.getId(), result);
 	}
 	
 	

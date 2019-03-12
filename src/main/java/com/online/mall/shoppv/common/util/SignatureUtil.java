@@ -4,15 +4,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.online.mall.shoppv.common.DictConstantsUtil;
+import org.springframework.beans.factory.annotation.Value;
 
 public class SignatureUtil {
 	
@@ -20,13 +18,16 @@ public class SignatureUtil {
 	
 	public static final SignatureUtil INTANCE = new SignatureUtil();
 	
+	@Value(value="${signkey}")
+	private String signKey;
+	
 	/**
 	 * 签名验证
 	 * @param map
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 */
-	public boolean checkSign(Map<String, String> map) throws NoSuchAlgorithmException 
+	public boolean checkSign(Map<String, Object> map) throws NoSuchAlgorithmException 
 	{
 		String sign = (String)map.get("sign");
 		map.remove("sign");
@@ -42,10 +43,10 @@ public class SignatureUtil {
 	/**
 	 * 以nd5方式签名
 	 */
-	public String sign(Map<String, String> map) throws NoSuchAlgorithmException
+	public String sign(Map<String, Object> map) throws NoSuchAlgorithmException
 	{
 		String s = sortJoin(map);
-		s = s + DictConstantsUtil.INSTANCE.getDictVal("signkey");
+		s = s + signKey;
 		log.info("sign string:"+s);
 		return md5(s);
 	}
@@ -72,7 +73,7 @@ public class SignatureUtil {
 	 * @param keys
 	 * @return
 	 */
-	private String sortJoin(Map<String, String> map)
+	public String sortJoin(Map<String, Object> map)
 	{
 		List<String> ls = new ArrayList<String>(map.keySet());
 		Collections.sort(ls);

@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.ShoppingCar;
 import com.online.mall.shoppv.service.CustomerService;
@@ -44,7 +45,7 @@ public class ShopControl {
 			@Param("open_userid") String open_userid,@Param("phone") String phone,
 			@Param("sign") String sign)
 	{
-		Map<String,String> map = new HashMap<String,String>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("source", source);
 		map.put("phone", phone);
 		map.put("open_userid", open_userid);
@@ -69,7 +70,11 @@ public class ShopControl {
 	{
 		HttpSession session = request.getSession();
 		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
-		Customer user = (Customer)session.getAttribute(session.getId());
+		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
+		if(user == null)
+		{
+			return "goods/emptyshopping";
+		}
 		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
 		if(ls==null || ls.isEmpty())
 		{

@@ -30,7 +30,7 @@ class CustomerServiceTest extends ApplicationTest {
 		request.setCharacterEncoding("utf-8");
 		session = new MockHttpSession();
 		request.setSession(session);
-		Map<String,String> req = new HashMap<String,String>();
+		Map<String,Object> req = new HashMap<String,Object>();
 		req.put("source", "jdsdaoidoiio");
 		req.put("phone", "1382372784");
 		req.put("open_userid", "iqwudhiudhajk");
