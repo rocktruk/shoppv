@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.online.mall.shoppv.common.util.SignatureUtil;
@@ -170,8 +171,8 @@ public class CreateOrderRequest {
 			}
 		}
 		try {
-			String sign = SignatureUtil.INTANCE.sign(map);
-			msg = SignatureUtil.INTANCE.sortJoin(map)+"&sign="+sign;
+			String signval = SignatureUtil.INTANCE.sign(map);
+			msg = SignatureUtil.INTANCE.sortJoin(map)+"&sign="+signval;
 			log.info("create order:"+msg);
 		} catch (NoSuchAlgorithmException e) {
 			log.error(e.getMessage(),e);

@@ -83,6 +83,7 @@ public class CustomerService {
 			if(!flag)
 			{
 				log.error("签名校验失败");
+				return flag;
 			}
 		} catch (NoSuchAlgorithmException e) {
 			log.error(e.getMessage(),e);

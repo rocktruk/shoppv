@@ -29,14 +29,17 @@ class TransServiceTest extends ApplicationTest{
 		request = new MockHttpServletRequest();
 		session = new MockHttpSession();
 		Customer user = new Customer();
-		user.setOpenId("346awdwduhew");
-		user.setChannelType("jd82372764");
-		user.setPhone("13764801223");
+		user.setOpenId("20190304170234651018");
+		user.setChannelType("jd20160927009141");
+		user.setPhone("17521704730");
 		session.setAttribute(session.getId(), user);
 		request.setSession(session);
 		Map<String,Object> params = new HashMap<String, Object>();
 		params.put("cityCode", "102342");
 		params.put("orderTitle", "测试订单");
+		params.put("totalAmt","0.10");
+		params.put("cityCode", "102313");
+		params.put("ConsigneeAddress", "上海市浦东新区张江高科");
 		Optional<CreateOrderResponse> resp = service.createOrder(request, params);
 		System.out.println(resp.get().getMsg());
 	}

@@ -11,15 +11,22 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
 public class SignatureUtil {
 	
 	private static final Logger log = LoggerFactory.getLogger(SignatureUtil.class);
 	
-	public static final SignatureUtil INTANCE = new SignatureUtil();
+	private static String signkey;
 	
-	@Value(value="${signkey}")
-	private String signKey;
+	public static final SignatureUtil INTANCE = new SignatureUtil(signkey);
+	
+	private SignatureUtil(@Value("${signkey}") String signkey)
+	{
+		this.signkey = signkey;
+	}
 	
 	/**
 	 * 签名验证
@@ -41,12 +48,12 @@ public class SignatureUtil {
 	}
 
 	/**
-	 * 以nd5方式签名
+	 * 以md5方式签名
 	 */
 	public String sign(Map<String, Object> map) throws NoSuchAlgorithmException
 	{
 		String s = sortJoin(map);
-		s = s + signKey;
+		s = s + signkey;
 		log.info("sign string:"+s);
 		return md5(s);
 	}

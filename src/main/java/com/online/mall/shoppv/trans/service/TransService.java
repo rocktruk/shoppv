@@ -37,6 +37,8 @@ public class TransService {
 	@Value(value="${appid}")
 	private String appId;
 	
+	@Value(value="${signkey}")
+	private String signkey;
 	/**
 	 * 创建订单
 	 * @param request
@@ -48,7 +50,7 @@ public class TransService {
 		CreateOrderRequest order = new CreateOrderRequest();
 		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
 		order.setSource(user.getChannelType());
-//		order.setCity_codes((String)params.get("cityCode"));
+		order.setCity_codes((String)params.get("cityCode"));
 		order.setApp_id(appId);
 		order.setConsignee_address((String)params.get("ConsigneeAddress"));
 		order.setNotify_url(host+"/resultNofity");
