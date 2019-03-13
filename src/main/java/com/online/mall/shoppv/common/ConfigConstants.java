@@ -55,6 +55,21 @@ public class ConfigConstants {
 	//商品待售
 	public static final String GOODS_STATUS_TOSALE = "goods.status.tosale";
 	
+	public static final String PUSHTYPE_FORMDATA = "pushtype.formdata";
+	
+	public static final String PUSHTYPE_FORMURLENCODED = "pushtype.formurlencoded";
+	
+	public static final String ORDRTYPE_NORMAL = "ordrtype.normal";
+	
+	public static final String ORDRTYPE_CYCLE = "ordrtype.cycle";
+	
+	public static final String ORDRTYPE_RECYCLE = "ordrtype.recycle";
+	
+	public static final String ORDRTYPE_PREPAY = "ordrtype.prepay";
+	
+	public static final String ORDRTYPE_DSCT = "ordrtype.dsct";
+	
+	public static final String ORDRTYPE_DSCTTIMES = "ordrtype.dscttimes";
 	
 }
 

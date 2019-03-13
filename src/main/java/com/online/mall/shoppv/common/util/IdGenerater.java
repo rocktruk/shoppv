@@ -8,10 +8,16 @@ public class IdGenerater {
 	
 	public static final String GOODS_PREFIX = "GOODS";
 	
+	public static final String TRANS_PREFIX = "T";
+	
 	private IdGenerater() {
 		
 	}
 	
+	/**
+	 * 商品ID生成
+	 * @return
+	 */
 	public String goodsIdGenerate()
 	{
 		UUIDGenerator generator = UUIDGenerator.getInstance();
@@ -20,5 +26,16 @@ public class IdGenerater {
 		return id;
 	}
 	
+	/**
+	 * 交易流水号生成
+	 * @return
+	 */
+	public String transIdGenerate()
+	{
+		UUIDGenerator generator = UUIDGenerator.getInstance();
+		String id = generator.generateTimeBasedUUID().toString();
+		id = TRANS_PREFIX+id.replaceAll("-", "");
+		return id;
+	}
 	
 }

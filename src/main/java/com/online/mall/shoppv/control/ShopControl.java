@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
@@ -73,7 +75,7 @@ public class ShopControl {
 		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
 		if(user == null)
 		{
-			return "goods/emptyshopping";
+			return "goods/shoppingcar";
 		}
 		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
 		if(ls==null || ls.isEmpty())
@@ -83,6 +85,14 @@ public class ShopControl {
 		{
 			return "goods/shoppingcar";
 		}
+	}
+	
+	@RequestMapping("/fillOrder")
+	@ResponseBody
+	public String submitOrder(HttpServletRequest request,@RequestBody Map<String, Object> req)
+	{
+		
+		return "goods/submitorder";
 	}
 	
 }

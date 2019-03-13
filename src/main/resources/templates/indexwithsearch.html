@@ -56,20 +56,21 @@
 					</a>
 					<div class="edmond clearfix">
 						夏季炎热签收水果前请确认0
-					<span class="sprite-icon"></span>
+					<div style="width:100px;height:38px;float:left;padding-left: 10px;margin-bottom: 2px;margin-top: 2px">
+						<img style="max-height: 100%;max-width: 100%" th:src="@{images/favicon.jpg}" />
+					</div>
+					<!--<span class="sprite-icon"  ></span>
 						<div class="swiper-container edmond_child">
 							<ul class="swiper-wrapper edmond_width clearfix">
 								<li class="swiper-slide edmond_con fl">
 									夏季炎热签收水果前请确认1
 								</li>
 							</ul>
-						</div>
+						</div>-->
 					</div>
 				</nav>
 			</div>
-				<!--生日专区 end-->
-				<main>
-					<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="">
+				<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="">
 						<ul class="clearfix  goodslist  margin-auto" id="goods_list">
 							<li class="col-xs-6 padding-0 margin-bottom-d75rem" th:each="product:${goodsLs}" >
 								<a th:href="@{goodsInfo(goodsId=${product.getId()})}">
@@ -81,9 +82,7 @@
 								</div>
 							</li>
 						</ul>
-						<div id="loading" style="text-align: center;display:none;padding-top: 3px;"><i class="fa fa-refresh"><span>玩命加载中...</span></i></div>
 					</section>
-				</main>
 				<!--menu  start-->
 				<div id="menu">
 					<ul>

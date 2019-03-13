@@ -18,14 +18,13 @@ public class CreateOrderRequest {
 	
 	private String source;
 	
-	@Value(value="${appid}")
 	private String app_id;
 	
 	private String open_userid;
 	
 	private String out_order_number;
 	
-	private int type_status;
+	private String type_status;
 	
 	private String coupon_goods_id;
 	
@@ -41,7 +40,8 @@ public class CreateOrderRequest {
 	
 	private String notify_url;
 	
-	private int push_type;
+	private String push_type;
+	
 
 	public String getSource() {
 		return source;
@@ -75,11 +75,11 @@ public class CreateOrderRequest {
 		this.out_order_number = out_order_number;
 	}
 
-	public int getType_status() {
+	public String getType_status() {
 		return type_status;
 	}
 
-	public void setType_status(int type_status) {
+	public void setType_status(String type_status) {
 		this.type_status = type_status;
 	}
 
@@ -139,11 +139,11 @@ public class CreateOrderRequest {
 		this.notify_url = notify_url;
 	}
 
-	public int getPush_type() {
+	public String getPush_type() {
 		return push_type;
 	}
 
-	public void setPush_type(int push_type) {
+	public void setPush_type(String push_type) {
 		this.push_type = push_type;
 	}
 	
