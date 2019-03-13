@@ -148,6 +148,10 @@ public class CreateOrderRequest {
 		this.push_type = push_type;
 	}
 	
+	/**
+	 * 组装请求报文，并签名
+	 * @return
+	 */
 	public String pack()
 	{
 		String msg = "";
@@ -172,7 +176,7 @@ public class CreateOrderRequest {
 		}
 		try {
 			String signval = SignatureUtil.INTANCE.sign(map);
-			msg = SignatureUtil.INTANCE.sortJoin(map)+"&sign="+signval;
+			msg = new StringBuilder(SignatureUtil.INTANCE.sortJoin(map)).append("&sign=").append(signval).toString();
 			log.info("create order:"+msg);
 		} catch (NoSuchAlgorithmException e) {
 			log.error(e.getMessage(),e);

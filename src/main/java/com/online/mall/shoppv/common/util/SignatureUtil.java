@@ -52,10 +52,10 @@ public class SignatureUtil {
 	 */
 	public String sign(Map<String, Object> map) throws NoSuchAlgorithmException
 	{
-		String s = sortJoin(map);
-		s = s + signkey;
-		log.info("sign string:"+s);
-		return md5(s);
+		StringBuilder s = new StringBuilder(sortJoin(map));
+		s = s.append(signkey);
+		log.info("sign string:"+s.toString());
+		return md5(s.toString());
 	}
 	
 	

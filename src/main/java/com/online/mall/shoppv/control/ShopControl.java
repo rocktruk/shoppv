@@ -60,6 +60,7 @@ public class ShopControl {
 	@RequestMapping("/index")
 	public String index()
 	{
+		
 		return "indexwithsearch";
 	}
 	
