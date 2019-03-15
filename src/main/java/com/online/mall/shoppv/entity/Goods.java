@@ -56,7 +56,7 @@ public class Goods {
 	@Column(name="TOTAL_SALES")
 	private long totalSales;
 	
-	@Column(name="BANNER_IMGES")
+	@Column(name="BANNER_IMAGES")
 	private String banerImages;
 	
 	@Transient

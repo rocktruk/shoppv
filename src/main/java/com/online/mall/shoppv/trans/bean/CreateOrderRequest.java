@@ -1,6 +1,7 @@
 package com.online.mall.shoppv.trans.bean;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class CreateOrderRequest {
 	
 	private String order_title;
 	
-	private float total_amount;
+	private BigDecimal total_amount;
 	
 	private String return_url;
 	
@@ -116,11 +117,11 @@ public class CreateOrderRequest {
 		this.order_title = order_title;
 	}
 
-	public float getTotal_amount() {
+	public BigDecimal getTotal_amount() {
 		return total_amount;
 	}
 
-	public void setTotal_amount(float total_amount) {
+	public void setTotal_amount(BigDecimal total_amount) {
 		this.total_amount = total_amount;
 	}
 

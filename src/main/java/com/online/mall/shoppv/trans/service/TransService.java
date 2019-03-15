@@ -1,6 +1,7 @@
 package com.online.mall.shoppv.trans.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
 import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.DictConstantsUtil;
 import com.online.mall.shoppv.common.util.HttpUtil;
@@ -59,12 +60,11 @@ public class TransService {
 		order.setOut_order_number(IdGenerater.INSTANCE.transIdGenerate());
 		order.setPush_type(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.PUSHTYPE_FORMURLENCODED));
 		order.setReturn_url(host+"/paymentResult");
-		order.setTotal_amount(Float.parseFloat((String)params.get("totalAmt")));
+		order.setTotal_amount(((BigDecimal)params.get("totalAmt")).setScale(2));
 		order.setType_status(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDRTYPE_NORMAL));
 		try {
 			String result = HttpUtil.post(createOrderUrl, order.pack());
-			ObjectMapper mapper = new ObjectMapper();
-			CreateOrderResponse resp = mapper.readValue(result, CreateOrderResponse.class);
+			CreateOrderResponse resp = JSON.parseObject(result, CreateOrderResponse.class);
 			return Optional.of(resp);
 		} catch (IOException e) {
 			log.error(e.getMessage(),e);

@@ -1,12 +1,18 @@
 package com.online.mall.shoppv.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.mapping.Array;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
@@ -27,6 +33,9 @@ import com.online.mall.shoppv.repository.GoodsWithoutDetailRepository;
 
 @Service
 public class GoodsService {
+	
+	
+	private static final Logger log = LoggerFactory.getLogger(GoodsService.class);
 
 	@Autowired
 	private GoodsRepository goodRepository;
@@ -88,10 +97,28 @@ public class GoodsService {
 	public Optional<Goods> getProduct(HttpServletRequest request,String goodsId)
 	{
 		Optional<Goods> goods = goodRepository.findById(goodsId);
-		request.setAttribute("product", goods.isPresent()?goods.get():new Goods());
+		request.setAttribute("product", goods.map(g -> parseBanner(g)).orElse(new HashMap<String, Object>()));
 		return goods;
 	}
 	
+	/**
+	 * 将轮播图片以逗号分隔用于前台遍历
+	 * @param goods
+	 * @return
+	 */
+	private  Map<String,Object> parseBanner(Goods goods){
+		Map<String, String> map;
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			map = BeanUtils.describe(goods);
+			result.putAll(map);
+			result.put("banners", map.get("banerImages").split(","));
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+		}
+		
+		return result;
+	}
 	
 	/**
 	 * 分页查询商品列表

@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class SignatureUtil {
@@ -52,7 +51,8 @@ public class SignatureUtil {
 	 */
 	public String sign(Map<String, Object> map) throws NoSuchAlgorithmException
 	{
-		StringBuilder s = new StringBuilder(sortJoin(map));
+		StringBuilder s = new StringBuilder();
+		s.append(sortJoin(map));
 		s = s.append(signkey);
 		log.info("sign string:"+s.toString());
 		return md5(s.toString());

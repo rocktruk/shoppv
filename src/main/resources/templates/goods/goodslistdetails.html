@@ -23,10 +23,6 @@
 	<link rel="stylesheet" th:href="@{css/goodslist-details.css}">
 </head>
 <body>
-<!-- 引入 js 库文件 -->
-<script type="text/javascript" th:src='@{js/list/jquery-3.2.1.js}'></script>
-<script type="text/javascript" th:src='@{js/list/bootstrap.js}'></script>
-<script type="text/javascript" th:src='@{js/list/vue.js}'></script>
 	<!-- 正文 -->
 	<div class="container-fluid padding-0 goodslist-details">
 		<!-- =======header ======== -->
@@ -54,8 +50,8 @@
 					<!--End banner tabs -->
 					<!-- banner inner  -->
 					<div class="carousel-inner" role="listbox">
-					   	<div class="item active" th:each="banner,bannerState:${product.banners}" th:classappend="bannerState.index==0?active:''">
-					      	<img th:src="@{${banner}}" th:alt="${product.title}">
+					   	<div class="item" style="height: 300px;" th:each="banner,bannerState:${product.banners}" th:classappend="${bannerState.index==0}?active:''">
+					      	<img th:src="@{${banner}}" style="height: auto;width: auto;max-height: 100%;max-width: 100%;" th:alt="${product.title}">
 					     	<div class="carousel-caption">
 					     		<p></p>
 					    	</div>
@@ -78,8 +74,8 @@
 				</section>
 				<!-- 轮播图的补充信息 -->
 				<div class="padding-left-1rem font-size-1rem border-line-1px-ec">
-					<p class="margin-bottom-1rem"><a href="javascript:void(0)" th:text="${product.getTitle()}"></a></p>
-					<p class="margin-bottom-1rem text-red"><span>￥</span><span th:text="${product.getPrice()}"></span></p>
+					<p class="margin-bottom-1rem"><a href="javascript:void(0)" th:text="${product.title}"></a></p>
+					<p class="margin-bottom-1rem text-red"><span>￥</span><span th:text="${product.price}"></span></p>
 					
 				</div>
 				<!-- 这是商品页的 轮播 图 -->
@@ -130,7 +126,7 @@
 
 				<section class="padding-left-right-1rem padding-top-2rem padding-bottom-1d6rem font-size-1rem relative border-line-1rem-f5f5f5f clearfix">
 						<div class="pull-left">
-							<img src="images/xx_goodslist_details_goods-xx_01.png" alt="" class="padding-right-1rem"><span>晨晨</span>
+							<img src="images/user-logo_001.png" alt="" class="padding-right-1rem"><span>晨晨</span>
 						</div>
 						<div class="pull-right text-e0e0e0">2017-7-18</div>
 						<div class="padding-top-1rem clear" >
@@ -243,36 +239,60 @@
 	<!-- footer  -->
 		<footer class="fixed-bottom width-auto bg-white z-index-1000" >
 			<ul class="col-xs-5 clearfix padding-0 " >
-				<!-- 关注 -->
 				<li class="relative text-center col-xs-4 padding-0 font-size-1d5rem relative middle">
 					<a href="javascript:void(0)" class="xjp-block line-e0 padding-top-bottom-d9rem" >
 						<span class="glyphicon glyphicon-heart text-red"></span>
 						<p class="font-size-d8rem">关注</p>
 					</a>
 				</li>
-				<!-- 提问 -->
 				<li class="relative text-center col-xs-4 padding-0 font-size-1d5rem">
 					<a href="javascript:void(0)" class="xjp-block line-e0 padding-top-bottom-d9rem">
 						<span class="glyphicon glyphicon-pencil text-bbb"></span>
 						<p class="font-size-d8rem">提问</p>
 					</a>
 				</li>
-				<!-- 店铺 -->
 				<li class="relative text-center col-xs-4 padding-0 font-size-1d5rem">
 					<a href="javascript:void(0)" class="xjp-block hover-text-red padding-top-bottom-d9rem">
 						<span class="glyphicon glyphicon-calendar text-bbb"></span>
 						<p class="font-size-d8rem">店铺</p>
 					</a>
 				</li>
-				<!-- 停车缴费4 -->
 			</ul>
 			<ul class="col-xs-7 padding-0" >
 				<li class="col-xs-6 h-5rem padding-0 text-center bg-ffc971" ><a href="javascript:void(0)" class="font-size-1rem text-white">加入购物车</a></li>
-				<li class="col-xs-6 h-5rem padding-0 text-center bg-ff916f" ><a href="javascript:void(0)" class="font-size-1rem text-white">立即团购</a></li>
+				<li class="col-xs-6 h-5rem padding-0 text-center bg-ff916f" ><a href="javascript:void(0)" class="font-size-1rem text-white">立即购买</a></li>
 			</ul>
 		</footer>
-	<!--End footer -->
+		<!--<footer class="aui-footer-button aui-footer-flex aui-footer-fixed">
+                <div class="aui-footer-wrap">
+                    <i class="glyphicon glyphicon-pencil text-bbb"></i>
+                    <span>提问</span>
+                </div>
+                <div class="aui-footer-wrap">
+                    <i class="icon-service"></i>
+                    <span>客服</span>
+                </div>
+                <div class="aui-footer-wrap">
+                    <i class="icon-car"></i>
+                    <span>购物车</span>
+                </div>
+                <div class="aui-footer-group aui-footer-flex1">
+                    <div class="aui-footer-flex">
+                        <div class="aui-btn aui-btn-gray">
+                            <span>加入购物车</span>
+                        </div>
+                        <div class="aui-btn aui-btn-red">
+                            <span>立即购买</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+	End footer -->
 	</div>
+	<!-- 引入 js 库文件 -->
+<script type="text/javascript" th:src='@{js/list/jquery-3.2.1.js}'></script>
+<script type="text/javascript" th:src='@{js/list/bootstrap.js}'></script>
+<script type="text/javascript" th:src='@{js/list/vue.js}'></script>
 <!-- <script type="text/javascript" src="js/goods.js"></script> -->
 <script type="text/javascript">
 	$(function(){

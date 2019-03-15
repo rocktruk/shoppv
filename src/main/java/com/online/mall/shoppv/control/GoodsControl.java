@@ -46,7 +46,8 @@ public class GoodsControl {
 	public String goodsInfo(HttpServletRequest request,@Param("goodsId") String goodsId)
 	{
 		goodsService.getProduct(request,goodsId);
-		return "goods/goodslistdetails";
+//		return "goods/goodslistdetails";
+		return "goods/goodsinfo";
 	}
 	
 	/**

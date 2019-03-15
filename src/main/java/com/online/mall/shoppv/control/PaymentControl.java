@@ -48,6 +48,12 @@ public class PaymentControl {
 		return result;
 	}
 	
+	/**
+	 * 购买，创建订单
+	 * @param request
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/pay")
 	@ResponseBody
 	public Map<String,Object> payment(HttpServletRequest request,@RequestBody Map<String,Object> req)
