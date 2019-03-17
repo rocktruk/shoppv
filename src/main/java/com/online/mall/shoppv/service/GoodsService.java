@@ -62,7 +62,7 @@ public class GoodsService {
 	{
 		GoodsWithoutDetail goods = new GoodsWithoutDetail();
 		goods.setGoodsMenuId(menuId);
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("inventory","totalSales","monthSales");
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("inventory","totalSales","monthSales","carriage");
 		Example<GoodsWithoutDetail> example = Example.of(goods,matcher);
 		PageRequest page = null;
 		if(sort == null)
@@ -90,35 +90,14 @@ public class GoodsService {
 	
 	/**
 	 * 根据商品ID查询商品信息
-	 * @param request
 	 * @param goodsId
 	 * @return
 	 */
-	public Optional<Goods> getProduct(HttpServletRequest request,String goodsId)
+	public Optional<Goods> getProduct(String goodsId)
 	{
-		Optional<Goods> goods = goodRepository.findById(goodsId);
-		request.setAttribute("product", goods.map(g -> parseBanner(g)).orElse(new HashMap<String, Object>()));
-		return goods;
+		return goodRepository.findById(goodsId);
 	}
 	
-	/**
-	 * 将轮播图片以逗号分隔用于前台遍历
-	 * @param goods
-	 * @return
-	 */
-	private  Map<String,Object> parseBanner(Goods goods){
-		Map<String, String> map;
-		Map<String,Object> result = new HashMap<String, Object>();
-		try {
-			map = BeanUtils.describe(goods);
-			result.putAll(map);
-			result.put("banners", map.get("banerImages").split(","));
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-		}
-		
-		return result;
-	}
 	
 	/**
 	 * 分页查询商品列表

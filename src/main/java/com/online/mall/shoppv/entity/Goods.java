@@ -59,8 +59,14 @@ public class Goods {
 	@Column(name="BANNER_IMAGES")
 	private String banerImages;
 	
+	@Column(name="CARRIAGE")
+	private int carriage;
+	
+	@Column(name="ORI_PRICE")
+	private BigDecimal oriPrice;
+	
 	@Transient
-	private String banners;
+	private String[] banners;
 	
 	public String getId() {
 		return id;
@@ -167,12 +173,29 @@ public class Goods {
 		this.banerImages = banerImages;
 	}
 
-	public String getBanners() {
+
+	public String[] getBanners() {
 		return banners;
 	}
 
-	public void setBanners(String banners) {
+	public void setBanners(String[] banners) {
 		this.banners = banners;
+	}
+
+	public int getCarriage() {
+		return carriage;
+	}
+
+	public void setCarriage(int carriage) {
+		this.carriage = carriage;
+	}
+
+	public BigDecimal getOriPrice() {
+		return oriPrice;
+	}
+
+	public void setOriPrice(BigDecimal oriPrice) {
+		this.oriPrice = oriPrice;
 	}
 	
 	

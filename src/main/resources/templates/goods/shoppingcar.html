@@ -6,80 +6,40 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="format-detection" content="telephone=no" />
-    <meta name="description" content="微分销系统" />
-    <meta name="keywords" content="微分销系统" />
-    <title>微分销系统_多享出品</title>
+    <meta name="description" content="龙鑫商城" />
+    <meta name="keywords" content="龙鑫商城" />
+    <title>龙鑫商城</title>
     <link rel="stylesheet" type="text/css" th:href="@{css/shopcar.css}">
 </head>
 <body>
 	<div class="fix_head">
-		<a href="javascript:history.go(-1);" class="back">
-			<img src="images/back.jpg">
-		</a>
+<!-- 		<a href="javascript:history.go(-1);" class="back"> -->
+<!-- 			<img src="images/back.jpg"> -->
+<!-- 		</a> -->
 		<p>购物车</p>
-		<a href="home.html" class="home">
-			<img src="images/home.jpg">
-		</a>
+<!-- 		<a href="home.html" class="home"> -->
+<!-- 			<img src="images/home.jpg"> -->
+<!-- 		</a> -->
 	</div>
 	<div class="sc_h"></div>
-	<div class="lb">
+	<div class="lb" th:each="merchandise:${data.goods}">
 		<div class="check">
 			<div class="xz" data="0"></div>
 		</div>
-		<img src="images/spt.jpg" class="spt">
+		<img th:src="@{${merchandise.goods.imgPath}}" class="spt">
 		<div class="mid">
-			<p class="name">韩国正品自然乐园芦荟补水保湿洗面奶男士女控油祛</p>
-			<p class="color">颜色:白色</p>
+			<p class="name" th:text="${merchandise.goods.title}"></p>
+			<p class="color">快递:<span th:text="${merchandise.goods.carriage}"></span></p>
 			<div class="jj">
 				<span class="jia">-</span>
-				<input class="num" value="1">
+				<input class="num" th:value="${merchandise.count}">
 				<span class="jian">+</span>
 			</div>
 		</div>
 		<div class="jgq">
-			<div class="price"><p>￥<span class="pri">10.00</span></p></div>
-			<div class="price_de"><p><del>￥30.00</del></p></div>
-			<img src="images/del.jpg" class="del">
-		</div>
-	</div>
-	<div class="lb">
-		<div class="check">
-			<div class="xz" data="0"></div>
-		</div>
-		<img src="images/spt.jpg" class="spt">
-		<div class="mid">
-			<p class="name">韩国正品自然乐园芦荟补水保湿洗面奶男士女控油祛</p>
-			<p class="color">颜色:白色</p>
-			<div class="jj">
-				<span class="jia">-</span>
-				<input class="num" value="1">
-				<span class="jian">+</span>
-			</div>
-		</div>
-		<div class="jgq">
-			<div class="price"><p>￥<span class="pri">11.00</span></p></div>
-			<div class="price_de"><p><del>￥30.00</del></p></div>
-			<img src="images/del.jpg" class="del">
-		</div>
-	</div>
-	<div class="lb">
-		<div class="check">
-			<div class="xz" data="0"></div>
-		</div>
-		<img src="images/spt.jpg" class="spt">
-		<div class="mid">
-			<p class="name">韩国正品自然乐园芦荟补水保湿洗面奶男士女控油祛</p>
-			<p class="color">颜色:白色</p>
-			<div class="jj">
-				<span class="jia">-</span>
-				<input class="num" value="1">
-				<span class="jian">+</span>
-			</div>
-		</div>
-		<div class="jgq">
-			<div class="price"><p>￥<span class="pri">12.00</span></p></div>
-			<div class="price_de"><p><del>￥30.00</del></p></div>
-			<img src="images/del.jpg" class="del">
+			<div class="price"><p>￥<span class="pri" th:text="${merchandise.goods.price}"></span></p></div>
+			<div class="price_de"><p><del th:text="${merchandise.goods.price * merchandise.count}"></del></p></div>
+			<img th:src="@{images/index/shoppingcart/inter1.png}" class="del">
 		</div>
 	</div>
 	<div class="fix_bottom">

@@ -10,6 +10,8 @@ public class IdGenerater {
 	
 	public static final String TRANS_PREFIX = "T";
 	
+	public static final String SHOPPINGCAR_PREFIX = "SHOP";
+	
 	private IdGenerater() {
 		
 	}
@@ -35,6 +37,19 @@ public class IdGenerater {
 		UUIDGenerator generator = UUIDGenerator.getInstance();
 		String id = generator.generateTimeBasedUUID().toString();
 		id = TRANS_PREFIX+id.replaceAll("-", "");
+		return id;
+	}
+	
+	
+	/**
+	 * 购物车流水号生成
+	 * @return
+	 */
+	public String shopIdGenerate()
+	{
+		UUIDGenerator generator = UUIDGenerator.getInstance();
+		String id = generator.generateTimeBasedUUID().toString();
+		id = SHOPPINGCAR_PREFIX+id.replaceAll("-", "");
 		return id;
 	}
 	

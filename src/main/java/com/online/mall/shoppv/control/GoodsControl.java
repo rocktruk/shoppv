@@ -45,8 +45,11 @@ public class GoodsControl {
 	@RequestMapping("/goodsInfo")
 	public String goodsInfo(HttpServletRequest request,@Param("goodsId") String goodsId)
 	{
-		goodsService.getProduct(request,goodsId);
-//		return "goods/goodslistdetails";
+		Optional<Goods> goods = goodsService.getProduct(goodsId);
+		request.setAttribute("product", goods.map(g -> {
+			g.setBanners(g.getBanerImages().split(","));
+			return g;
+		}).orElse(new Goods()));
 		return "goods/goodsinfo";
 	}
 	

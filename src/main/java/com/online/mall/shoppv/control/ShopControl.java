@@ -1,8 +1,11 @@
 package com.online.mall.shoppv.control;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,7 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.ShoppingCar;
+import com.online.mall.shoppv.respcode.util.IRespCodeContants;
+import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
+import com.online.mall.shoppv.service.GoodsService;
 import com.online.mall.shoppv.service.ShoppingCarService;
 
 @Controller
@@ -29,6 +35,9 @@ public class ShopControl {
 	
 	@Autowired
 	private ShoppingCarService carService;
+	
+	@Autowired
+	private GoodsService goodsService;
 	
 	@Autowired
 	private CustomerService userService;
@@ -64,6 +73,7 @@ public class ShopControl {
 		return "indexwithsearch";
 	}
 	
+	
 	/**
 	 * 购物车
 	 * @return
@@ -76,7 +86,7 @@ public class ShopControl {
 		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
 		if(user == null)
 		{
-			return "goods/shoppingcar";
+			return "goods/emptyshopping";
 		}
 		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
 		if(ls==null || ls.isEmpty())
@@ -84,7 +94,14 @@ public class ShopControl {
 			return "goods/emptyshopping";
 		}else
 		{
-			return "goods/shoppingcar";
+			Map<String,Object> data = new HashMap<String, Object>();
+			ls.stream().map(sc -> {
+				sc.setGoods(goodsService.getProduct(sc.getGoodsId()).get());
+				return sc;
+			}).collect(Collectors.toList());
+			data.put("goods", ls);
+			request.setAttribute("data", data);
+			return "goods/shopcar";
 		}
 	}
 	
@@ -95,5 +112,33 @@ public class ShopControl {
 		
 		return "goods/submitorder";
 	}
+	
+	/**
+	 * 购物车添加商品
+	 * @param request
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/addCar")
+	@ResponseBody
+	public Map<String,Object> addShoppingCar(HttpServletRequest request,@RequestBody Map<String, Object> req)
+	{
+		Map<String,Object> result = new HashMap<String,Object>();
+		try {
+			HttpSession session = request.getSession();
+			carService.addShoppingCar((Customer)SessionUtil.getAttribute(session,session.getId()), req);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e)
+		{
+			log.error(e.getMessage(),e);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
+		}
+		return result;
+	}
+	
+	
+	
 	
 }

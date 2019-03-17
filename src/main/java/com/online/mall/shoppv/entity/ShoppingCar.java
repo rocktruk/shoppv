@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 
 @Table(name="SHOPPING_CAR")
 @Entity
@@ -14,20 +16,26 @@ public class ShoppingCar {
 
 	
 	@Id
-	@Column(name="ID",columnDefinition="varchar",length=20)
+	@Column(name="ID",columnDefinition="varchar",length=40)
 	private String id;
 	
 	@Column(name="CUS_ID",nullable=false)
 	private long cusId;
 	
-	@Column(name="CREATE_TIME",columnDefinition="timestamp")
+	@Column(name="CREATE_TIME",columnDefinition="timestamp",insertable=false,updatable=false)
 	private Date createTime;
 	
 	@Column(name="CURRENT_PRICE")
 	private BigDecimal currentPrice;
 	
-	@Column(name="GOODS_ID",columnDefinition="varchar",length=20)
+	@Column(name="GOODS_ID",columnDefinition="varchar",length=40)
 	private String goodsId;
+	
+	@Column(name="COUNT")
+	private int count;
+	
+	@Transient
+	private Goods goods;
 
 	public String getId() {
 		return id;
@@ -67,6 +75,22 @@ public class ShoppingCar {
 
 	public void setGoodsId(String goodsId) {
 		this.goodsId = goodsId;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
 	}
 	
 	
