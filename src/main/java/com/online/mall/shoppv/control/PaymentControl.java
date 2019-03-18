@@ -2,21 +2,30 @@ package com.online.mall.shoppv.control;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.online.mall.shoppv.trans.bean.CreateOrderResponse;
 import com.online.mall.shoppv.trans.service.TransService;
 
 @Controller
 public class PaymentControl {
 
+	@Autowired
 	private TransService transHandler;
+	
+	private static final Logger log = LoggerFactory.getLogger(PaymentControl.class);
 	
 	/**
 	 * 结果页跳转
@@ -59,8 +68,8 @@ public class PaymentControl {
 	public Map<String,Object> payment(HttpServletRequest request,@RequestBody Map<String,Object> req)
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
-//				transHandler.createOrder(request, req);
-		
+		Optional<CreateOrderResponse> rsp = transHandler.createOrder(request, req);
+		log.info(JSON.toJSONString(rsp.get()));
 		return result;
 	}
 	

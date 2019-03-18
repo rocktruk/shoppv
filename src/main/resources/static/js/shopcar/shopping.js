@@ -2,19 +2,23 @@ $(function(){
 	// 数量减
 	$(".minus").click(function() {
 		var t = $(this).parent().find('.num');
+		var id = $(this).parent().parent().parent().parent().find("h5");
 		t.text(parseInt(t.text()) - 1);
 		if (t.text() <= 1) {
 			t.text(1);
 		}
+		updateShopCar(t.text(),id.text());
 		TotalPrice();
 	});
 	// 数量加
 	$(".plus").click(function() {
 		var t = $(this).parent().find('.num');
+		var id = $(this).parent().parent().parent().parent().find("h5");
 		t.text(parseInt(t.text()) + 1);
 		if (t.text() <= 1) {
 			t.text(1);
 		}
+		updateShopCar(t.text(),id.text());
 		TotalPrice();
 	});
 	/******------------分割线-----------------******/
@@ -39,6 +43,19 @@ $(function(){
       TotalPrice();
       // 计算
     }
+    goodsC = $(this).closest(".shop-group-item").find(".goodsCheck:checked");
+    var ids = "";
+    for (var k in goodsC){
+    	if(k == 'length'){
+    		break;
+    	}
+    	var i = goodsC[k].nextElementSibling.innerText;
+    	if(k > 0){
+    		ids +=",";
+    	}
+    	ids += i; 
+    }
+    $(".settlement").attr("href",$(".settlement").attr("href")+"?ids="+ids);
   });
   // 点击店铺按钮
   $(".shopCheck").click(function() {
@@ -68,6 +85,24 @@ $(function(){
     }
     $(".shopCheck").change(); //执行店铺全选的操作
   });
+  
+  //更新购物车
+  function updateShopCar(t,id){
+	  $.ajax({
+  		data: JSON.stringify({"id":id,"count":t}),
+  		url:  "/updateCar",
+  		type: "POST",
+  		contentType:"application/json",
+  		success:function(data){
+  			console.log(data.returncode);
+  		},
+  		error:function(msg)
+  		{
+  			console.log(msg);
+  		}
+  	});
+  }
+  
 	//计算
   function TotalPrice() {
     var allprice = 0; //总价

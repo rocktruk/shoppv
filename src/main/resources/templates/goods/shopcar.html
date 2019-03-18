@@ -13,26 +13,26 @@
 <!--头部开始-->
 <div class="header">
 	<h1>购物车</h1>
-	<a href="#" class="back"><span></span></a>
-	<a href="#" class=""></a>
+<!-- 	<a href="#" class="back"><span></span></a> -->
+	<a href="javascript:;" class="">编辑</a>
 </div>
 <!--头部结束-->
 <div class="shopping">
 	
 	<div class="shop-group-item">
-<!-- 		<div class="shop-name"> -->
-<!-- 			<input type="checkbox" class="check goods-check shopCheck"> -->
-<!-- 			<h4><a href="#">苹果专卖店</a></h4> -->
-<!-- 			<div class="coupons"><span>领券</span><em>|</em><span>编辑</span></div> -->
-<!-- 		</div> -->
+		<div class="shop-name"> 
+			<input type="checkbox" style="display:none" class="check goods-check shopCheck">
+			<h4><a href="#">苹果专卖店</a></h4>
+			<div class="coupons"><span>领券</span><em>|</em><span>编辑</span><span class="shop-total-amount ShopTotal">0</span></div>
+		</div>
 		<ul>
 			<li th:each="merchandise:${data.goods}">
 				<div class="shop-info">
 					<input type="checkbox" class="check goods-check goodsCheck">
+					<h5 style="display:none" th:text="${merchandise.id}"></h5>
 					<div class="shop-info-img"><a href="#"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div>
 					<div class="shop-info-text">
 						<h4 th:text="${merchandise.goods.title}"></h4>
-<!-- 						<div class="shop-brief"><span>重量:3.3kg</span><span>颜色:标配版</span><span>版本:13.3英寸</span></div> -->
 						<div class="shop-brief"><span>运费:<i th:text="${merchandise.goods.carriage}"></i></span></div>
 						<div class="shop-price">
 							<div class="shop-pices">￥<b class="price" th:text="${merchandise.goods.price}"></b></div>
@@ -46,7 +46,6 @@
 				</div>
 			</li>
 		</ul>
-<!-- 		<div class="shopPrice">本店总计：￥<span class="shop-total-amount ShopTotal">0.00</span></div> -->
 	</div>
 	
 <!-- 	<div class="shop-group-item"> -->
@@ -59,6 +58,7 @@
 <!-- 			<li> -->
 <!-- 				<div class="shop-info"> -->
 <!-- 					<input type="checkbox" class="check goods-check goodsCheck"> -->
+<!-- 					<h5>SHOP918273</h5> -->
 <!-- 					<div class="shop-info-img"><a href="#"><img th:src="@{images/shopcar/computer.jpg}" /></a></div> -->
 <!-- 					<div class="shop-info-text"> -->
 <!-- 						<h4>Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/128GB SSD闪存/Retina屏 MF839CH/A)</h4> -->
@@ -95,15 +95,14 @@
 <!-- 		</ul> -->
 <!-- 		<div class="shopPrice">本店总计：￥<span class="shop-total-amount ShopTotal">0.00</span></div> -->
 <!-- 	</div> -->
-<!-- </div> -->
-
+</div>
 <div class="payment-bar">
 	<div class="all-checkbox"><input type="checkbox" class="check goods-check" id="AllCheck">全选</div>
 	<div class="shop-total">
 		<strong>总价：<i class="total" id="AllTotal">0.00</i></strong>
 		<span>减免：0</span>
 	</div>
-	<a href="#" class="settlement">结算</a>
+	<a th:href="@{fillOrder}" class="settlement">结算</a>
 </div>
 <script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>
 <script type="text/javascript" th:src="@{js/shopcar/shopping.js}"></script>

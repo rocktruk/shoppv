@@ -41,4 +41,9 @@ public class ShoppingCarService {
 		}
 	}
 	
+	@Transactional
+	public void updateShoppingCar(Map<String, Object> map) {
+		carRepos.updateShoppingCarWithId(map.get("id").toString(),Integer.parseInt((String)map.get("count")));
+	}
+	
 }

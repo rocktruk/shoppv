@@ -1,5 +1,6 @@
 package com.online.mall.shoppv.control;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,6 +74,11 @@ public class ShopControl {
 		return "indexwithsearch";
 	}
 	
+	@RequestMapping("car")
+	public String car()
+	{
+		return "goods/shopcar";
+	}
 	
 	/**
 	 * 购物车
@@ -106,11 +112,32 @@ public class ShopControl {
 	}
 	
 	@RequestMapping("/fillOrder")
-	@ResponseBody
-	public String submitOrder(HttpServletRequest request,@RequestBody Map<String, Object> req)
+	public String submitOrder(HttpServletRequest request)
 	{
-		
-		return "goods/submitorder";
+		HttpSession session = request.getSession();
+		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
+		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
+		if(user == null)
+		{
+			return "goods/emptyshopping";
+		}
+		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
+		if(ls==null || ls.isEmpty())
+		{
+			return "goods/emptyshopping";
+		}else
+		{
+			Map<String,Object> data = new HashMap<String, Object>();
+			data.put("total", BigDecimal.ZERO);
+			ls.stream().map(sc -> {
+				sc.setGoods(goodsService.getProduct(sc.getGoodsId()).get());
+				data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount())))));
+				return sc;
+			}).collect(Collectors.toList());
+			data.put("goods", ls);
+			request.setAttribute("data", data);
+			return "goods/submitorder";
+		}
 	}
 	
 	/**
@@ -138,7 +165,22 @@ public class ShopControl {
 		return result;
 	}
 	
-	
+	@RequestMapping("/updateCar")
+	@ResponseBody
+	public Map<String,Object> updateShoppingCar(HttpServletRequest request,@RequestBody Map<String, Object> req){
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			carService.updateShoppingCar(req);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e)
+		{
+			log.error(e.getMessage(),e);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
+		}
+		return result;
+	}
 	
 	
 }

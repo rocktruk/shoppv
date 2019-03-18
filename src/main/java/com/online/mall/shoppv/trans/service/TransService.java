@@ -60,7 +60,7 @@ public class TransService {
 		order.setOut_order_number(IdGenerater.INSTANCE.transIdGenerate());
 		order.setPush_type(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.PUSHTYPE_FORMURLENCODED));
 		order.setReturn_url(host+"/paymentResult");
-		order.setTotal_amount(((BigDecimal)params.get("totalAmt")).setScale(2));
+		order.setTotal_amount(new BigDecimal((String)params.get("totalAmt")).setScale(2));
 		order.setType_status(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDRTYPE_NORMAL));
 		try {
 			String result = HttpUtil.post(createOrderUrl, order.pack());

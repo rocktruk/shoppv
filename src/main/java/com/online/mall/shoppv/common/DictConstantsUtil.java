@@ -31,7 +31,7 @@ public class DictConstantsUtil {
 	{
 		Properties dict = new Properties();
 		try {
-			dict.load(new FileInputStream(new File(DictConstantsUtil.class.getResource("dict.properties").getFile())));
+			dict.load(new FileInputStream(new File(DictConstantsUtil.class.getResource("/dict.properties").getFile())));
 		} catch (FileNotFoundException e) {
 			log.error(e.getMessage(),e);
 		} catch (IOException e) {
