@@ -14,4 +14,8 @@ public interface IRespCodeContants {
 	String RESPCODE_SYSERR = "respcode.syserr";
 	
 	String RESPMSG_SYSERR = "respmsg.syserr";
+	
+	String RESPCODE_CREATEORDR_FAIL = "respcode.createordr.fail";
+	
+	String RESPMSG_CREATEORDR_FAIL = "respmsg.createordr.fail";
 }

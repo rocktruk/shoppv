@@ -89,7 +89,7 @@ public class ShopControl {
 	{
 		HttpSession session = request.getSession();
 		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
-		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
+		Customer user = (Customer)SessionUtil.getAttribute(session,SessionUtil.USER);
 		if(user == null)
 		{
 			return "goods/emptyshopping";
@@ -116,7 +116,7 @@ public class ShopControl {
 	{
 		HttpSession session = request.getSession();
 		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
-		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
+		Customer user = (Customer)SessionUtil.getAttribute(session,SessionUtil.USER);
 		if(user == null)
 		{
 			return "goods/emptyshopping";
@@ -140,6 +140,13 @@ public class ShopControl {
 		}
 	}
 	
+	@RequestMapping("/payment")
+	public String payment()
+	{
+		return "goods/submitorder";
+	}
+	
+	
 	/**
 	 * 购物车添加商品
 	 * @param request
@@ -153,7 +160,7 @@ public class ShopControl {
 		Map<String,Object> result = new HashMap<String,Object>();
 		try {
 			HttpSession session = request.getSession();
-			carService.addShoppingCar((Customer)SessionUtil.getAttribute(session,session.getId()), req);
+			carService.addShoppingCar((Customer)SessionUtil.getAttribute(session,SessionUtil.USER), req);
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
 		}catch(Exception e)
@@ -165,6 +172,12 @@ public class ShopControl {
 		return result;
 	}
 	
+	/**
+	 * 更新购物车
+	 * @param request
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/updateCar")
 	@ResponseBody
 	public Map<String,Object> updateShoppingCar(HttpServletRequest request,@RequestBody Map<String, Object> req){

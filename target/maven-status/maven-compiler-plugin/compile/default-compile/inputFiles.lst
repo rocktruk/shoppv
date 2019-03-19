@@ -38,6 +38,7 @@ C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\entity\ShoppingCa
 C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\entity\Goods.java
 C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\trans\bean\OrderStatusUpdateRequest.java
 C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\entity\MasterTrans.java
+C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\trans\bean\PaymentRequest.java
 C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\entity\ReceiveAddress.java
 C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\entity\Customer.java
 C:\Users\kaka_\git\shoppv\src\main\java\com\online\mall\shoppv\service\ShoppingCarService.java

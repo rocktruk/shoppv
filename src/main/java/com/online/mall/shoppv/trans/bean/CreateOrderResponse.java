@@ -34,7 +34,7 @@ public class CreateOrderResponse {
 	}
 	
 	
-	class OrderDetail {
+	public class OrderDetail {
 		
 		private String source;
 		

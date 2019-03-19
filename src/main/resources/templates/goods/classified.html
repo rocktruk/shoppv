@@ -31,7 +31,7 @@
 					<div class="integ_left fl">
 						<ul class="integ_ul">
 							<li class="integ_li topline" th:each="menu:${menuMap.get('classified')}">
-								<span th:text="${menu.getMenuName()}">积分商城</span>
+								<span th:text="${menu.getMenuName()}"></span>
 								<p class="integ_border"></p>
 							</li>
 							<p class="integ_top topline"></p>
@@ -42,7 +42,7 @@
 							<li class="integ_con fl" th:each="child:${prod}">
 								<a th:href="@{goodsls(goodsMenu=${child.getId()})}" >
 									<img th:src="@{${child.getImageSrc()}}">
-									<span class="integ_text" th:text="${child.getMenuName()}">生活家电</span>
+									<span class="integ_text" th:text="${child.getMenuName()}"></span>
 								</a>
 							</li>
 						</ul>

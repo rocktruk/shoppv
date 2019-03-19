@@ -34,7 +34,6 @@ public class CustomControl {
 	@RequestMapping("/user")
 	public String user(HttpServletRequest request)
 	{
-		request.setAttribute("userName", "123");
 		return "user/user";
 	}
 	

@@ -109,7 +109,7 @@ public class CustomerService {
 			return user;
 			}).orElse(user);
 		Customer result = repository.save(loginUsr);
-		SessionUtil.setAttribute(session,session.getId(), result);
+		SessionUtil.setAttribute(session,SessionUtil.USER, result);
 	}
 	
 	

@@ -49,7 +49,7 @@ public class TransService {
 	{
 		HttpSession session = request.getSession();
 		CreateOrderRequest order = new CreateOrderRequest();
-		Customer user = (Customer)SessionUtil.getAttribute(session,session.getId());
+		Customer user = (Customer)SessionUtil.getAttribute(session,SessionUtil.USER);
 		order.setSource(user.getChannelType());
 		order.setCity_codes((String)params.get("cityCode"));
 		order.setApp_id(appId);

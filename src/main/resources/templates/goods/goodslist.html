@@ -61,7 +61,7 @@
 				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>
 				<li class="text-center"><a th:href="@{goodsls(sort=price,goodsMenu=${goods},isasc=${isAsc})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'price'}? 'active' : ''">价格<i class="fa " th:classappend="${isAsc == null? 'fa-unsorted':(isAsc == 'asc'? 'fa-sort-asc':'fa-sort-desc')}"></i></a></li>
 			</ul>
-			<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="">
+			<section class="bg-f8 padding-top-bottom-1rem  clearfix" >
 				<ul class="clearfix  goodslist  margin-auto" id="goods_list">
 					<li class="col-xs-6 padding-0 margin-bottom-d75rem" th:each="product:${goodsLs}" >
 						<a th:href="@{goodsInfo(goodsId=${product.getId()})}">

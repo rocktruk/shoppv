@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionUtil {
 
+	public static final String USER = "user";
 	
 	public static void setAttribute(HttpSession session,String key,Object value)
 	{

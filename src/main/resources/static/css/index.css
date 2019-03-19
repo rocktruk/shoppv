@@ -1789,7 +1789,7 @@ a.account_integral:after{
 .fill_order ul.fill_box li.fill_list p.fill_pic span.span_pic{
 	display: block;
 	width: 0.75rem;
-	margin-top: 0.3rem;
+	margin-top: 1rem;
 }
 .fill_order ul.fill_box li.fill_list p.fill_pic span.span_text{
 	display: block;
