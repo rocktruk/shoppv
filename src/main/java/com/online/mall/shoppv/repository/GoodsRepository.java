@@ -14,9 +14,5 @@ import com.online.mall.shoppv.entity.Goods;
 @Repository
 public interface GoodsRepository extends IExpandJpaRepository<Goods, String> {
 
-	@Modifying
-	@Transactional
-	@Query(value="insert into goods value (?,?,?,?,?,?,?,?,?,?,?,?)",nativeQuery=true)
-	int insertGoods(String id,BigDecimal price,String brand,byte[] detail,long inventory,String status,String imgPath,int goodsMenuId,String specification,String title,long monthSales,long totalSales);
 	
 }

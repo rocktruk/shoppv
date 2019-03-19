@@ -87,45 +87,5 @@ public class GoodsControl {
 	}
 	
 	
-	@RequestMapping("/menu")
-	@ResponseBody
-	public Map<String,String> insertMenu(@RequestBody Map<String, String> req)
-	{
-		Map<String,String> response = new HashMap<String, String>();
-		GoodsMenu menu = new GoodsMenu();
-		menu.setImageSrc(req.get("imgSrc"));
-		menu.setMenuName(req.get("menuName"));
-		menu.setParentId(Integer.parseInt(req.get("parentId")));
-		boolean flag = menuService.addMenu(menu);
-		if(flag)
-		{
-			response.put("respCode", "000000");
-		}else
-		{
-			response.put("respCode", "111111");
-		}
-		return response;
-	}
 	
-	@RequestMapping("/insertGoods")
-	@ResponseBody
-	public Map<String,String> insertGoods(@RequestBody Map<String, String> req)
-	{
-		Map<String,String> response = new HashMap<String, String>();
-		Goods goods = new Goods();
-		goods.setId(IdGenerater.INSTANCE.goodsIdGenerate());
-		goods.setBrand(req.get("brand"));
-		goods.setGoodsMenuId(Integer.parseInt(req.get("goodsMenuId")));
-		goods.setImgPath(req.get("imgPath"));
-		goods.setInventory(Long.parseLong(req.get("inventory")));
-		goods.setMonthSales(0);
-		goods.setPrice(new BigDecimal(req.get("price")).setScale(2));
-		goods.setSpecification(req.get("specification"));
-		goods.setStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_STATUS_TOSALE));
-		goods.setTitle(req.get("title"));
-		goods.setTotalSales(0);
-		goodsService.insertGoods(goods);
-		response.put("respCode", "000000");
-		return response;
-	}
 }

@@ -76,17 +76,6 @@ public class GoodsService {
 	}
 	
 	
-	@Transactional
-	public boolean insertGoods(Goods goods)
-	{
-		int n = goodRepository.insertGoods(goods.getId(), goods.getPrice(), goods.getBrand(), goods.getDetail(), goods.getInventory(), goods.getStatus(), goods.getImgPath(), goods.getGoodsMenuId(), goods.getSpecification(), goods.getTitle(), goods.getMonthSales(), goods.getTotalSales());
-		if(n == 1) {
-			return true;
-		}else
-		{
-			return false;
-		}
-	}
 	
 	/**
 	 * 根据商品ID查询商品信息

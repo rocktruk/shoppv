@@ -43,12 +43,21 @@ public class GoodsWithoutDetail {
 	@Column(name="title")
 	private String title;
 	
+	@Column(name="desc")
+	private String desc;
+	
 	@Column(name="MONTH_SALES")
 	private long monthSales;
 	
 	@Column(name="TOTAL_SALES")
 	private long totalSales;
 	
+	
+	@Column(name="CARRIAGE")
+	private int carriage;
+	
+	@Column(name="ORI_PRICE")
+	private BigDecimal oriPrice;
 	
 	public String getId() {
 		return id;
@@ -137,6 +146,30 @@ public class GoodsWithoutDetail {
 
 	public void setTotalSales(long totalSales) {
 		this.totalSales = totalSales;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public int getCarriage() {
+		return carriage;
+	}
+
+	public void setCarriage(int carriage) {
+		this.carriage = carriage;
+	}
+
+	public BigDecimal getOriPrice() {
+		return oriPrice;
+	}
+
+	public void setOriPrice(BigDecimal oriPrice) {
+		this.oriPrice = oriPrice;
 	}
 
 	

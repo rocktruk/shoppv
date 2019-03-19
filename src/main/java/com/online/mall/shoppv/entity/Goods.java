@@ -50,6 +50,9 @@ public class Goods {
 	@Column(name="title")
 	private String title;
 	
+	@Column(name="DESC")
+	private String desc;
+	
 	@Column(name="MONTH_SALES")
 	private long monthSales;
 	
@@ -196,6 +199,14 @@ public class Goods {
 
 	public void setOriPrice(BigDecimal oriPrice) {
 		this.oriPrice = oriPrice;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 	
 	
