@@ -23,25 +23,25 @@
 						<li class="fill_left fill_list fl">
 							<span class="fill_span">李某  139****1234</span>
 							<p class="fill_pic clearfix">
-								<span class="span_pic fl"><img th:src="@{images/index/adress/addr.png}"></span>
+								<span class="span_pic fl"><img th:src="@{images/index/xqq/icon.png}"></span>
 								<span class="span_text fr">北京市丰台区北京市丰台区北京市丰台区北京市丰台区北京市丰台区</span>
 							</p>
 						</li>
 						<li class="fill_right fill_list fr">
-							<a href="Receipt_info.html#"><img src="images/ddxq/right.png" class="fill_img" /></a>
+							<a href="Receipt_info.html#"><img th:src="@{images/index/xqq/right.png}" class="fill_img" /></a>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 			<div class="shopping">
-				<div class="shop-group-item">
+				<!--<div class="shop-group-item">
 					<ul>
 						<li th:each="merchandise:${data.goods}">
 							<div class="shop-info">
+								<h5 style="display:none" th:text="${merchandise.id}"></h5>
 								<div class="shop-info-img"><a href="#"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div>
 								<div class="shop-info-text">
-									<h5 style="display:none" th:text="${merchandise.id}"></h5>
 									<h4 th:text="${merchandise.goods.title}"></h4>
 									<div class="shop-brief"><span>运费:<i th:text="${merchandise.goods.carriage}"></i></span></div>
 									<div class="shop-price">
@@ -54,10 +54,55 @@
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div>-->
+				<div class="shop-group-item"> 
+<!-- 		<div class="shop-name"> -->
+<!-- 			<input type="checkbox" class="check goods-check shopCheck"> -->
+<!-- 			<h4><a href="#">苹果专卖店</a></h4> -->
+<!-- 			<div class="coupons"><span>领券</span><em>|</em><span>编辑</span><span class="shop-total-amount ShopTotal">0</span></div> -->
+<!-- 		</div> -->
+<!-- 		<ul> -->
+<!-- 			<li> -->
+<!-- 				<div class="shop-info"> -->
+<!-- 					<input type="checkbox" class="check goods-check goodsCheck"> -->
+<!-- 					<h5>SHOP918273</h5> -->
+<!-- 					<div class="shop-info-img"><a href="#"><img th:src="@{images/shopcar/computer.jpg}" /></a></div> -->
+<!-- 					<div class="shop-info-text"> -->
+<!-- 						<h4>Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/128GB SSD闪存/Retina屏 MF839CH/A)</h4> -->
+<!-- 						<div class="shop-brief"><span>重量:3.3kg</span><span>颜色:标配版</span><span>版本:13.3英寸</span></div> -->
+<!-- 						<div class="shop-price"> -->
+<!-- 							<div class="shop-pices">￥<b class="price">100.00</b></div> -->
+<!-- 							<div class="shop-arithmetic"> -->
+<!-- 								<a href="javascript:;" class="minus">-</a> -->
+<!-- 								<span class="num" >1</span> -->
+<!-- 								<a href="javascript:;" class="plus">+</a> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</li> -->
+<!-- 			<li> -->
+<!-- 				<div class="shop-info"> -->
+<!-- 					<input type="checkbox" class="check goods-check goodsCheck"> -->
+<!-- 					<div class="shop-info-img"><a href="#"><img th:src="@{images/shopcar/computer.jpg}" /></a></div> -->
+<!-- 					<div class="shop-info-text"> -->
+<!-- 						<h4>Apple MacBook Pro 13.3英寸笔记本电脑 银色(Core i5 处理器/8GB内存/128GB SSD闪存/Retina屏 MF839CH/A)</h4> -->
+<!-- 						<div class="shop-brief"><span>重量:3.3kg</span><span>颜色:标配版</span><span>版本:13.3英寸</span></div> -->
+<!-- 						<div class="shop-price"> -->
+<!-- 							<div class="shop-pices">￥<b class="price">100.00</b></div> -->
+<!-- 							<div class="shop-arithmetic"> -->
+<!-- 								<a href="javascript:;" class="minus">-</a> -->
+<!-- 								<span class="num" >1</span> -->
+<!-- 								<a href="javascript:;" class="plus">+</a> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</li> -->
+<!-- 		</ul> -->
+ 			</div> 
 			</div>
 			<div class="payment-bar">
-<!-- 				<div class="all-checkbox"><input type="checkbox" class="check goods-check" id="AllCheck">全选</div> -->
 				<div class="shop-total">
 					<strong>总价：<i class="total" id="AllTotal" th:text="${data.total}"></i></strong>
 					<span>减免：0</span>
