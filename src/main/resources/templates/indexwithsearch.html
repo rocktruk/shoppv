@@ -50,9 +50,9 @@
 			<!--nav start-->
 			<div id="nav">
 				<nav class="clearfix">
-					<a th:href="@{/goodsls}">
-						<img th:src="@{images/user-logo-002.png}" />
-						<span>积分商城</span>
+					<a th:each="menu:${menus}" th:href="@{goodsls(goodsMenu=${menu.id})}">
+						<img th:src="@{${menu.imageSrc}}" />
+						<span th:text="${menu.menuName}"></span>
 					</a>
 					<div class="edmond clearfix">
 						夏季炎热签收水果前请确认0

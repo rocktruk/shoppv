@@ -1,5 +1,6 @@
 package com.online.mall.shoppv.control;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.online.mall.shoppv.common.util.SessionUtil;
+import com.online.mall.shoppv.common.util.SignatureUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
@@ -57,16 +59,43 @@ public class PaymentControl {
 			String source,String open_userid,String res_status,
 			String res_msg,String order_number,String total_amount,String sign)
 	{
-		
+		Map<String,Object> req = new HashMap<String, Object>();
+		req.putAll(request.getParameterMap());
+		boolean flag = false;
+		try {
+			flag = SignatureUtil.INTANCE.checkSign(req);
+			if(flag)
+			{
+				return "goods/paymentsuccess";
+			}
+		} catch (NoSuchAlgorithmException e) {
+			log.error(e.getMessage(),e);
+		}
 		
 		return "goods/paymentsuccess";
 	}
 	
+	/**
+	 * 交易结果通知受理
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/resultNofity")
 	public Map<String,Object> notifyPayment(HttpServletRequest request)
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
-		
+		result.putAll(request.getParameterMap());
+		boolean flag = false;
+		try {
+			flag = SignatureUtil.INTANCE.checkSign(result);
+			if(flag)
+			{
+				
+			}
+			result.clear();
+		} catch (NoSuchAlgorithmException e) {
+			log.error(e.getMessage(),e);
+		}
 		return result;
 	}
 	

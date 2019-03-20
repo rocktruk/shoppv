@@ -21,9 +21,9 @@
 			<ul class="fill_box">
 				<li class="fill_left fill_list fl">
 					<p class="fill_pic clearfix">
-						<span class="span_pic fl"><img th:src="@{images/index/xqq/icon.png}" /></span>
-						<span class="span_text fr" th:text="${'收货人:李某'+'139****1234'}"></span>
-						<span class="span_text fr">北京市丰台区北京市丰台区北京市丰台区北京市丰台区北京市丰台区</span>
+						<span class="span_pic fl" style="position: fixed"><img th:src="@{images/index/xqq/icon.png}" /></span>
+						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top: 5px;font-size:0.9rem;color:black" th:text="${'收货人:李某'}"></span><span style="position: fixed;padding-left:65%;padding-top: 5px">139****1234</span>
+						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top:25px">北京市丰台区北京市丰台区北京市丰台区北京市丰台区北京市丰台区</span>
 					</p>
 				</li>
 				<li class="fill_right fill_list fr">
@@ -32,30 +32,30 @@
 			</ul>
 		</div>
 	</div>
-	<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>
+	<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#D5131C SIZE=3>
 	<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="margin-top: 15px">
 			<div class="shopping">
-<!-- 				<div class="shop-group-item"> -->
-<!-- 					<ul> -->
-<!-- 						<li th:each="merchandise:${data.goods}"> -->
-<!-- 							<div class="shop-info"> -->
-<!-- 								<h5 style="display:none" th:text="${merchandise.id}"></h5> -->
-<!-- 								<div class="shop-info-img"><a href="#"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div> -->
-<!-- 								<div class="shop-info-text"> -->
-<!-- 									<h4 th:text="${merchandise.goods.title}"></h4> -->
-<!-- 									<div class="shop-brief"><span>运费:<i th:text="${merchandise.goods.carriage}"></i></span></div> -->
-<!-- 									<div class="shop-price"> -->
-<!-- 										<div class="shop-pices">￥<b class="price" th:text="${merchandise.goods.price}"></b></div> -->
-<!-- 										<div class="shop-arithmetic"> -->
-<!-- 											<div class="shop-brief"><span>x</span><span th:text="${merchandise.count}"></span></div> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</li> -->
-<!-- 					</ul> -->
-<!-- 				</div> -->
-				<div class="shop-group-item"> 
+ 				<div class="shop-group-item"> 
+					<ul> 
+ 						<li th:each="merchandise:${data.goods}"> 
+ 							<div class="shop-info">
+ 								<h5 style="display:none" th:text="${merchandise.id}"></h5> 
+ 								<div class="shop-info-img"><a href="#"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div> 
+ 								<div class="shop-info-text"> 
+									<h4 th:text="${merchandise.goods.title}"></h4> 
+ 									<div class="shop-brief"><span>运费:<i th:text="${merchandise.goods.carriage}"></i></span></div> 
+ 									<div class="shop-price"> 
+ 										<div class="shop-pices">￥<b class="price" th:text="${merchandise.goods.price}"></b></div> 
+ 										<div class="shop-arithmetic"> 
+ 											<div class="shop-brief"><span>x</span><span th:text="${merchandise.count}"></span></div> 
+										</div> 
+ 									</div> 
+								</div> 
+ 							</div> 
+ 						</li> 
+ 					</ul>
+ 				</div> 
+				<!--<div class="shop-group-item"> 
 				<div class="shop-name">
 					<input type="checkbox" class="check goods-check shopCheck">
 					<h4><a href="#">苹果专卖店</a></h4>
@@ -100,7 +100,7 @@
 						</div>
 					</li>
 				</ul>
- 			</div> 
+ 			</div> -->
 		</div>
 	</section>
 			<div class="payment-bar">

@@ -831,7 +831,7 @@
                 <div class="aui-footer-group aui-footer-flex1">
                     <div class="aui-footer-flex">
                         <div class="aui-btn aui-btn-gray">
-                            <a href="javascript:;">
+                            <a href="javascript:;" th:onclick="'addShoppingCar('+${product.price}+','+${product.id}+')'">
                             	<span>加入购物车</span>
                             </a>
                         </div>
@@ -885,6 +885,24 @@
                     }
                 });
             });
+
+			function addShoppingCar(price,goodsId){
+				$.ajax({
+		        		data: JSON.stringify({"price":price,"goodsId":goodsId,"count":1}),
+		        		url:  "/addCar",
+		        		type: "POST",
+		        		contentType:"application/json",
+		        		success:function(data){
+		        			if(data.respcode=="000000"){
+		        				windows.location.href = data.url;
+		        			}
+		        		},
+		        		error:function(msg)
+		        		{
+		        			console.log(msg);
+		        		}
+		        	});
+			}
 
         </script>
     </body>

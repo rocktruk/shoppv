@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
+import com.online.mall.shoppv.entity.GoodsMenu;
 import com.online.mall.shoppv.entity.ShoppingCar;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
+import com.online.mall.shoppv.service.GoodsMenuService;
 import com.online.mall.shoppv.service.GoodsService;
 import com.online.mall.shoppv.service.ShoppingCarService;
 
@@ -42,6 +44,9 @@ public class ShopControl {
 	
 	@Autowired
 	private CustomerService userService;
+	
+	@Autowired
+	private GoodsMenuService menuService;
 
 	@RequestMapping("/")
 	/**
@@ -68,9 +73,10 @@ public class ShopControl {
 	
 	
 	@RequestMapping("/index")
-	public String index()
+	public String index(HttpServletRequest request)
 	{
-		
+		List<GoodsMenu> ls = menuService.findAll();
+		request.setAttribute("menus", ls);
 		return "indexwithsearch";
 	}
 	

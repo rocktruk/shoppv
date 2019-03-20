@@ -35,6 +35,9 @@ public class TransService {
 	@Value(value="${createorder.url}")
 	private String createOrderUrl;
 	
+//	@Value(value="${server.servlet.context-path}")
+//	private String context;
+	
 	@Value(value="${appid}")
 	private String appId;
 	
