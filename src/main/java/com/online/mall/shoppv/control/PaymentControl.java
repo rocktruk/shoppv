@@ -85,6 +85,7 @@ public class PaymentControl {
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.putAll(request.getParameterMap());
+		
 		boolean flag = false;
 		try {
 			flag = SignatureUtil.INTANCE.checkSign(result);
