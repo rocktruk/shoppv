@@ -18,4 +18,9 @@ public interface IRespCodeContants {
 	String RESPCODE_CREATEORDR_FAIL = "respcode.createordr.fail";
 	
 	String RESPMSG_CREATEORDR_FAIL = "respmsg.createordr.fail";
+	
+	String RESPCODE_CREATEORDR_USER_INCONFORMITY = "respcode.createordr.user.inconformity";
+	
+	String RESPMSG_CREATEORDR_USER_INCONFORMITY = "respmsg.createordr.user.inconformity";
+	
 }

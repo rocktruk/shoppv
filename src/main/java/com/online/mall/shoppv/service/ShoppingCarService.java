@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,9 @@ public class ShoppingCarService {
 	@Autowired
 	private ShoppingCarRepository carRepos;
 	
+	@Autowired
+	private GoodsService goodsService;
+	
 	private static final Logger log = LoggerFactory.getLogger(ShoppingCarService.class);
 	
 	public List<ShoppingCar> getShopingGoodsByUser(long cusId)
@@ -36,8 +40,9 @@ public class ShoppingCarService {
 	 * @param ids
 	 * @return
 	 */
-	public List<ShoppingCar> getShopingGoodsWithID(String[] ids)
+	public List<ShoppingCar> getShopingGoodsWithID(String carIds)
 	{
+		String[] ids = carIds.split(",");
 		List<ShoppingCar> ls = new ArrayList<ShoppingCar>();
 		for(int i=0;i<ids.length;i++)
 		{
@@ -47,6 +52,27 @@ public class ShoppingCarService {
 		return ls;
 	}
 	
+	/**
+	 * 根据客户选中的结算商品获取购物车清单
+	 * @param carIds
+	 * @param data
+	 * @return
+	 */
+	@Cacheable(value="ShopCarToSettle",key="'getShoppingCarAndGoods'+#carIds")
+	public List<ShoppingCar> getShoppingCarAndGoods(String carIds,Map<String,Object> data){
+		//查询需要结算的购物订单
+		List<ShoppingCar> ls = getShopingGoodsWithID(carIds);
+		ls.stream().map(sc -> {
+			//遍历购物订单关联对应的商品
+			sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
+			//创建订单时无须计算总价
+			if(data!=null) {
+				data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount())))));
+			}
+			return sc;
+		}).collect(Collectors.toList());
+		return ls;
+	}
 	
 	/**
 	 * 添加购物车

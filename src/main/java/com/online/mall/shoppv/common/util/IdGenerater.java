@@ -12,6 +12,11 @@ public class IdGenerater {
 	
 	public static final String SHOPPINGCAR_PREFIX = "SHOP";
 	
+	public static final String ORDER_PREFIX = "ORDER";
+	
+	public static final String RECVADDR_PREFIX = "RADD";
+	
+	
 	private IdGenerater() {
 		
 	}
@@ -50,6 +55,29 @@ public class IdGenerater {
 		UUIDGenerator generator = UUIDGenerator.getInstance();
 		String id = generator.generateTimeBasedUUID().toString();
 		id = SHOPPINGCAR_PREFIX+id.replaceAll("-", "");
+		return id;
+	}
+	
+	/**
+	 * 订单流水号生成
+	 * @return
+	 */
+	public String orderIdGenerate()
+	{
+		UUIDGenerator generator = UUIDGenerator.getInstance();
+		String id = generator.generateTimeBasedUUID().toString();
+		id = ORDER_PREFIX+id.replaceAll("-", "");
+		return id;
+	}
+	
+	/**
+	 * 收货地址流水号生成
+	 * @return
+	 */
+	public String recvAddrIdGenerate() {
+		UUIDGenerator generator = UUIDGenerator.getInstance();
+		String id = generator.generateTimeBasedUUID().toString();
+		id = RECVADDR_PREFIX+id.replaceAll("-", "");
 		return id;
 	}
 	

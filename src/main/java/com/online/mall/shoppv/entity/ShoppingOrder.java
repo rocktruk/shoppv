@@ -24,13 +24,13 @@ public class ShoppingOrder {
 	@Column(name="TRANS_NO")
 	private String transNo;
 	
-	@Column(name="CREATE_TIME")
+	@Column(name="CREATE_TIME",insertable=false,updatable=false)
 	private Date createTime;
 	
 	@Column(name="ORDER_STATUS")
 	private String orderStatus;
 	
-	@Column(name="LST_UPD_DATE")
+	@Column(name="LST_UPD_DATE",insertable=false,updatable=false)
 	private Date lstUpdDate;
 	
 	@Column(name="DELIVER_STATUS")
@@ -40,7 +40,7 @@ public class ShoppingOrder {
 	private String addressId;
 	
 	@Column(name="COUNT")
-	private String count;
+	private int count;
 	
 	@Column(name="TOTAL_ORDR_AMT")
 	private BigDecimal totalOrdrAmt;
@@ -123,11 +123,11 @@ public class ShoppingOrder {
 		this.addressId = addressId;
 	}
 
-	public String getCount() {
+	public int getCount() {
 		return count;
 	}
 
-	public void setCount(String count) {
+	public void setCount(int count) {
 		this.count = count;
 	}
 

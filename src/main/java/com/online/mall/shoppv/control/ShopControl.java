@@ -101,16 +101,16 @@ public class ShopControl {
 			return "goods/emptyshopping";
 		}
 		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
+		Map<String,Object> data = new HashMap<String, Object>();
+		ls.stream().map(sc -> {
+			sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
+			return sc;
+		}).collect(Collectors.toList());
 		if(ls==null || ls.isEmpty())
 		{
 			return "goods/emptyshopping";
 		}else
 		{
-			Map<String,Object> data = new HashMap<String, Object>();
-			ls.stream().map(sc -> {
-				sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
-				return sc;
-			}).collect(Collectors.toList());
 			data.put("goods", ls);
 			request.setAttribute("data", data);
 			return "goods/shopcar";
@@ -127,22 +127,15 @@ public class ShopControl {
 		{
 			return "goods/emptyshopping";
 		}
-		String[] carIds = ids.split(",");
+		Map<String,Object> data = new HashMap<String, Object>();
 		//查询需要结算的购物订单
-		List<ShoppingCar> ls = carService.getShopingGoodsWithID(carIds);
+		List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids,data);
 		if(ls==null || ls.isEmpty())
 		{
 			return "goods/emptyshopping";
 		}else
 		{
-			Map<String,Object> data = new HashMap<String, Object>();
 			data.put("total", BigDecimal.ZERO);
-			ls.stream().map(sc -> {
-				//遍历购物订单关联对应的商品
-				sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
-				data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount())))));
-				return sc;
-			}).collect(Collectors.toList());
 			data.put("goods", ls);
 			request.setAttribute("data", data);
 			request.setAttribute("ids", ids);

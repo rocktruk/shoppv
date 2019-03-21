@@ -117,7 +117,7 @@
 			<script type="text/javascript">
 				function createOrder(){
 					$.ajax({
-		        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids}),
+		        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids,"addressId":"ad"}),
 		        		url:  "/pay",
 		        		type: "POST",
 		        		contentType:"application/json",

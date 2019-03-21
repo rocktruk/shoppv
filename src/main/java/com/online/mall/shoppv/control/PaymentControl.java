@@ -2,6 +2,7 @@ package com.online.mall.shoppv.control;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,8 +23,11 @@ import com.alibaba.fastjson.JSON;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.common.util.SignatureUtil;
 import com.online.mall.shoppv.entity.Customer;
+import com.online.mall.shoppv.entity.ShoppingCar;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
+import com.online.mall.shoppv.service.ShoppingCarService;
+import com.online.mall.shoppv.service.ShoppingOrderService;
 import com.online.mall.shoppv.trans.bean.CreateOrderResponse;
 import com.online.mall.shoppv.trans.bean.PaymentRequest;
 import com.online.mall.shoppv.trans.service.TransService;
@@ -33,6 +37,12 @@ public class PaymentControl {
 
 	@Autowired
 	private TransService transHandler;
+	
+	@Autowired
+	private ShoppingOrderService orderService;
+	
+	@Autowired
+	private ShoppingCarService carService;
 	
 	private static final Logger log = LoggerFactory.getLogger(PaymentControl.class);
 	
@@ -112,28 +122,44 @@ public class PaymentControl {
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
-		//创建订单
-		Optional<CreateOrderResponse> rsp = transHandler.createOrder(request, req);
-		if(rsp.isPresent() && rsp.get().getStatus()==0)
-		{
-			log.info(JSON.toJSONString(rsp.get()));
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
-			//拼装支付页面跳转url
-			StringBuilder url = new StringBuilder();
-			url.append(paymentUrl);
-			PaymentRequest payment = new PaymentRequest();
-			Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
-			payment.setApp_id(appId);
-			payment.setSource(user.getChannelType());
-			payment.setOpen_userid(user.getOpenId());
-			payment.setOrder_number(rsp.get().getData().getOrder_number());
-			String msg = payment.pack();
-			url.append("?").append(msg);
-			result.put("url", url.toString());
-		}else {
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_FAIL));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_CREATEORDR_FAIL));
+		try {
+			Customer cus = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
+			List<ShoppingCar> ls = carService.getShoppingCarAndGoods((String)req.get("ids"), null);
+			for (ShoppingCar car : ls) {
+				if(car.getCusId() != cus.getId()) {
+					log.error("结算购物车清单："+req.get("ids")+"|客户号不一致订单："+car.getId()+"|当前客户为："+cus.getId());
+					result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_USER_INCONFORMITY));
+					result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_CREATEORDR_USER_INCONFORMITY));
+					return result;
+				}
+			}
+			//查询购物车结算商品，并插入订单表
+			orderService.insertOrderByShoppingCar(ls,(String)req.get("addressId"));
+			//创建订单
+			Optional<CreateOrderResponse> rsp = transHandler.createOrder(request, req);
+			if(rsp.isPresent() && rsp.get().getStatus()==0)
+			{
+				log.info(JSON.toJSONString(rsp.get()));
+				result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+				result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+				//拼装支付页面跳转url
+				StringBuilder url = new StringBuilder();
+				url.append(paymentUrl);
+				PaymentRequest payment = new PaymentRequest();
+				Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
+				payment.setApp_id(appId);
+				payment.setSource(user.getChannelType());
+				payment.setOpen_userid(user.getOpenId());
+				payment.setOrder_number(rsp.get().getData().getOrder_number());
+				String msg = payment.pack();
+				url.append("?").append(msg);
+				result.put("url", url.toString());
+			}else {
+				result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_FAIL));
+				result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_CREATEORDR_FAIL));
+			}
+		}catch(Exception e) {
+			log.error(e.getMessage(),e);
 		}
 		return result;
 	}

@@ -11,6 +11,8 @@ public class ConfigConstants {
 
 	public static final String ORDER_STATUS_NOTPAY = "order.status.notpay";
 	
+	public static final String ORDER_STATUS_FAILED = "order.status.failed";
+	
 	public static final String ORDER_STATUS_REFUND = "order.status.refund";
 	
 	//交易状态
@@ -71,6 +73,9 @@ public class ConfigConstants {
 	
 	public static final String ORDRTYPE_DSCTTIMES = "ordrtype.dscttimes";
 	
+	public static final String RECV_ADDR_DFT = "recv.addr.dft";
+	
+	public static final String RECV_ADDR_UNDFT = "recv.addr.undft";
 }
 
 

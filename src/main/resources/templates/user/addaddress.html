@@ -68,7 +68,7 @@
 					</p>
 				</div>
 			</div>
-			<a href="javascript:;" class="btn-block">保存</a>
+			<a href="javascript:;" class="btn-block" onclick="addRecvAddr()">保存</a>
 		</div>
 	</div>
     <script th:src="@{js/address/jquery.min.js}"></script>
@@ -194,6 +194,25 @@
             });
         });
     });
+    
+    function addRecvAddr(){
+    	$.ajax({
+    		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids,"addressId":"ad"}),
+    		url:  "/addRecvAddr",
+    		type: "POST",
+    		contentType:"application/json",
+    		success:function(data){
+    			if(data.respcode=="000000"){
+    				$("#payment").attr("href",data.url);
+    				$("#spanId").click();
+    			}
+    		},
+    		error:function(msg)
+    		{
+    			console.log(msg);
+    		}
+    	});
+    }
     </script>
 </body>
 </html>

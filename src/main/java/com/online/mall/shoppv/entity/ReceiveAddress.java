@@ -35,11 +35,14 @@ public class ReceiveAddress {
 	@Column(name="DETAILED_ADDRESS")
 	private String detailedAddr;
 	
-	@Column(name="LST_UPD_TIME")
+	@Column(name="LST_UPD_TIME",insertable=false,updatable=false)
 	private Date lstUpdTime;
 	
 	@Column(name="IS_DFT_ADDR",columnDefinition="char",length=1,nullable=false)
 	private String dftAddr;
+	
+	@Column(name="CITY_CODE")
+	private String cityCode;
 
 	public String getId() {
 		return id;
@@ -120,7 +123,14 @@ public class ReceiveAddress {
 	public void setDftAddr(String dftAddr) {
 		this.dftAddr = dftAddr;
 	}
-	
+
+	public String getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(String cityCode) {
+		this.cityCode = cityCode;
+	}
 	
 	
 }
