@@ -35,7 +35,7 @@ public class ShoppingCar {
 	private int count;
 	
 	@Transient
-	private Goods goods;
+	private GoodsWithoutDetail goods;
 
 	public String getId() {
 		return id;
@@ -85,11 +85,11 @@ public class ShoppingCar {
 		this.count = count;
 	}
 
-	public Goods getGoods() {
+	public GoodsWithoutDetail getGoods() {
 		return goods;
 	}
 
-	public void setGoods(Goods goods) {
+	public void setGoods(GoodsWithoutDetail goods) {
 		this.goods = goods;
 	}
 	

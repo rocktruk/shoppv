@@ -49,9 +49,9 @@
                         <i>￥</i>
                         <i th:text="${product.price}"></i>
                     </h2>
-                    <span>￥899</span>
-                    <em>6.9折</em>
-                    <em>特价</em>
+                    <span th:text="${'¥'+product.oriPrice}" th:unless="${product.oriPrice == 0}"></span>
+                    <em th:unless="${product.oriPrice == 0}">6.9折</em>
+                    <em th:unless="${product.oriPrice == 0}">特价</em>
                 </div>
                 <div class="aui-product-title">
                     <h2 th:text="${product.title}"></h2>
@@ -831,9 +831,7 @@
                 <div class="aui-footer-group aui-footer-flex1">
                     <div class="aui-footer-flex">
                         <div class="aui-btn aui-btn-gray">
-                            <a href="javascript:;" th:onclick="'addShoppingCar('+${product.price}+','+${product.id}+')'">
-                            	<span>加入购物车</span>
-                            </a>
+                            <span onclick="addShoppingCar()">加入购物车</span>
                         </div>
                         <div class="aui-btn aui-btn-red">
                             <span>立即购买</span>
@@ -885,16 +883,21 @@
                     }
                 });
             });
-
-			function addShoppingCar(price,goodsId){
+		</script>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			    var price = [[${product.price}]];
+			    var goodsId = [[${product.id}]];
+			/*]]>*/
+			function addShoppingCar(){
 				$.ajax({
 		        		data: JSON.stringify({"price":price,"goodsId":goodsId,"count":1}),
-		        		url:  "/addCar",
+		        		url:  "/shopping/addCar",
 		        		type: "POST",
 		        		contentType:"application/json",
 		        		success:function(data){
 		        			if(data.respcode=="000000"){
-		        				windows.location.href = data.url;
+		        				
 		        			}
 		        		},
 		        		error:function(msg)

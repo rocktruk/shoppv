@@ -24,13 +24,6 @@
 	<link rel="stylesheet" type="text/css" th:href="@{css/ui.css}">
 	<link rel="stylesheet" th:href="@{css/index.css}">
 	<link rel="stylesheet" th:href="@{font-awesome/css/font-awesome.min.css}">
-<style type="text/css">
-.sprite-icon{
-	display:inline-block;
-	background:url("../images/index/jd-sprites.png") no-repeat;
-	background-size:200px 200px;
-}
-</style>
 </head>
 <body>
 <!-- 引入 js 库文件 -->
@@ -55,9 +48,9 @@
 		<div class="goods margin-top-3d9rem margin-bottom-6rem">
 			<ul class="xx-nav-tabs xx-nav">
 				<li class="text-center">
-					<a th:href="@{goodsls(sort=all,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
+					<a th:href="@{shopping/goodsls(sort=all,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
 				</li>
-				<!--<li class="text-center"><a th:href="@{goodsls}?sort=" class="xjp-inline-block font-size-1d2rem">人气</a></li>-->
+				<!--<li class="text-center"><a th:href="@{shopping/goodsls}?sort=" class="xjp-inline-block font-size-1d2rem">人气</a></li>-->
 				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>
 				<li class="text-center"><a th:href="@{goodsls(sort=price,goodsMenu=${goods},isasc=${isAsc})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'price'}? 'active' : ''">价格<i class="fa " th:classappend="${isAsc == null? 'fa-unsorted':(isAsc == 'asc'? 'fa-sort-asc':'fa-sort-desc')}"></i></a></li>
 			</ul>
@@ -73,7 +66,7 @@
 						</div>
 					</li>
 				</ul>
-				<p class="notice" id="loading"><i class="fa fa-refresh"><span>玩命加载中...</span></i></p>
+				<p class="notice" style="display:none" id="loading"><i class="fa fa-refresh"><span>玩命加载中...</span></i></p>
 			</section>
 		</div>
 		
@@ -158,7 +151,7 @@
 		        	var data = {"sort":$('#sort').val(),"goodsMenu":$('#goodsMenu').val(),"isAsc":$('#isasc').val(),"index":index};
 		        	$.ajax({
 		        		data: JSON.stringify(data),
-		        		url:  "/loadGoods",
+		        		url:  "/shopping/loadGoods",
 		        		type: "POST",
 		        		contentType:"application/json",
 		        		success:function(data){

@@ -35,14 +35,15 @@ public class TransService {
 	@Value(value="${createorder.url}")
 	private String createOrderUrl;
 	
-//	@Value(value="${server.servlet.context-path}")
-//	private String context;
+	@Value(value="${server.servlet.context-path}")
+	private String context;
 	
 	@Value(value="${appid}")
 	private String appId;
 	
 	@Value(value="${signkey}")
 	private String signkey;
+	
 	/**
 	 * 创建订单
 	 * @param request
@@ -57,12 +58,12 @@ public class TransService {
 		order.setCity_codes((String)params.get("cityCode"));
 		order.setApp_id(appId);
 		order.setConsignee_address((String)params.get("ConsigneeAddress"));
-		order.setNotify_url(host+"/resultNofity");
+		order.setNotify_url(host+context+"/resultNofity");
 		order.setOpen_userid(user.getOpenId());
 		order.setOrder_title((String)params.get("orderTitle"));
 		order.setOut_order_number(IdGenerater.INSTANCE.transIdGenerate());
 		order.setPush_type(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.PUSHTYPE_FORMURLENCODED));
-		order.setReturn_url(host+"/paymentResult");
+		order.setReturn_url(host+context+"/paymentResult");
 		order.setTotal_amount(new BigDecimal((String)params.get("totalAmt")).setScale(2));
 		order.setType_status(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDRTYPE_NORMAL));
 		try {

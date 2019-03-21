@@ -82,9 +82,17 @@ public class GoodsService {
 	 * @param goodsId
 	 * @return
 	 */
+	@Cacheable(value="GoodsCacheWithId",key="'getProduct'+#goodsId")
 	public Optional<Goods> getProduct(String goodsId)
 	{
 		return goodRepository.findById(goodsId);
+	}
+	
+	
+	@Cacheable(value="GoodsCacheWithId",key="'getProductWithDetail'+#goodsId")
+	public Optional<GoodsWithoutDetail> getProductWithDetail(String goodsId)
+	{
+		return noDetailRepos.findById(goodsId);
 	}
 	
 	

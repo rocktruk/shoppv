@@ -28,6 +28,7 @@ public class CacheUtil {
      */
     public enum Caches{
         getGoodsWithPage(3600,1000),
+        GoodsCacheWithId(1800,1000);
         ;
         Caches() {
         }

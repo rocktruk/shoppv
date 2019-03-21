@@ -20,7 +20,7 @@ public interface ShoppingCarRepository extends IExpandJpaRepository<ShoppingCar,
 	
 	@Modifying
 	@Transactional
-	@Query(value="insert into ShoppingCar value(?,?,?,?,?,?)", nativeQuery = true)
+	@Query(value="insert into shopping_car value(?,?,?,?,?,?)", nativeQuery = true)
 	int insertShoppingCar(String id,long cusId,Date createTime,BigDecimal currentPrice,String goodsId,int count);
 	
 	@Modifying

@@ -112,12 +112,14 @@ public class PaymentControl {
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
+		//创建订单
 		Optional<CreateOrderResponse> rsp = transHandler.createOrder(request, req);
 		if(rsp.isPresent() && rsp.get().getStatus()==0)
 		{
 			log.info(JSON.toJSONString(rsp.get()));
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+			//拼装支付页面跳转url
 			StringBuilder url = new StringBuilder();
 			url.append(paymentUrl);
 			PaymentRequest payment = new PaymentRequest();

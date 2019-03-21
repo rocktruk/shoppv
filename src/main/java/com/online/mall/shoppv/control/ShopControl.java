@@ -108,7 +108,7 @@ public class ShopControl {
 		{
 			Map<String,Object> data = new HashMap<String, Object>();
 			ls.stream().map(sc -> {
-				sc.setGoods(goodsService.getProduct(sc.getGoodsId()).get());
+				sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
 				return sc;
 			}).collect(Collectors.toList());
 			data.put("goods", ls);
@@ -118,7 +118,7 @@ public class ShopControl {
 	}
 	
 	@RequestMapping("/fillOrder")
-	public String submitOrder(HttpServletRequest request)
+	public String submitOrder(HttpServletRequest request,String ids)
 	{
 		HttpSession session = request.getSession();
 		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
@@ -127,7 +127,9 @@ public class ShopControl {
 		{
 			return "goods/emptyshopping";
 		}
-		List<ShoppingCar> ls = carService.getShopingGoodsByUser(user.getId());
+		String[] carIds = ids.split(",");
+		//查询需要结算的购物订单
+		List<ShoppingCar> ls = carService.getShopingGoodsWithID(carIds);
 		if(ls==null || ls.isEmpty())
 		{
 			return "goods/emptyshopping";
@@ -136,12 +138,14 @@ public class ShopControl {
 			Map<String,Object> data = new HashMap<String, Object>();
 			data.put("total", BigDecimal.ZERO);
 			ls.stream().map(sc -> {
-				sc.setGoods(goodsService.getProduct(sc.getGoodsId()).get());
+				//遍历购物订单关联对应的商品
+				sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
 				data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount())))));
 				return sc;
 			}).collect(Collectors.toList());
 			data.put("goods", ls);
 			request.setAttribute("data", data);
+			request.setAttribute("ids", ids);
 			return "goods/submitorder";
 		}
 	}

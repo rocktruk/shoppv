@@ -442,7 +442,11 @@ a {
 }
 
 .aui-btn-gray {
-    background: #404040;
+    background-image: -webkit-gradient(linear,left top,right top,from(orange),to(rgb(255, 146, 0)));
+    background-image: -webkit-linear-gradient(left,orange,rgb(255, 146, 0));
+    background-image: -moz-linear-gradient(left,orange,rgb(255, 146, 0));
+    background-image: linear-gradient(to right,orange,rgb(255, 146, 0));
+    background-color: orange;
 }
 
 .aui-btn-red {

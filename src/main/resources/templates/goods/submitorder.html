@@ -111,12 +111,13 @@
 				<a href="javascript:;" onclick="createOrder()"  class="settlement">提交订单</a>
 			</div>
 			<a id="payment" href="javascript:;" style="visibility: hidden;"><span id="spanId">支付</span></a>
+			<span style="display:none" th:text="${ids}"></span>
 			<script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>
 <!-- 			<script type="text/javascript" th:src="@{js/rem.js" ></script> -->
 			<script type="text/javascript">
 				function createOrder(){
 					$.ajax({
-		        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text()}),
+		        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids}),
 		        		url:  "/pay",
 		        		type: "POST",
 		        		contentType:"application/json",
