@@ -30,13 +30,13 @@
 				<div class="inputtxt">
 					<p>收货人姓名</p>
 					<p>
-						<input type="text" placeholder="收货人姓名">
+						<input type="text" id="recvName" placeholder="收货人姓名">
 					</p>
 				</div>
 				<div class="inputtxt">
 					<p>联系方式</p>
 					<p>
-						<input type="text" placeholder="手机号码">
+						<input type="text" id="phone" placeholder="手机号码">
 					</p>
 				</div>
                 <div class="inputtxt">
@@ -64,7 +64,7 @@
 				<div class="inputtxt">
 					<p>详细地址（街道、楼牌号等）</p>
 					<p>
-						<input type="text" placeholder="请输入您的详细地址">
+						<input type="text" id="dtlAddress" placeholder="请输入您的详细地址">
 					</p>
 				</div>
 			</div>
@@ -197,14 +197,12 @@
     
     function addRecvAddr(){
     	$.ajax({
-    		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids,"addressId":"ad"}),
-    		url:  "/addRecvAddr",
+    		data: JSON.stringify({"cityCode":$('#myAddrs').attr("data-key"),"recvName":$('#recvName').val(),"phone":$('phone').val(),"dtlAddress":$('#dtlAddress').val(),"district":$('#myAddrs').val()}),
+    		url:  "/shopping/addRecvAddr",
     		type: "POST",
     		contentType:"application/json",
     		success:function(data){
     			if(data.respcode=="000000"){
-    				$("#payment").attr("href",data.url);
-    				$("#spanId").click();
     			}
     		},
     		error:function(msg)

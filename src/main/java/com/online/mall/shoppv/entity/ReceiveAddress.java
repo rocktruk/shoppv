@@ -43,6 +43,8 @@ public class ReceiveAddress {
 	
 	@Column(name="CITY_CODE")
 	private String cityCode;
+	
+	
 
 	public String getId() {
 		return id;

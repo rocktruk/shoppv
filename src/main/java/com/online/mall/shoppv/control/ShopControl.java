@@ -6,11 +6,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.GoodsMenu;
+import com.online.mall.shoppv.entity.ReceiveAddress;
 import com.online.mall.shoppv.entity.ShoppingCar;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
 import com.online.mall.shoppv.service.GoodsMenuService;
 import com.online.mall.shoppv.service.GoodsService;
+import com.online.mall.shoppv.service.ReceivedAddrService;
 import com.online.mall.shoppv.service.ShoppingCarService;
 
 @Controller
@@ -47,6 +51,9 @@ public class ShopControl {
 	
 	@Autowired
 	private GoodsMenuService menuService;
+	
+	@Autowired
+	private ReceivedAddrService recvAddrService;
 
 	@RequestMapping("/")
 	/**
@@ -117,8 +124,15 @@ public class ShopControl {
 		}
 	}
 	
+	/**
+	 * 发起结算
+	 * @param request
+	 * @param ids 需要结算的商品
+	 * @param addrId 收货地址ID
+	 * @return
+	 */
 	@RequestMapping("/fillOrder")
-	public String submitOrder(HttpServletRequest request,String ids)
+	public String submitOrder(HttpServletRequest request,String ids,String addrId)
 	{
 		HttpSession session = request.getSession();
 		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
@@ -137,6 +151,13 @@ public class ShopControl {
 		{
 			data.put("total", BigDecimal.ZERO);
 			data.put("goods", ls);
+			Optional<ReceiveAddress> recvAddr;
+			if (Strings.isNullOrEmpty(addrId))
+			{
+				recvAddr = recvAddrService.getDftAddr();
+			}else {
+				recvAddr = recvAddrService.getAddrById(addrId);
+			}
 			request.setAttribute("data", data);
 			request.setAttribute("ids", ids);
 			return "goods/submitorder";

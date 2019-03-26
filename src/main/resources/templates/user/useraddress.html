@@ -9,53 +9,70 @@
     <title>收货地址</title>
     <link rel="stylesheet" type="text/css" th:href="@{css/reset_m.css}">
     <link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
+     <link rel="stylesheet" type="text/css" th:href="@{css/fixed.css}">
 </head>
 
 <body>
+	<header class="aui-navBar aui-navBar-fixed">
+        <a href="javascript:;" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title">我的收货地址</span>
+        </div>
+        <a th:href="@{addAddress}" class="aui-navBar-item">
+            <span style="font-weight:500;font-size:1.5rem">添加新地址</span>
+        </a>
+    </header>
     <div class="pg-addresslist">
         <div class="blockH"></div>
-        <div class="card">
-            <div class="border-bot cardcell">
-                <h1><span>姓名</span><span>186****6700</span></h1>
-                <p class="fontsmall fontgray">山东省青岛市金沙滩石雀小筑8号楼1单元</p>
-            </div>
-            <div class="cardcell clearfix fontsmall">
-                <label class="fl">
-                    <div class="radios">
-                        <input type="radio" name="moren" checked="">
-                    </div>
-                    <span>默认地址</span>
-                </label>
-                <div class="fr">
-                    <a href="javascript:;" class="operate">编辑</a>
-                    <a href="javascript:;" class="operate">删除</a>
-                </div>
-            </div>
-        </div>
-        <div class="blockH"></div>
-        <div class="card">
-            <div class="border-bot cardcell">
-                <h1><span>姓名</span><span>186****6700</span></h1>
-                <p class="fontsmall fontgray">山东省青岛市金沙滩石雀小筑8号楼1单元</p>
-            </div>
-            <div class="cardcell clearfix fontsmall">
-                <label class="fl">
-                    <div class="radios">
-                        <input type="radio" name="moren">
-                    </div>
-                    <span>设为默认</span>
-                </label>
-                <div class="fr">
-                    <a href="javascript:;" class="operate">编辑</a>
-                    <a href="javascript:;" class="operate">删除</a>
-                </div>
-            </div>
-        </div>
-        <div class="blockH"></div>
-        <div class="card">
-            <a th:href="@{/addAddress}" class="btn-block">+ 新建地址</a>
-        </div>
+	        <a href="javascript:;" th:each="address:${addrLs}">
+	        	<div class="card" th:onclick="'javascript:choice('+${address.id}+')'">
+		            <div class="border-bot cardcell">
+		                <h1><span th:text="${address.recvName}"></span><span style="color:gray;font-size:1.3rem;padding-left: 20px" th:text="${address.phone}"></span></h1>
+		                <p class="fontsmall" th:text="${address.provice+' '+address.city+' '+address.county+' '+address.detailedAddr}"></p>
+		            </div>
+		            <div class="cardcell clearfix fontsmall">
+		                <label class="fl">
+		                    <div class="radios">
+		                        <input type="radio" name="moren" th:checked="${address.dftAddr} eq '1'">
+		                    </div>
+		                    <span>默认地址</span>
+		                </label>
+		                <div class="fr">
+		                    <a href="javascript:;" class="operate">编辑</a>
+		                    <a href="javascript:;" class="operate">删除</a>
+		                </div>
+		            </div>
+	        	</div>
+	            <div class="blockH"></div>
+	        </a>
+	        
+       <!-- <div class="card">
+            <a th:href="@{addAddress}" class="btn-block">+ 新建地址</a>
+        </div>-->
     </div>
+    <script type="text/javascript">
+    	function choice(id){
+    		$.ajax({
+        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids,"addressId":"ad"}),
+        		url:  "/pay",
+        		type: "POST",
+        		contentType:"application/json",
+        		success:function(data){
+        			if(data.respcode=="000000"){
+        				$("#payment").attr("href",data.url);
+        				$("#spanId").click();
+        			}
+        		},
+        		error:function(msg)
+        		{
+        			console.log(msg);
+        		}
+        	});
+    	}
+    
+    </script>
 </body>
 
 </html>

@@ -1,5 +1,8 @@
 package com.online.mall.shoppv.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,4 +22,20 @@ public class ReceivedAddrService {
 	}
 	
 	
+	public List<ReceiveAddress> getAddrLs(long userId)
+	{
+		return recvAddrRepo.findReceiveAddressByCusId(userId);
+	}
+	
+	
+	public Optional<ReceiveAddress> getAddrById(String id)
+	{
+		return recvAddrRepo.findById(id);
+	}
+	
+	
+	public Optional<ReceiveAddress> getDftAddr()
+	{
+		return recvAddrRepo.findReceiveAddressByDftAddr("1");
+	}
 }
