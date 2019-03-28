@@ -9,9 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.online.mall.shoppv.common.util.SessionUtil;
+import com.online.mall.shoppv.entity.Customer;
+
+@Component
 public class ShoppvInteceptor implements HandlerInterceptor {
 
 	private static final Logger log = LoggerFactory.getLogger(ShoppvInteceptor.class);
@@ -23,7 +28,15 @@ public class ShoppvInteceptor implements HandlerInterceptor {
 		String requestId = UUID.randomUUID().toString();
 		MDC.put("requestId", requestId);
 		request.setAttribute("startTime", start);
-		log.error("|B|"+request.getPathInfo()+"|"+(HttpMethod.GET.equals(request.getMethod())?request.getQueryString():request.getReader().readLine()));
+		Customer user = (Customer)SessionUtil.getAttribute(request.getSession(), SessionUtil.USER);
+		if(user == null)
+		{
+			user = new Customer();
+			user.setId(6);
+			user.setName("20190304170234651018");
+			SessionUtil.setAttribute(request.getSession(), SessionUtil.USER, user);
+		}
+		
 		return true;
 	}
 	

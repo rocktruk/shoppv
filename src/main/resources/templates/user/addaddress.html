@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -204,20 +204,20 @@
     
     function addRecvAddr(){
     	$.ajax({
-    		data: JSON.stringify({"cityCode":$('#myAddrs').attr("data-key"),"recvName":$('#recvName').val(),"phone":$('phone').val(),"dtlAddress":$('#dtlAddress').val(),"district":$('#myAddrs').val()}),
+    		data: JSON.stringify({"cityCode":$('#myAddrs').attr("data-key"),"recvName":$('#recvName').val(),"phone":$('#phone').val(),"dtlAddress":$('#dtlAddress').val(),"district":$('#myAddrs').val()}),
     		url:  "/shopping/addRecvAddr",
     		type: "POST",
     		contentType:"application/json",
     		success:function(data){
     			if(data.respcode=="000000"){
     				if(ids){
-    					$("#recvhref").attr("href","/address?orderId="+ids);
+    					$("#recvhref").attr("href","address?orderId="+ids);
     				}else{
-    					$("#recvhref").attr("href","/address");
+    					$("#recvhref").attr("href","address");
     				}
 		        	$("#spanId").click();
     			}else{
-    				alter(data.respmsg);
+    				alert(data.respmsg);
     			}
     		},
     		error:function(msg)
