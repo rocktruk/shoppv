@@ -13,21 +13,30 @@
 		<title>龙鑫商城</title>
 		<link type="text/css" rel="stylesheet" th:href="@{css/shopcar/base.css}" />
 		<link type="text/css" rel="stylesheet" th:href="@{css/shopcar/module.css}"  />
+		<link rel="stylesheet" type="text/css" th:href="@{css/fixed.css}">
 	</head>
 <body>
-	<div class="int_title"><span class="int_pic"><img th:src="@{images/index/jifen/left.png}"/></span>填写订单</div>
+	<!--<div class="int_title"><span class="int_pic"><img th:src="@{images/index/jifen/left.png}"/></span>填写订单</div>-->
+	<header class="aui-navBar aui-navBar-fixed">
+        <a href="javascript:;" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title" style="font-size:1.1rem;font-weight:400;">确认订单</span>
+        </div>
+    </header>
 	<div class="m_pwd topline" style="height: auto;">
 		<div class="fill_order clearfix">
 			<ul class="fill_box">
 				<li class="fill_left fill_list fl">
 					<p class="fill_pic clearfix">
 						<span class="span_pic fl" style="position: fixed"><img th:src="@{images/index/xqq/icon.png}" /></span>
-						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top: 5px;font-size:0.9rem;color:black" th:text="${'收货人:李某'}"></span><span style="position: fixed;padding-left:65%;padding-top: 5px">139****1234</span>
-						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top:25px">北京市丰台区北京市丰台区北京市丰台区北京市丰台区北京市丰台区</span>
+						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top: 5px;font-size:0.9rem;color:black" th:text="${'收货人:'+addr.recvName}"></span><span style="position: fixed;padding-left:65%;padding-top: 5px" th:text="${addr.phone}"></span>
+						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top:25px" th:text="${addr.provice+addr.city+addr.county+addr.detailedAddr}"></span>
 					</p>
 				</li>
 				<li class="fill_right fill_list fr">
-					<a th:href="@{address}"><img th:src="@{images/index/xqq/right.png}" class="fill_img" /></a>
+					<a th:href="@{address(ordrIds=${ids})}"><img th:src="@{images/index/xqq/right.png}" class="fill_img" /></a>
 				</li>
 			</ul>
 		</div>
@@ -108,17 +117,16 @@
 					<strong>总价：<i class="total" id="AllTotal" th:text="${data.total}"></i></strong>
 					<span>减免：0</span>
 				</div>
-				<a href="javascript:;" onclick="createOrder()"  class="settlement">提交订单</a>
+				<a href="javascript:;" th:onclick="createOrder([[${addr.id}]],[[${ids}]])"  class="settlement">提交订单</a>
 			</div>
 			<a id="payment" href="javascript:;" style="visibility: hidden;"><span id="spanId">支付</span></a>
-			<span style="display:none" th:text="${ids}"></span>
 			<script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>
 <!-- 			<script type="text/javascript" th:src="@{js/rem.js" ></script> -->
 			<script type="text/javascript">
-				function createOrder(){
+				function createOrder(addrId,ids){
 					$.ajax({
-		        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids,"addressId":"ad"}),
-		        		url:  "/pay",
+		        		data: JSON.stringify({"addrId":addrId,"totalAmt":$('#AllTotal').text(),"ids":ids}),
+		        		url:  "/shopping/pay",
 		        		type: "POST",
 		        		contentType:"application/json",
 		        		success:function(data){

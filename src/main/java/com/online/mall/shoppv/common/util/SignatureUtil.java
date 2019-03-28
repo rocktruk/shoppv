@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,6 @@ public class SignatureUtil {
 		return md5(s.toString());
 	}
 	
-	
 	/**
 	 * md5方式计算签名
 	 * @param str
@@ -70,7 +70,7 @@ public class SignatureUtil {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.reset();
 		md.update(str.getBytes());
-		return new BigInteger(1,md.digest()).toString(16);
+		return CoderUtil.getHexString(md.digest());
 	}
 	
 	
@@ -87,8 +87,7 @@ public class SignatureUtil {
 		StringBuilder result = new StringBuilder();
 		for(int i=0;i<ls.size();i++)
 		{
-			if(i > 0)
-			{
+			if(i>0) {
 				result.append("&");
 			}
 			result.append(ls.get(i)).append("=").append(map.get(ls.get(i)));

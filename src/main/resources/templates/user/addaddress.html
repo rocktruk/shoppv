@@ -69,6 +69,7 @@
 				</div>
 			</div>
 			<a href="javascript:;" class="btn-block" onclick="addRecvAddr()">保存</a>
+			<a id="recvhref" href="javascript:;" style="visibility: hidden;"><span id="spanId">收货地址管理页</span></a>
 		</div>
 	</div>
     <script th:src="@{js/address/jquery.min.js}"></script>
@@ -194,6 +195,12 @@
             });
         });
     });
+    </script>
+    
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+		var ids = [[${orderId}]];
+	/*]]>*/
     
     function addRecvAddr(){
     	$.ajax({
@@ -203,6 +210,14 @@
     		contentType:"application/json",
     		success:function(data){
     			if(data.respcode=="000000"){
+    				if(ids){
+    					$("#recvhref").attr("href","/address?orderId="+ids);
+    				}else{
+    					$("#recvhref").attr("href","/address");
+    				}
+		        	$("#spanId").click();
+    			}else{
+    				alter(data.respmsg);
     			}
     		},
     		error:function(msg)

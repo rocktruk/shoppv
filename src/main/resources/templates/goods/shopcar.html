@@ -14,7 +14,7 @@
 <div class="header">
 	<h1>购物车</h1>
 <!-- 	<a href="#" class="back"><span></span></a> -->
-	<a href="javascript:;" class="">编辑</a>
+	<a href="javascript:;" style="float:right;">编辑</a>
 </div>
 <!--头部结束-->
 <div class="shopping">
@@ -102,9 +102,32 @@
 		<strong>总价：<i class="total" id="AllTotal">0.00</i></strong>
 		<span>减免：0</span>
 	</div>
-	<a th:href="@{fillOrder}" class="settlement">结算</a>
+	<a href="javascript:;" class="settlement" onclick="submit()">结算</a>
+	<span style="display:none" id="ids"></span>
+	<a th:href="@{fillOrder}" id="settlea" style="display:none"><span id="settle">结算</span></a>
 </div>
 <script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>
 <script type="text/javascript" th:src="@{js/shopcar/shopping.js}"></script>
+<script type="text/javascript">
+	function submit(){
+		$.ajax({
+		data: JSON.stringify({"ids":$("#ids").val()}),
+		url:  "/shopping/orderSubmit",
+		type: "POST",
+		contentType:"application/json",
+		success:function(data){
+			if(data.respcode=="000000"){
+				$("#settlea").attr("href","fillOrder?orders="+data.orderId);
+				$("#settle").click();
+			}
+		},
+		error:function(msg)
+		{
+			console.log(msg);
+		}
+	});
+	}
+	
+</script>
 </body>
 </html>

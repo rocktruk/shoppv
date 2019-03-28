@@ -26,50 +26,38 @@
     </header>
     <div class="pg-addresslist">
         <div class="blockH"></div>
-	        <a href="javascript:;" th:each="address:${addrLs}">
-	        	<div class="card" th:onclick="'javascript:choice('+${address.id}+')'">
-		            <div class="border-bot cardcell">
-		                <h1><span th:text="${address.recvName}"></span><span style="color:gray;font-size:1.3rem;padding-left: 20px" th:text="${address.phone}"></span></h1>
-		                <p class="fontsmall" th:text="${address.provice+' '+address.city+' '+address.county+' '+address.detailedAddr}"></p>
-		            </div>
-		            <div class="cardcell clearfix fontsmall">
-		                <label class="fl">
-		                    <div class="radios">
-		                        <input type="radio" name="moren" th:checked="${address.dftAddr} eq '1'">
-		                    </div>
-		                    <span>默认地址</span>
-		                </label>
-		                <div class="fr">
-		                    <a href="javascript:;" class="operate">编辑</a>
-		                    <a href="javascript:;" class="operate">删除</a>
-		                </div>
-		            </div>
-	        	</div>
-	            <div class="blockH"></div>
-	        </a>
+    	<div class="card" th:each="address,addstate:${addrLs}">
+    	<a th:href="@{fillOrder(orderId=${ordrIds})}" th:id="${'href'+address.id}" style="display:none">
+    		<span th:id="${address.id}"></span>
+    	</a>
+            <div class="border-bot cardcell" th:onclick="choice([[${address.id}]])">
+                <h1><span th:text="${address.recvName}"></span><span style="color:gray;font-size:1.3rem;padding-left: 20px" th:text="${address.phone}"></span></h1>
+                <p class="fontsmall" th:text="${address.provice+' '+address.city+' '+address.county+' '+address.detailedAddr}"></p>
+            </div>
+            <div class="cardcell clearfix fontsmall">
+                <label class="fl">
+                    <div class="radios">
+                        <input type="radio" name="moren" th:checked="${address.dftAddr} eq '1'">
+                    </div>
+                    <span>默认地址</span>
+                </label>
+                <div class="fr">
+                    <a href="javascript:;" class="operate">编辑</a>
+                    <a href="javascript:;" class="operate">删除</a>
+                </div>
+            </div>
+    	</div>
+        <div class="blockH"></div>
 	        
        <!-- <div class="card">
             <a th:href="@{addAddress}" class="btn-block">+ 新建地址</a>
         </div>-->
     </div>
+    <script type="text/javascript" th:src="@{js/jquery-1.11.1.min.js}"></script>
     <script type="text/javascript">
     	function choice(id){
-    		$.ajax({
-        		data: JSON.stringify({"cityCode":"12304","ConsigneeAddress":"上海市浦东新区张江","orderTitle":"wuli订单","totalAmt":$('#AllTotal').text(),"ids":ids,"addressId":"ad"}),
-        		url:  "/pay",
-        		type: "POST",
-        		contentType:"application/json",
-        		success:function(data){
-        			if(data.respcode=="000000"){
-        				$("#payment").attr("href",data.url);
-        				$("#spanId").click();
-        			}
-        		},
-        		error:function(msg)
-        		{
-        			console.log(msg);
-        		}
-        	});
+    		$('#href'+id).attr('href',$('#href'+id).attr('href')+'&addrId='+id)
+    		$('#'+id).click();
     	}
     
     </script>

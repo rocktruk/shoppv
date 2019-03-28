@@ -2565,7 +2565,7 @@ p.ticket_contnet{
 .pay_success .pay_s_box{
 	width: 100%;
 	height: 10rem;
-	padding: 10%;
+	padding: 3%;
 }
 .pay_success .pay_s_box .pay_s_b_pic{
 	width: 11.375rem;
@@ -2577,7 +2577,7 @@ p.ticket_contnet{
 	height: 3rem;
 }
 .pay_success .pay_s_box .pay_s_b_pic p.pay_pic_text{
-	width: 7.6rem;
+	/*width: 7.6rem;*/
 	height: 3rem;
 	margin-top: 0.3rem;
 }
@@ -2585,10 +2585,10 @@ p.ticket_contnet{
 	display: block;
 	line-height: 1.2rem;
 	height: 1.2rem;
-	font-size: 0.7rem;
+	font-size: 0.5rem;
 }
 .pay_success .pay_s_box .pay_s_b_pic p.pay_pic_text span font{
-	color: #ed0012;
+	color: black;
 }
 .pay_success .pay_btn{
 	width: 13.5rem;

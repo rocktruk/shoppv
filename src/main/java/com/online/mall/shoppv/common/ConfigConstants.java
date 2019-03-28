@@ -28,6 +28,8 @@ public class ConfigConstants {
 	
 	public static final String TRX_STATUS_INITIAL = "trx.status.initial";
 	
+	public static final String TRX_STATUS_FAIL = "trx.status.fail";
+	
 	//待发货
 	public static final String DELIVER_STATUS_WAITSEND = "deliver.status.waitsend";
 	//待收货
@@ -76,6 +78,11 @@ public class ConfigConstants {
 	public static final String RECV_ADDR_DFT = "recv.addr.dft";
 	
 	public static final String RECV_ADDR_UNDFT = "recv.addr.undft";
+	
+	public static final String TRXCODE_CONSUME = "trxcode.consume";
+	
+	public static final String TRXCODE_REFUND = "trxcode.refund";
+	
 }
 
 

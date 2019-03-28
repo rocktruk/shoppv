@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +17,14 @@ import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.online.mall.shoppv.common.util.CacheUtil;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.GoodsMenu;
@@ -54,6 +57,9 @@ public class ShopControl {
 	
 	@Autowired
 	private ReceivedAddrService recvAddrService;
+	
+	@Autowired
+	private CacheUtil cache;
 
 	@RequestMapping("/")
 	/**
@@ -124,6 +130,35 @@ public class ShopControl {
 		}
 	}
 	
+	@RequestMapping("/orderSubmit")
+	public Map<String,Object> submitOrder(HttpServletRequest request,@RequestBody String ids){
+		
+		HttpSession session = request.getSession();
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
+			Map<String,Object> data = new HashMap<String, Object>();
+			data.put("total", BigDecimal.ZERO);
+			//查询需要结算的购物订单
+			List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids);
+			//计算总价
+			ls.stream().forEach(sc -> data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount()))))));
+			data.put("goods", ls);
+			data.put("ids", ids);
+			String id = UUID.randomUUID().toString();
+			cache.caffeineCacheManager().getCache(CacheUtil.Caches.SettleOrder.name()).put(id, data);
+			result.put("orderId", id);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e)
+		{
+			log.error(e.getMessage(),e);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUBMITORDER_FAIL));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUBMITORDER_FAIL));
+		}
+		return result;
+	}
+	
 	/**
 	 * 发起结算
 	 * @param request
@@ -132,36 +167,32 @@ public class ShopControl {
 	 * @return
 	 */
 	@RequestMapping("/fillOrder")
-	public String submitOrder(HttpServletRequest request,String ids,String addrId)
+	public String forwardOrder(HttpServletRequest request,String orderId,String addrId)
 	{
 		HttpSession session = request.getSession();
-		log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
-		Customer user = (Customer)SessionUtil.getAttribute(session,SessionUtil.USER);
-		if(user == null)
-		{
-			return "goods/emptyshopping";
-		}
+		request.setAttribute("orderId", orderId);
 		Map<String,Object> data = new HashMap<String, Object>();
-		//查询需要结算的购物订单
-		List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids,data);
-		if(ls==null || ls.isEmpty())
-		{
-			return "goods/emptyshopping";
-		}else
-		{
-			data.put("total", BigDecimal.ZERO);
-			data.put("goods", ls);
-			Optional<ReceiveAddress> recvAddr;
-			if (Strings.isNullOrEmpty(addrId))
-			{
-				recvAddr = recvAddrService.getDftAddr();
-			}else {
-				recvAddr = recvAddrService.getAddrById(addrId);
-			}
-			request.setAttribute("data", data);
-			request.setAttribute("ids", ids);
-			return "goods/submitorder";
+		SimpleValueWrapper wrapper = (SimpleValueWrapper)cache.caffeineCacheManager().getCache(CacheUtil.Caches.SettleOrder.name()).get(orderId);
+		if(wrapper == null) {
+			return "redirect:shoppingCar";
 		}
+		data = (Map<String,Object>)wrapper;
+		request.setAttribute("orderId", orderId);
+		Optional<ReceiveAddress> recvAddr;
+		//根据传入的收货地址ID获取收货地址信息，如果没有传则获取默认收货地址
+		if (Strings.isNullOrEmpty(addrId))
+		{
+			recvAddr = recvAddrService.getDftAddr();
+		}else {
+			recvAddr = recvAddrService.getAddrById(addrId);
+		}
+		//没有对应的收货地址信息，则返回增加收货地址页面
+		if(!recvAddr.isPresent()) {
+			return "redirect:addAddress";
+		}
+		request.setAttribute("data", data);
+		request.setAttribute("addr", recvAddr.get());
+		return "goods/submitorder";
 	}
 	
 	@RequestMapping("/payment")

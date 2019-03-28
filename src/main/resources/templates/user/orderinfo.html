@@ -13,7 +13,7 @@
     <body>
 
 
-        <section class="aui-flexView">
+        <section class="aui-flexView" th:each="order:${orders}">
             <header class="aui-navBar aui-navBar-fixed">
                 <a href="javascript:;" class="aui-navBar-item">
                     <i class="icon icon-return"></i>
@@ -28,7 +28,7 @@
             <section class="aui-scrollView">
                 <div class="aui-flex aui-flex-context">
                     <div class="aui-flex-box">
-                        <h2>交易成功</h2>
+                        <h2 th:text="${order.orderStatus eq '00'}?'交易成功':'交易失败'"></h2>
                         <!--<h3><span th:text="${order.desc}" th:unless="${order.desc!=null}"></span></h3>-->
                     </div>
                     <div class="aui-assemble-img">

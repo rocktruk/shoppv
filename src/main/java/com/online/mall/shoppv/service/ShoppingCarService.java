@@ -59,16 +59,12 @@ public class ShoppingCarService {
 	 * @return
 	 */
 	@Cacheable(value="ShopCarToSettle",key="'getShoppingCarAndGoods'+#carIds")
-	public List<ShoppingCar> getShoppingCarAndGoods(String carIds,Map<String,Object> data){
+	public List<ShoppingCar> getShoppingCarAndGoods(String carIds){
 		//查询需要结算的购物订单
 		List<ShoppingCar> ls = getShopingGoodsWithID(carIds);
 		ls.stream().map(sc -> {
 			//遍历购物订单关联对应的商品
 			sc.setGoods(goodsService.getProductWithDetail(sc.getGoodsId()).get());
-			//创建订单时无须计算总价
-			if(data!=null) {
-				data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount())))));
-			}
 			return sc;
 		}).collect(Collectors.toList());
 		return ls;

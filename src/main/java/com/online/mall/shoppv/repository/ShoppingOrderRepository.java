@@ -1,6 +1,7 @@
 package com.online.mall.shoppv.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,6 @@ public interface ShoppingOrderRepository extends IExpandJpaRepository<ShoppingOr
 	int insertOrder(String id,long cusId, String goodsId,String transNo,String orderStatus,String deliverStatus,
 			String addressId,BigDecimal totalOrdrAmt,BigDecimal discountAmt,BigDecimal payAmt);
 	
+	
+	List<ShoppingOrder> findShoppingOrderByTransNo(String traceNo);
 }

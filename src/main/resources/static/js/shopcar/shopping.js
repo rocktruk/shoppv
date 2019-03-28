@@ -43,7 +43,7 @@ $(function(){
       TotalPrice();
       // 计算
     }
-    goodsC = $(this).closest(".shop-group-item").find(".goodsCheck:checked");
+    goodsC = $(".shop-group-item").find(".goodsCheck:checked");
     var ids = "";
     for (var k in goodsC){
     	if(k == 'length'){
@@ -55,7 +55,7 @@ $(function(){
     	}
     	ids += i; 
     }
-    $(".settlement").attr("href",$(".settlement").attr("href")+"?ids="+ids);
+    $(".settlement").attr("href","fillOrder?ids="+ids);
   });
   // 点击店铺按钮
   $(".shopCheck").click(function() {
@@ -76,12 +76,27 @@ $(function(){
   });
   // 点击全选按钮
   $("#AllCheck").click(function() {
+  	var goodsC = $(this).closest(".shop-group-item").find(".goodsCheck:checked");
     if ($(this).prop("checked") == true) { //如果全选按钮被选中
       $(".goods-check").prop('checked', true); //所有按钮都被选中
       TotalPrice();
+      goodsC = $(".shop-group-item").find(".goodsCheck:checked");
+    var ids = "";
+    for (var k in goodsC){
+    	if(k == 'length'){
+    		break;
+    	}
+    	var i = goodsC[k].nextElementSibling.innerText;
+    	if(k > 0){
+    		ids +=",";
+    	}
+    	ids += i; 
+    }
+    $(".settlement").attr("href","fillOrder?ids="+ids);
     } else {
       $(".goods-check").prop('checked', false); //else所有按钮不全选
       TotalPrice();
+      $(".settlement").attr("href","fillOrder");
     }
     $(".shopCheck").change(); //执行店铺全选的操作
   });

@@ -17,17 +17,18 @@
 			<div class="int_title">支付成功</div>
 			<div class="pay_success topline">
 				<div class="pay_s_box">
-					<div class="pay_s_b_pic clearfix">
-						<p class="pay_pic_img fl">
+					<div class="pay_s_b_pic clearfix" style="width:100%">
+						<p class="pay_pic_img fl" style="padding-top: 5%">
 							<img th:src="@{images/index/index/dd_03.png}" />
 						</p>
 						<p class="pay_pic_text fr">
-							<span>支付方式 : <font>万福卡支付</font></span>
-							<span>订单金额 : <font>680.0积分</font></span>
+							<span>订单编号 : <font th:text="${traceNo}"></font></span>
+							<span>周边通交易号 : <font th:text="${backChnnlTraceNo}"></font></span>
+							<span>交易金额 : <font th:text="${'¥'+trxAmt}"></font></span>
 						</p>
 					</div>
 					<div class="pay_btn clearfix">
-						<a href="Order_details.html" class="pay_a_btn p_money fl">
+						<a th:href="@{orderInfo(traceNo=${traceNo})}" class="pay_a_btn p_money fl">
 							查看订单
 						</a>
 						<a th:href="@{index}" class="pay_a_btn p_money fr">
@@ -37,7 +38,7 @@
 				</div>
 			</div>
 			<!--banner start-->	
-				<main class="pay_top">
+				<!--<main class="pay_top">
 					<div class="best_Sellers order_top best_top  clearfix">
 						<h3 class="best_title pay_pading"><p>热销商品</p></h3>
 						<ul>
@@ -50,7 +51,7 @@
 					</div>
 					<p class="notice">没有更多商品了！</p>
 				</main>
-			</div>
+			</div>-->
 			<div id="back_top">
 				<a href="#"><img th:src="@{images/index/xqq/the_top.png}" /></a>
 			</div>

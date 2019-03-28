@@ -27,10 +27,14 @@ import com.online.mall.shoppv.common.util.IdGenerater;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.ReceiveAddress;
+import com.online.mall.shoppv.entity.ShoppingOrder;
+import com.online.mall.shoppv.entity.Trans;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
 import com.online.mall.shoppv.service.ReceivedAddrService;
+import com.online.mall.shoppv.service.ShoppingOrderService;
+import com.online.mall.shoppv.service.TransactionService;
 
 
 @Controller
@@ -43,6 +47,12 @@ public class CustomControl {
 	
 	@Autowired
 	private ReceivedAddrService recvService;
+	
+	@Autowired
+	private TransactionService transDtlService;
+	
+	@Autowired
+	private ShoppingOrderService orderService;
 	
 	/**
 	 * 我的页面
@@ -71,16 +81,17 @@ public class CustomControl {
 	 * @return
 	 */
 	@RequestMapping("/address")
-	public String address(HttpServletRequest request,HttpSession session)
+	public String address(HttpServletRequest request,HttpSession session,String ordrIds)
 	{
 		Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
-		List<ReceiveAddress> ls = recvService.getAddrLs(7);
+		List<ReceiveAddress> ls = recvService.getAddrLs(user.getId());
 		Collections.sort(ls,new Comparator<ReceiveAddress>() {
 			public int compare(ReceiveAddress o1, ReceiveAddress o2) {
 				return Integer.parseInt(o2.getDftAddr()) - Integer.parseInt(o1.getDftAddr());
 			};
 		});
 		request.setAttribute("addrLs", ls);
+		request.setAttribute("ordrIds", ordrIds);
 		return "user/useraddress";
 	}
 	
@@ -89,7 +100,7 @@ public class CustomControl {
 	 * @return
 	 */
 	@RequestMapping("/addAddress")
-	public String addAddress()
+	public String addAddress(HttpServletRequest request)
 	{
 		return "user/addaddress";
 	}
@@ -134,6 +145,20 @@ public class CustomControl {
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
 		}
 		return result;
+	}
+	
+	
+	@RequestMapping("/order")
+	public String order(HttpServletRequest request) {
+		return "user/order";
+	}
+	
+	
+	@RequestMapping("/orderInfo")
+	public String orderInfo(HttpServletRequest request,@RequestBody Map<String,Object> params) {
+		List<ShoppingOrder> orders = orderService.getOrdersByTrans((String)params.get("traceNo"));
+		request.setAttribute("orders", orders);
+		return "user/orderinfo";
 	}
 	
 }

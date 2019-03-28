@@ -29,7 +29,8 @@ public class CacheUtil {
     public enum Caches{
         getGoodsWithPage(3600,1000),
         GoodsCacheWithId(1800,1000),
-    	ShopCarToSettle(600,500);
+    	ShopCarToSettle(600,4000),
+    	SettleOrder(1800,3000);
         ;
         Caches() {
         }

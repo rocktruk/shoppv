@@ -13,7 +13,7 @@ import org.springframework.mock.web.MockHttpSession;
 import com.online.mall.shoppv.common.util.SignatureUtil;
 
 
-class CustomerServiceTest extends ApplicationTest {
+public class CustomerServiceTest extends ApplicationTest {
 	
 	@Autowired
 	private CustomerService service;

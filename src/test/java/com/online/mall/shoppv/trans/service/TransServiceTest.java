@@ -45,8 +45,8 @@ class TransServiceTest {
 		params.put("totalAmt",new BigDecimal("0.1"));
 		params.put("cityCode", "102313");
 		params.put("ConsigneeAddress", "上海市浦东新区张江高科");
-		Optional<CreateOrderResponse> resp = service.createOrder(request, params);
-		Assert.assertEquals(0, resp.get().getStatus());
+//		Optional<CreateOrderResponse> resp = service.createOrder(request, params);
+//		Assert.assertEquals(0, resp.get().getStatus());
 	}
 	
 
