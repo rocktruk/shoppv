@@ -117,7 +117,7 @@
 					<strong>总价：<i class="total" id="AllTotal" th:text="${data.total}"></i></strong>
 					<span>减免：0</span>
 				</div>
-				<a href="javascript:;" th:onclick="createOrder([[${addr.id}]],[[${ids}]])"  class="settlement">提交订单</a>
+				<a href="javascript:;" th:onclick="createOrder([[${addr.id}]],[[${orderId}]])"  class="settlement">提交订单</a>
 			</div>
 			<a id="payment" href="javascript:;" style="visibility: hidden;"><span id="spanId">支付</span></a>
 			<script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>

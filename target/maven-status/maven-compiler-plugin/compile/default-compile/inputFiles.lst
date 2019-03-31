@@ -1,4 +1,5 @@
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/common/util/HttpUtil.java
+/Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/service/TransactionService.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/ShoppingCarRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/MasterTrans.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/service/CustomerService.java
@@ -39,10 +40,12 @@
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/common/util/SessionUtil.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/common/DictConstantsUtil.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/control/CustomControl.java
+/Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/TransRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/CustomerRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/respcode/util/RespConstantsUtil.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/service/ReceivedAddrService.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/respcode/util/IRespCodeContants.java
+/Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/entity/Trans.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/repository/ShoppingOrderRepository.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/trans/bean/OrderStatusUpdateRequest.java
 /Users/kaka_lijian/eclipse-workspace/shoppv/src/main/java/com/online/mall/shoppv/trans/service/TransService.java

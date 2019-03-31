@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,7 +18,9 @@ import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.SimpleValueWrapper;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,8 +62,8 @@ public class ShopControl {
 	private ReceivedAddrService recvAddrService;
 	
 	@Autowired
-	private CacheUtil cache;
-
+	private SessionUtil cacheUtil;
+	
 	@RequestMapping("/")
 	/**
 	 * 科匠登录
@@ -91,12 +94,6 @@ public class ShopControl {
 		List<GoodsMenu> ls = menuService.findAll();
 		request.setAttribute("menus", ls);
 		return "indexwithsearch";
-	}
-	
-	@RequestMapping("car")
-	public String car()
-	{
-		return "goods/shopcar";
 	}
 	
 	/**
@@ -130,8 +127,15 @@ public class ShopControl {
 		}
 	}
 	
+	/**
+	 * 提交结算订单
+	 * @param request
+	 * @param ids
+	 * @return
+	 */
 	@RequestMapping("/orderSubmit")
-	public Map<String,Object> submitOrder(HttpServletRequest request,@RequestBody String ids){
+	@ResponseBody
+	public Map<String,Object> submitOrder(HttpServletRequest request,@RequestBody Map<String,String> ids){
 		
 		HttpSession session = request.getSession();
 		Map<String,Object> result = new HashMap<String, Object>();
@@ -140,13 +144,13 @@ public class ShopControl {
 			Map<String,Object> data = new HashMap<String, Object>();
 			data.put("total", BigDecimal.ZERO);
 			//查询需要结算的购物订单
-			List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids);
+			List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids.get("ids"));
 			//计算总价
 			ls.stream().forEach(sc -> data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount()))))));
 			data.put("goods", ls);
 			data.put("ids", ids);
 			String id = UUID.randomUUID().toString();
-			cache.caffeineCacheManager().getCache(CacheUtil.Caches.SettleOrder.name()).put(id, data);
+			cacheUtil.setCacheContent(CacheUtil.Caches.SettleOrder.name(), id, data);
 			result.put("orderId", id);
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
@@ -159,6 +163,23 @@ public class ShopControl {
 		return result;
 	}
 	
+	
+	@RequestMapping("/delCarGoods")
+	@ResponseBody
+	public Map<String,Object> delShopCar(HttpServletRequest request,@RequestBody Map<String,String> ids){
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			carService.delShopCar(ids.get("ids"));
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e) {
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
+		}
+		return result;
+		
+	}
+	
 	/**
 	 * 发起结算
 	 * @param request
@@ -169,29 +190,32 @@ public class ShopControl {
 	@RequestMapping("/fillOrder")
 	public String forwardOrder(HttpServletRequest request,String orderId,String addrId)
 	{
-		HttpSession session = request.getSession();
 		request.setAttribute("orderId", orderId);
 		Map<String,Object> data = new HashMap<String, Object>();
-		SimpleValueWrapper wrapper = (SimpleValueWrapper)cache.caffeineCacheManager().getCache(CacheUtil.Caches.SettleOrder.name()).get(orderId);
-		if(wrapper == null) {
-			return "redirect:shoppingCar";
+		try {
+			//获取提交结算订单时放入的结算订单信息
+			Map<String,Object> wrapper = (Map<String,Object>)cacheUtil.getCacheContent(CacheUtil.Caches.SettleOrder.name(), orderId);
+			if(wrapper == null) {
+				return "redirect:shoppingCar";
+			}
+			data = wrapper;
+			Optional<ReceiveAddress> recvAddr;
+			//根据传入的收货地址ID获取收货地址信息，如果没有传则获取默认收货地址
+			if (Strings.isNullOrEmpty(addrId))
+			{
+				recvAddr = recvAddrService.getDftAddr();
+			}else {
+				recvAddr = recvAddrService.getAddrById(addrId);
+			}
+			//没有对应的收货地址信息，则返回增加收货地址页面
+			if(!recvAddr.isPresent()) {
+				return "redirect:addAddress";
+			}
+			request.setAttribute("data", data);
+			request.setAttribute("addr", recvAddr.get());
+		}catch(Exception e) {
+			
 		}
-		data = (Map<String,Object>)wrapper;
-		request.setAttribute("orderId", orderId);
-		Optional<ReceiveAddress> recvAddr;
-		//根据传入的收货地址ID获取收货地址信息，如果没有传则获取默认收货地址
-		if (Strings.isNullOrEmpty(addrId))
-		{
-			recvAddr = recvAddrService.getDftAddr();
-		}else {
-			recvAddr = recvAddrService.getAddrById(addrId);
-		}
-		//没有对应的收货地址信息，则返回增加收货地址页面
-		if(!recvAddr.isPresent()) {
-			return "redirect:addAddress";
-		}
-		request.setAttribute("data", data);
-		request.setAttribute("addr", recvAddr.get());
 		return "goods/submitorder";
 	}
 	
@@ -238,7 +262,7 @@ public class ShopControl {
 	public Map<String,Object> updateShoppingCar(HttpServletRequest request,@RequestBody Map<String, Object> req){
 		Map<String,Object> result = new HashMap<String, Object>();
 		try {
-			carService.updateShoppingCar(req);
+			carService.updateShoppingCar((String)req.get("id"),Integer.parseInt((String)req.get("count")));
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
 		}catch(Exception e)

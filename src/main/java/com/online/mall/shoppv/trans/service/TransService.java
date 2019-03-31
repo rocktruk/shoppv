@@ -73,7 +73,7 @@ public class TransService {
 	private ShoppingOrderService orderService;
 	
 	@Autowired
-	private CacheUtil cache;
+	private SessionUtil cacheUtil;
 	
 	
 	/**
@@ -136,7 +136,8 @@ public class TransService {
 				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_WAITPAY));
 				entity.setBackChnlTraceNo(resp.getData().getOrder_number());
 				entity.setBackChannel(resp.getData().getSource());
-				cache.caffeineCacheManager().getCache(CacheUtil.Caches.ShopCarToSettle.name()).put(entity.getBackChnlTraceNo(), entity);
+//				cache.caffeineCacheManager().getCache(CacheUtil.Caches.ShopCarToSettle.name()).put(entity.getBackChnlTraceNo(), entity);
+				cacheUtil.setCacheContent(CacheUtil.Caches.ShopCarToSettle.name(), entity.getBackChnlTraceNo(), entity);
 			}else {
 				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_FAIL));
 				payReq.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_FAIL));

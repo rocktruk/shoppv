@@ -58,7 +58,7 @@ public class ShoppingOrderService {
 			orders.add(order);
 		}
 		aysnSaveOrders(orders);
-		carRepo.deleteAll(ls);
+		carRepo.deleteInBatch(ls);
 	}
 	
 	/**

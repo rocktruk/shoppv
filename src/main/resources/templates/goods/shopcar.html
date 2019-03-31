@@ -13,8 +13,7 @@
 <!--头部开始-->
 <div class="header">
 	<h1>购物车</h1>
-<!-- 	<a href="#" class="back"><span></span></a> -->
-	<a href="javascript:;" style="float:right;">编辑</a>
+	<a href="javascript:;" onclick="editor()" style="right:10px">编辑</a>
 </div>
 <!--头部结束-->
 <div class="shopping">
@@ -106,26 +105,69 @@
 	<span style="display:none" id="ids"></span>
 	<a th:href="@{fillOrder}" id="settlea" style="display:none"><span id="settle">结算</span></a>
 </div>
+<div class="del-bar" style="display:none">
+	<div class="all-checkbox"><input type="checkbox" class="check goods-check" id="delCheck">全选</div>
+	<a href="javascript:;" class="delete" onclick="delShopCar()">删除</a>
+</div>
 <script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>
 <script type="text/javascript" th:src="@{js/shopcar/shopping.js}"></script>
 <script type="text/javascript">
-	function submit(){
-		$.ajax({
-		data: JSON.stringify({"ids":$("#ids").val()}),
-		url:  "/shopping/orderSubmit",
-		type: "POST",
-		contentType:"application/json",
-		success:function(data){
-			if(data.respcode=="000000"){
-				$("#settlea").attr("href","fillOrder?orders="+data.orderId);
-				$("#settle").click();
-			}
-		},
-		error:function(msg)
-		{
-			console.log(msg);
+	var editStat = "settle";
+	function editor(){
+		if(editStat == "settle"){
+			$(".payment-bar").css("display",'none');
+			$(".del-bar").css("display",'block');
+			editStat = "del";
+		}else{
+			$(".payment-bar").css("display",'block');
+			$(".del-bar").css("display",'none');
+			editStat = "settle";
 		}
-	});
+	}
+
+	function delShopCar(){
+		$.ajax({
+			data: JSON.stringify({"ids":$("#ids").text()}),
+			url:  "delCarGoods",
+			type: "POST",
+			contentType:"application/json",
+			success:function(data){
+				if(data.respcode=="000000"){
+					window.location.reload();
+				}else{
+					alert(data.respmsg);
+				}
+			},
+			error:function(msg)
+			{
+				console.log(msg);
+			}
+		});
+	}
+
+	function submit(){
+		if(!$("#ids").text()||$("#ids").text()==""){
+			alert("请先选择结算商品");
+			return;
+		}
+		$.ajax({
+			data: JSON.stringify({"ids":$("#ids").text()}),
+			url:  "orderSubmit",
+			type: "POST",
+			contentType:"application/json",
+			success:function(data){
+				if(data.respcode=="000000"){
+					$("#settlea").attr("href","fillOrder?orderId="+data.orderId);
+					$("#settle").click();
+				}else{
+				    alert(data.respmsg);
+				}
+			},
+			error:function(msg)
+			{
+				console.log(msg);
+			}
+		});
 	}
 	
 </script>

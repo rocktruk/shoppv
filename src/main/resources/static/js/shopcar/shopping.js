@@ -7,7 +7,7 @@ $(function(){
 		if (t.text() <= 1) {
 			t.text(1);
 		}
-		updateShopCar(t.text(),id.text());
+		updateShopCar(id.text(),t.text(),'minus');
 		TotalPrice();
 	});
 	// 数量加
@@ -18,7 +18,7 @@ $(function(){
 		if (t.text() <= 1) {
 			t.text(1);
 		}
-		updateShopCar(t.text(),id.text());
+		updateShopCar(id.text(),t.text(),'plus');
 		TotalPrice();
 	});
 	/******------------分割线-----------------******/
@@ -55,7 +55,7 @@ $(function(){
     	}
     	ids += i; 
     }
-    $(".settlement").attr("href","fillOrder?ids="+ids);
+    $("#ids").text(ids);
   });
   // 点击店铺按钮
   $(".shopCheck").click(function() {
@@ -92,20 +92,46 @@ $(function(){
     	}
     	ids += i; 
     }
-    $(".settlement").attr("href","fillOrder?ids="+ids);
+   	$("#ids").text(ids);
     } else {
       $(".goods-check").prop('checked', false); //else所有按钮不全选
       TotalPrice();
-      $(".settlement").attr("href","fillOrder");
+      $("#ids").text();
+    }
+    $(".shopCheck").change(); //执行店铺全选的操作
+  });
+  //点击删除全选按钮
+  $("#delCheck").click(function() {
+  	var goodsC = $(this).closest(".shop-group-item").find(".goodsCheck:checked");
+    if ($(this).prop("checked") == true) { //如果全选按钮被选中
+      $(".goods-check").prop('checked', true); //所有按钮都被选中
+      TotalPrice();
+      goodsC = $(".shop-group-item").find(".goodsCheck:checked");
+    var ids = "";
+    for (var k in goodsC){
+    	if(k == 'length'){
+    		break;
+    	}
+    	var i = goodsC[k].nextElementSibling.innerText;
+    	if(k > 0){
+    		ids +=",";
+    	}
+    	ids += i; 
+    }
+   	$("#ids").text(ids);
+    } else {
+      $(".goods-check").prop('checked', false); //else所有按钮不全选
+      TotalPrice();
+      $("#ids").text();
     }
     $(".shopCheck").change(); //执行店铺全选的操作
   });
   
   //更新购物车
-  function updateShopCar(t,id){
+  function updateShopCar(id,c,m){
 	  $.ajax({
-  		data: JSON.stringify({"id":id,"count":t}),
-  		url:  "/updateCar",
+  		data: JSON.stringify({"id":id,"count":c,"method":m}),
+  		url:  "updateCar",
   		type: "POST",
   		contentType:"application/json",
   		success:function(data){

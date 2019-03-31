@@ -58,7 +58,7 @@ public class PaymentControl {
 	private TransactionService transDtlService;
 	
 	@Autowired
-	private CacheUtil cache;
+	private SessionUtil cacheUtil;
 	
 	private static final Logger log = LoggerFactory.getLogger(PaymentControl.class);
 	
@@ -95,12 +95,9 @@ public class PaymentControl {
 			flag = SignatureUtil.INTANCE.checkSign(req);
 			if(flag)
 			{
-				SimpleValueWrapper wrapper = (SimpleValueWrapper)cache.caffeineCacheManager().getCache(CacheUtil.Caches.ShopCarToSettle.name()).get(order_number);
-				Trans entity = null;
-				if(wrapper != null) {
-					entity = (Trans)wrapper.get();
-					
-				}else {
+//				SimpleValueWrapper wrapper = (SimpleValueWrapper)cache.caffeineCacheManager().getCache(CacheUtil.Caches.ShopCarToSettle.name()).get(order_number);
+				Trans entity = (Trans)cacheUtil.getCacheContent(CacheUtil.Caches.ShopCarToSettle.name(), order_number);;
+				if(entity == null) {
 					entity = transDtlService.getTransByOrderNum(source, order_number).get();
 				}
 				request.setAttribute("traceNo", entity.getTraceNo());
@@ -175,27 +172,16 @@ public class PaymentControl {
 		Map<String,Object> result = new HashMap<String, Object>();
 		try {
 			Customer cus = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
-			List<ShoppingCar> ls = carService.getShoppingCarAndGoods((String)req.get("ids"));
-			Map<String,Object> total = new HashMap<String, Object>();
-			total.put("total", BigDecimal.ZERO);
-			//计算总价
-			ls.stream().forEach(sc -> total.put("total",((BigDecimal)total.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount()))))));
+			Map<String,Object> odrer = (Map<String,Object>)cacheUtil.getCacheContent(CacheUtil.Caches.SettleOrder.name(), (String)req.get("ids"));
 			//交易金额与订单金额比较
-			if(((BigDecimal)total.get("total")).compareTo(new BigDecimal((String)req.get("totalAmt")))!=0) {
+			if(((BigDecimal)odrer.get("total")).compareTo(new BigDecimal((String)req.get("totalAmt")))!=0) {
 				result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_PAYMENT_TRXAMT));
 				result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_PAYMENT_TRXAMT));
 				return result;
 			}
-			//判断所有订单是否都为该客户的订单
-			boolean flag = ls.stream().anyMatch(c -> c.getCusId() != cus.getId());
-			if(flag) {
-				log.error("结算购物车清单："+req.get("ids")+"|当前客户为："+cus.getId()+"|存在非当前客户订单");
-				result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_USER_INCONFORMITY));
-				result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_CREATEORDR_USER_INCONFORMITY));
-				return result;
-			}
 			//查询收货地址信息
 			Optional<ReceiveAddress> recvaddr = recvService.getAddrById((String)req.get("addrId"));
+			List<ShoppingCar> ls =((List<ShoppingCar>)odrer.get("goods"));
 			req.put("orderTitle", ls.get(0).getGoods().getTitle());
 			//创建订单
 			result = transHandler.createOrder(request, req,recvaddr.get(),ls);

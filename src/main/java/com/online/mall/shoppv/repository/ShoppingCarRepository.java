@@ -3,6 +3,7 @@ package com.online.mall.shoppv.repository;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,7 @@ public interface ShoppingCarRepository extends IExpandJpaRepository<ShoppingCar,
 	@Transactional
 	@Query(value = "update shopping_car s set s.count = ?2 where s.id = ?1", nativeQuery = true)
 	int updateShoppingCarWithId(String id,int count);
+	
+	
+	Optional<ShoppingCar> findShoppingCarByCusIdAndGoodsId(long cusId,String goodsId);
 }

@@ -2,6 +2,7 @@ package com.online.mall.shoppv.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,8 +36,9 @@ public class ShoppingCarService {
 		return carRepos.getShoppingCarByCusId(cusId);
 	}
 	
+	
 	/**
-	 * 根据所有的购物车ID查询购物车
+	 * 根据所有的购物车ID查询购物车商品列表
 	 * @param ids
 	 * @return
 	 */
@@ -58,7 +60,6 @@ public class ShoppingCarService {
 	 * @param data
 	 * @return
 	 */
-	@Cacheable(value="ShopCarToSettle",key="'getShoppingCarAndGoods'+#carIds")
 	public List<ShoppingCar> getShoppingCarAndGoods(String carIds){
 		//查询需要结算的购物订单
 		List<ShoppingCar> ls = getShopingGoodsWithID(carIds);
@@ -78,6 +79,19 @@ public class ShoppingCarService {
 	 */
 	@Transactional
 	public boolean addShoppingCar(Customer user,Map<String, Object> map) {
+		String goodsId = (String)map.get("goodsId");
+		Optional<ShoppingCar> car = carRepos.findShoppingCarByCusIdAndGoodsId(user.getId(), goodsId);
+		//购物车已经有该商品则更新记录，否则插入一条新记录
+		if(car.isPresent()) {
+			updateShoppingCar(car.get().getId(),car.get().getCount()+1);
+			return true;
+		}else {
+			return insertCar(user,map);
+		}
+	}
+	
+	@Transactional
+	public boolean insertCar(Customer user,Map<String, Object> map) {
 		int n = carRepos.insertShoppingCar(IdGenerater.INSTANCE.shopIdGenerate(), user.getId(), null, new BigDecimal((Double)map.get("price")), (String)map.get("goodsId"), (Integer)map.get("count"));
 		if(n==1)
 		{
@@ -88,8 +102,22 @@ public class ShoppingCarService {
 	}
 	
 	@Transactional
-	public void updateShoppingCar(Map<String, Object> map) {
-		carRepos.updateShoppingCarWithId(map.get("id").toString(),(Integer)map.get("count"));
+	public void updateShoppingCar(String id,int count) {
+		carRepos.updateShoppingCarWithId(id,count);
+	}
+	
+	
+	@Transactional
+	public void delShopCar(String ids) {
+		List<String> carGoods = Arrays.asList(ids.split(",")); 
+		List<ShoppingCar> shops = new ArrayList<ShoppingCar>();
+		carGoods.stream().map(g -> {
+			ShoppingCar car = new ShoppingCar();
+			car.setId(g);
+			shops.add(car);
+			return g;
+			}).collect(Collectors.toList());
+		carRepos.deleteInBatch(shops);
 	}
 	
 }

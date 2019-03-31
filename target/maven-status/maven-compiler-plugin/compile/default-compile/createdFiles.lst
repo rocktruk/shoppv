@@ -9,12 +9,15 @@ com/online/mall/shoppv/entity/GoodsMenu.class
 com/online/mall/shoppv/control/ShopControl.class
 com/online/mall/shoppv/common/util/HttpUtil$DefaultTrustManager.class
 com/online/mall/shoppv/entity/Goods.class
+com/online/mall/shoppv/repository/TransRepository.class
+com/online/mall/shoppv/control/CustomControl$1.class
 com/online/mall/shoppv/threadpool/ThreadPoolConfig.class
 com/online/mall/shoppv/trans/bean/CreateOrderResponse$OrderDetail.class
 com/online/mall/shoppv/repository/ShoppingCarRepository.class
 com/online/mall/shoppv/ShoppingApplication.class
 com/online/mall/shoppv/trans/bean/PaymentNotifyRequest.class
 com/online/mall/shoppv/repository/factory/ExpandJpaRepositoryFactoryBean$ExpandJpaRepositoryFactory.class
+com/online/mall/shoppv/entity/Trans.class
 com/online/mall/shoppv/common/util/CacheUtil.class
 com/online/mall/shoppv/repository/ReceiveAddressRepository.class
 com/online/mall/shoppv/service/MasterTransService.class
@@ -32,6 +35,7 @@ com/online/mall/shoppv/service/ShoppingCarService.class
 com/online/mall/shoppv/entity/Customer.class
 com/online/mall/shoppv/entity/GoodsWithoutDetail.class
 com/online/mall/shoppv/respcode/util/IRespCodeContants.class
+com/online/mall/shoppv/service/TransactionService.class
 com/online/mall/shoppv/trans/bean/CreateOrderResponse.class
 com/online/mall/shoppv/common/util/CacheUtil$Caches.class
 com/online/mall/shoppv/repository/factory/ExpandJpaRepositoryFactoryBean.class

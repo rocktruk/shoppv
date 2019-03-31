@@ -36,13 +36,13 @@
 				<div class="inputtxt">
 					<p>联系方式</p>
 					<p>
-						<input type="text" id="phone" placeholder="手机号码">
+						<input type="text" id="phone"  placeholder="手机号码">
 					</p>
 				</div>
                 <div class="inputtxt">
                 	<p>所在地区</p>
                     <p>
-        				<input type="text" readonly placeholder="省、市、区" id="myAddrs" name="addr" data-key="4-84-1298" value="" />
+        				<input type="text" readonly placeholder="省、市、区" id="myAddrs" name="addr" data-key="1-36-37" value="" />
                      </p>
     			</div>
 				<!--<div class="selectarea">
@@ -200,12 +200,33 @@
     <script th:inline="javascript">
     /*<![CDATA[*/
 		var ids = [[${orderId}]];
+		var url = "addRecvAddr";
+		var id = "";
+		var addr = [[${addres}]];
+		function init(){
+			url = "saveAddr";
+			var cityCode = [[${addres?.cityCode}]];
+			var recvName = [[${addres?.recvName}]];
+			var phone = [[${addres?.phone}]];
+			var district = [[${addres?.provice+' '+addres?.city+' '+addres?.county}]];
+			var dtlAddress = [[${addres?.detailedAddr}]];
+			id = [[${addres?.id}]];
+			$('#myAddrs').val(district).attr("data-key",cityCode);
+	    	$('#recvName').val(recvName);
+	    	$('#phone').val(phone);
+	    	$('#dtlAddress').val(dtlAddress);
+		}
 	/*]]>*/
+    	$(function(){
+    		if(addr){
+    			init();
+    		}
+    	});
     
     function addRecvAddr(){
     	$.ajax({
-    		data: JSON.stringify({"cityCode":$('#myAddrs').attr("data-key"),"recvName":$('#recvName').val(),"phone":$('#phone').val(),"dtlAddress":$('#dtlAddress').val(),"district":$('#myAddrs').val()}),
-    		url:  "/shopping/addRecvAddr",
+    		data: JSON.stringify({"id":id,"cityCode":$('#myAddrs').attr("data-key"),"recvName":$('#recvName').val(),"phone":$('#phone').val(),"dtlAddress":$('#dtlAddress').val(),"district":$('#myAddrs').val()}),
+    		url:  url,
     		type: "POST",
     		contentType:"application/json",
     		success:function(data){

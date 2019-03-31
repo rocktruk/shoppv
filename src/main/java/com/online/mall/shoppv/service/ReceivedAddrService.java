@@ -38,4 +38,9 @@ public class ReceivedAddrService {
 	{
 		return recvAddrRepo.findReceiveAddressByDftAddr("1");
 	}
+	
+	@Transactional
+	public void delAddr(String id) {
+		recvAddrRepo.deleteById(id);;
+	}
 }
