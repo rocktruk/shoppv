@@ -105,6 +105,7 @@ public class CustomControl {
 		return "user/addaddress";
 	}
 	
+	
 	/**
 	 * 新增收货地址
 	 * @param request
@@ -145,71 +146,6 @@ public class CustomControl {
 		}
 		return result;
 	}
-	
-	@RequestMapping("/updateAddr")
-	public String updateAddr(HttpServletRequest request,String id){
-		Map<String,Object> result = new HashMap<String, Object>();
-		try {
-			Optional<ReceiveAddress> addr = recvService.getAddrById(id);
-			request.setAttribute("addres", addr);
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
-		}catch(Exception e) {
-			log.error(e.getMessage(),e);
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
-		}
-		return "redirect:/addAddress";
-	}
-	
-	@RequestMapping("/saveAddr")
-	@ResponseBody
-	public Map<String,Object> saveAddr(HttpSession session,@RequestBody Map<String,String> req){
-		Map<String,Object> result = new HashMap<String, Object>();
-		try {
-			String[] districts = req.get("district").split(" ");
-			Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
-			ReceiveAddress recvAddr = new ReceiveAddress();
-			recvAddr.setCity(districts[1]);
-			recvAddr.setCounty(districts.length==3?districts[2]:"");
-			recvAddr.setCusId(user.getId());
-			recvAddr.setDetailedAddr(req.get("dtlAddress"));
-			recvAddr.setDftAddr(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_UNDFT));
-			recvAddr.setId(IdGenerater.INSTANCE.recvAddrIdGenerate());
-			recvAddr.setPhone(req.get("phone"));
-			recvAddr.setProvice(districts[0]);
-			recvAddr.setRecvName(req.get("recvName"));
-			recvAddr.setCityCode(req.get("cityCode"));
-			recvAddr.setId(req.get("id"));
-			recvService.saveRecvAddr(recvAddr);
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
-		}catch(Exception e) {
-			log.error(e.getMessage(),e);
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
-		}
-		return result;
-	}
-	
-	
-	
-	@RequestMapping("/delAddr")
-	@ResponseBody
-	public Map<String,Object> delAddr(@RequestBody Map<String,String> req){
-		Map<String,Object> result = new HashMap<String, Object>();
-		try {
-			recvService.delAddr(req.get("id"));
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
-		}catch(Exception e) {
-			log.error(e.getMessage(),e);
-			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
-			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
-		}
-		return result;
-	}
-	
 	
 	
 	@RequestMapping("/order")
