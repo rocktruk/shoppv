@@ -22,4 +22,7 @@ public interface ShoppingOrderRepository extends IExpandJpaRepository<ShoppingOr
 	
 	
 	List<ShoppingOrder> findShoppingOrderByTransNo(String traceNo);
+	
+	
+	
 }

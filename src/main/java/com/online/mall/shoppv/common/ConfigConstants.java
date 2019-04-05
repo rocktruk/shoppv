@@ -15,6 +15,8 @@ public class ConfigConstants {
 	
 	public static final String ORDER_STATUS_REFUND = "order.status.refund";
 	
+	public static final String ORDER_STATUS_CANCEL = "order.status.cancel";
+	
 	//交易状态
 	public static final String TRX_STATUS_SUC = "trx.status.suc";
 	
@@ -63,6 +65,7 @@ public class ConfigConstants {
 	
 	public static final String PUSHTYPE_FORMURLENCODED = "pushtype.formurlencoded";
 	
+	//科匠订单类型
 	public static final String ORDRTYPE_NORMAL = "ordrtype.normal";
 	
 	public static final String ORDRTYPE_CYCLE = "ordrtype.cycle";
@@ -75,10 +78,12 @@ public class ConfigConstants {
 	
 	public static final String ORDRTYPE_DSCTTIMES = "ordrtype.dscttimes";
 	
+	//收货地址是否默认
 	public static final String RECV_ADDR_DFT = "recv.addr.dft";
 	
 	public static final String RECV_ADDR_UNDFT = "recv.addr.undft";
 	
+	//交易码
 	public static final String TRXCODE_CONSUME = "trxcode.consume";
 	
 	public static final String TRXCODE_REFUND = "trxcode.refund";

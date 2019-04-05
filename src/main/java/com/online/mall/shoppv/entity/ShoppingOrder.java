@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Table(name="SHOP_ORDER")
@@ -18,8 +20,8 @@ public class ShoppingOrder {
 	@Column(name="CUS_ID")
 	private long cusId;
 	
-	@Column(name="GOODS_ID")
-	private String goodsId;
+//	@Column(name="GOODS_ID")
+//	private String goodsId;
 	
 	@Column(name="TRANS_NO")
 	private String transNo;
@@ -50,6 +52,10 @@ public class ShoppingOrder {
 	
 	@Column(name="PAY_AMT")
 	private BigDecimal payAmt;
+	
+	@OneToOne
+	@JoinColumn(name="GOODS_ID")
+	private GoodsWithoutDetail goods;
 
 	public String getId() {
 		return id;
@@ -65,14 +71,6 @@ public class ShoppingOrder {
 
 	public void setCusId(long cusId) {
 		this.cusId = cusId;
-	}
-
-	public String getGoodsId() {
-		return goodsId;
-	}
-
-	public void setGoodsId(String goodsId) {
-		this.goodsId = goodsId;
 	}
 
 	public String getTransNo() {
@@ -155,8 +153,13 @@ public class ShoppingOrder {
 		this.payAmt = payAmt;
 	}
 
-	
-	
-	
+	public GoodsWithoutDetail getGoods() {
+		return goods;
+	}
+
+	public void setGoods(GoodsWithoutDetail goods) {
+		this.goods = goods;
+	}
+
 	
 }

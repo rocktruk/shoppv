@@ -17,7 +17,7 @@ public interface ReceiveAddressRepository extends IExpandJpaRepository<ReceiveAd
 	List<ReceiveAddress> findReceiveAddressByCusId(long cusId);
 	
 	
-	Optional<ReceiveAddress> findReceiveAddressByDftAddr(String dftAddr);
+	Optional<ReceiveAddress> findReceiveAddressByCusIdAndDftAddr(long cusId,String dftAddr);
 	
 	
 	@Modifying

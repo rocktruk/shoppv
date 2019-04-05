@@ -203,7 +203,9 @@ public class ShopControl {
 			//根据传入的收货地址ID获取收货地址信息，如果没有传则获取默认收货地址
 			if (Strings.isNullOrEmpty(addrId))
 			{
-				recvAddr = recvAddrService.getDftAddr();
+				HttpSession session = request.getSession();
+				Customer user = (Customer)SessionUtil.getAttribute(session,SessionUtil.USER);
+				recvAddr = recvAddrService.getDftAddr(user.getId());
 			}else {
 				recvAddr = recvAddrService.getAddrById(addrId);
 			}

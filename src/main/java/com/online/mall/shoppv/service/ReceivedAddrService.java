@@ -34,9 +34,9 @@ public class ReceivedAddrService {
 	}
 	
 	
-	public Optional<ReceiveAddress> getDftAddr()
+	public Optional<ReceiveAddress> getDftAddr(long userId)
 	{
-		return recvAddrRepo.findReceiveAddressByDftAddr("1");
+		return recvAddrRepo.findReceiveAddressByCusIdAndDftAddr(userId,"1");
 	}
 	
 	@Transactional

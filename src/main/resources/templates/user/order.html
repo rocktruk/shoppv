@@ -47,106 +47,47 @@
                     <div class="divHeight"></div>
                     <div class="tab-panel">
                         <div class="tab-panel-item tab-active">
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
+                            <div class="tab-item" th:each="order:${allOrders}">
+                                <a th:href="@{index}" class="aui-well-item aui-well-item-clear">
                                     <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
+                                        <img th:src="@{images/favicon.jpg}" style="padding-top: 2px" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
-                                        <h3>自营Apple产品专营店</h3>
+                                        <h3>龙鑫商城</h3>
                                     </div>
-                                    <span class="aui-well-item-fr">已取消</span>
+                                    <span class="aui-well-item-fr" th:if="${order.orderStatus == '04'}">已取消</span>
+                                    <span class="aui-well-wait" th:if="${order.orderStatus == '03'}">等待付款</span>
+                                    <span class="aui-well-wait" th:if="${order.deliverStatus == '02' || order.deliverStatus == '01'}">等待收货</span>
+                                    <span class="aui-well-item-fr" th:if="${order.deliverStatus == '03'}"></span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{/orderInfo}" class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-001.png}" alt="">
+                                            <img th:src="@{${order.goods.imgPath}}" alt="">
                                         </div>
                                         <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
+                                            <p th:text="${order.goods.title+' '+order.goods.desc}"></p>
                                         </div>
                                     </a>
                                 </div>
                                 <a href="javascript:;" class="aui-mail-payment">
                                     <p>
-                                        共<em>1</em>
-                                        件商品 实付款: ￥<i>6899.00</i>
+                                        共<em th:text="${order.count}"></em>
+                                        件商品 实付款: ￥<i th:text="${order.totalOrdrAmt}"></i>
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
                                     <a href="javascript:;">再次购买</a>
                                     <a href="javascript:;" class="aui-df-color">评价晒单</a>
                                 </div>
-                            </div>
-                            <div class="divHeight"></div>
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
-                                    <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
-                                    </div>
-                                    <div class="aui-well-item-bd">
-                                        <h3>自营Apple产品专营店</h3>
-                                    </div>
-                                    <span class="aui-well-item-fr">已取消</span>
-                                </a>
-                                <div class="aui-mail-product">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-002.png}" alt="">
-                                        </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                    </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: ￥<i>6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">再次购买</a>
-                                </div>
-                            </div>
-                            <div class="divHeight"></div>
-                            <div class="tab-item">
-                                <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
-                                    <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
-                                    </div>
-                                    <div class="aui-well-item-bd">
-                                        <h3>自营Apple产品专营店</h3>
-                                    </div>
-                                    <span class="aui-well-item-fr">已取消</span>
-                                </a>
-                                <div class="aui-mail-product">
-                                    <a href="javascript:;" class="aui-mail-product-item">
-                                        <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-003.png}" alt="">
-                                        </div>
-                                        <div class="aui-mail-product-item-bd">
-                                            <p>Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机</p>
-                                        </div>
-                                    </a>
-                                </div>
-                                <a href="javascript:;" class="aui-mail-payment">
-                                    <p>
-                                        共<em>1</em>
-                                        件商品 实付款: ￥<i>6899.00</i>
-                                    </p>
-                                </a>
-                                <div class="aui-mail-button">
-                                    <a href="javascript:;">再次购买</a>
-                                    <a href="javascript:;">再次购买</a>
-                                </div>
+                                <div class="divHeight"></div>
                             </div>
                         </div>
                         <div class="tab-panel-item">
                             <div class="tab-item">
                                 <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
                                     <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
+                                        <img th:src="@{images/order/icon-logo.png}" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
                                         <h3>SONY京东自营官方旗舰店</h3>
@@ -154,9 +95,9 @@
                                     <span class="aui-well-wait">等待付款</span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{/orderInfo} class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-002.png}" alt="">
+                                            <img th:src="@{images/order/pd-002.png}" alt="">
                                         </div>
                                         <div class="aui-mail-product-item-bd">
                                             <p>索尼（SONY）WH-1000XM2 Hi-Res无线蓝牙耳机 智能降噪耳机 头戴式 1000x二代 香槟金</p>
@@ -178,7 +119,7 @@
                             <div class="tab-item">
                                 <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
                                     <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
+                                        <img th:src="@{images/order/icon-logo.png}" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
                                         <h3>自营Apple产品专营店</h3>
@@ -188,7 +129,7 @@
                                 <div class="aui-mail-product">
                                     <a href="javascript:;" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-003.png}" alt="">
+                                            <img th:src="@{images/order/pd-003.png}" alt="">
                                         </div>
                                         <div class="aui-mail-product-item-bd">
                                             <p>FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41</p>
@@ -212,7 +153,7 @@
                             <div class="tab-item">
                                 <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
                                     <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
+                                        <img th:src="@{images/order/icon-logo.png}" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
                                         <h3>自营Apple产品专营店</h3>
@@ -222,7 +163,7 @@
                                 <div class="aui-mail-product">
                                     <a href="javascript:;" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-004.png}" alt="">
+                                            <img th:src="@{images/order/pd-004.png}" alt="">
                                         </div>
                                         <div class="aui-mail-product-item-bd">
                                             <p>盼盼 酸梅汤 酸梅汁风味饮料 250ml*24盒 整箱 果汁饮料</p>
@@ -246,7 +187,7 @@
                             <div class="tab-item">
                                 <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
                                     <div class="aui-well-item-hd">
-                                        <img th:src="@{/images/order/icon-logo.png}" alt="">
+                                        <img th:src="@{images/order/icon-logo.png}" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
                                         <h3>自营Apple产品专营店</h3>
@@ -256,7 +197,7 @@
                                 <div class="aui-mail-product">
                                     <a href="javascript:;" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
-                                            <img th:src="@{/images/order/pd-005.png}" alt="">
+                                            <img th:src="@{images/order/pd-005.png}" alt="">
                                         </div>
                                         <div class="aui-mail-product-item-bd">
                                             <p>OPPO R15 全面屏双摄拍照手机 4G+128G 雪盈白 全网通 移动联通电信4G 双卡双待手机</p>

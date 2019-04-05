@@ -207,13 +207,30 @@ public class CustomControl {
 	}
 	
 	
-	
+	/**
+	 * 跳转订单页
+	 * @param request
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/order")
-	public String order(HttpServletRequest request) {
+	public String order(HttpServletRequest request,HttpSession session) {
+		Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
+		List<ShoppingOrder> orders = orderService.findAllOrderByUserWithPage(user.getId(), null, 0, 10);
+		List<ShoppingOrder> watiPay = orderService.findAllOrderByUserWithPage(user.getId(), "03", 0, 10);
+		List<ShoppingOrder> cancel = orderService.findAllOrderByUserWithPage(user.getId(), "04", 0, 10);
+		request.setAttribute("allOrders", orders);
+		request.setAttribute("watiPay", watiPay);
+		request.setAttribute("cancel", cancel);
 		return "user/order";
 	}
 	
-	
+	/**
+	 * 跳转订单详情页
+	 * @param request
+	 * @param params
+	 * @return
+	 */
 	@RequestMapping("/orderInfo")
 	public String orderInfo(HttpServletRequest request,@RequestBody Map<String,Object> params) {
 		List<ShoppingOrder> orders = orderService.getOrdersByTrans((String)params.get("traceNo"));
