@@ -83,7 +83,11 @@ public class GoodsControl {
 	@ResponseBody
 	public List<GoodsWithoutDetail> getGoodsListWithPageIndex(@RequestBody Map<String, String> req)
 	{
-		return goodsService.loadGoodsWithPage(Integer.parseInt(req.get("goodsMenu")), req.get("sort"), req.get("isAsc"), Integer.parseInt(req.get("index")));
+		int goodsId = -1;
+		if(req.get("goodsMenu")!=null) {
+			goodsId = Integer.parseInt(req.get("goodsMenu"));
+		}
+		return goodsService.loadGoodsWithPage(goodsId, req.get("sort"), req.get("isAsc"), Integer.parseInt(req.get("index")));
 	}
 	
 	
