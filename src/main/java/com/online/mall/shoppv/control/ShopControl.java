@@ -146,7 +146,7 @@ public class ShopControl {
 			//查询需要结算的购物订单
 			List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids.get("ids"));
 			//计算总价
-			ls.stream().forEach(sc -> data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount()))))));
+			ls.stream().forEach(sc -> data.put("total",((BigDecimal)data.get("total")).add((sc.getGoods().getPrice().multiply(new BigDecimal(sc.getCount())))).add(new BigDecimal(sc.getGoods().getCarriage()))));
 			data.put("goods", ls);
 			data.put("ids", ids);
 			String id = UUID.randomUUID().toString();
@@ -211,7 +211,7 @@ public class ShopControl {
 			}
 			//没有对应的收货地址信息，则返回增加收货地址页面
 			if(!recvAddr.isPresent()) {
-				return "redirect:addAddress";
+				return "redirect:addAddress?orderId="+orderId;
 			}
 			request.setAttribute("data", data);
 			request.setAttribute("addr", recvAddr.get());

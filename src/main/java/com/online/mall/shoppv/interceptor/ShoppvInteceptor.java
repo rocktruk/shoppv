@@ -32,7 +32,7 @@ public class ShoppvInteceptor implements HandlerInterceptor {
 		if(user == null)
 		{
 			user = new Customer();
-			user.setId(7);
+			user.setId(9);
 			user.setName("20190304170234651018");
 			SessionUtil.setAttribute(request.getSession(), SessionUtil.USER, user);
 		}

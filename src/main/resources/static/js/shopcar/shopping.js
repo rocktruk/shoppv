@@ -153,7 +153,8 @@ $(function(){
         if ($(this).is(":checked")) { //如果该商品被选中
           var num = parseInt($(this).parents(".shop-info").find(".num").text()); //得到商品的数量
           var price = parseFloat($(this).parents(".shop-info").find(".price").text()); //得到商品的单价
-          var total = price * num; //计算单个商品的总价
+          var carriage = parseInt($(this).parents(".shop-info").find(".carriage").text());//得到商品运费
+          var total = price * num + carriage; //计算单个商品的总价
           oprice += total; //计算该店铺的总价
         }
        // $(this).closest(".shop-group-item").find(".ShopTotal").text(oprice.toFixed(2)); //显示被选中商品的店铺总价

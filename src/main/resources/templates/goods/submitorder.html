@@ -18,9 +18,9 @@
 <body>
 	<!--<div class="int_title"><span class="int_pic"><img th:src="@{images/index/jifen/left.png}"/></span>填写订单</div>-->
 	<header class="aui-navBar aui-navBar-fixed">
-        <a href="javascript:;" class="aui-navBar-item">
+       <!-- <a href="javascript:;" class="aui-navBar-item">
             <i class="icon icon-return"></i>
-        </a>
+        </a>-->
         <div class="aui-center">
             <span class="aui-center-title" style="font-size:1.1rem;font-weight:400;">确认订单</span>
         </div>
@@ -30,13 +30,13 @@
 			<ul class="fill_box">
 				<li class="fill_left fill_list fl">
 					<p class="fill_pic clearfix">
-						<span class="span_pic fl" style="position: fixed"><img th:src="@{images/index/xqq/icon.png}" /></span>
-						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top: 5px;font-size:0.9rem;color:black" th:text="${'收货人:'+addr.recvName}"></span><span style="position: fixed;padding-left:65%;padding-top: 5px" th:text="${addr.phone}"></span>
-						<span class="span_text fr" style="position: fixed;padding-left:20px;padding-top:25px" th:text="${addr.provice+addr.city+addr.county+addr.detailedAddr}"></span>
+						<span class="span_pic fl" style="position: relative;top:10px"><img th:src="@{images/index/xqq/icon.png}" /></span>
+						<span class="span_text fr" style="position: relative;top:15px;font-size:0.9rem;color:black" th:text="${'收货人:'+addr.recvName}"></span><span style="position: relative;left:70%" th:text="${addr.phone}"></span>
+						<span class="span_text fr" style="position: relative;" th:text="${addr.provice+addr.city+addr.county+addr.detailedAddr}"></span>
 					</p>
 				</li>
 				<li class="fill_right fill_list fr">
-					<a th:href="@{address(ordrIds=${ids})}"><img th:src="@{images/index/xqq/right.png}" class="fill_img" /></a>
+					<a th:href="@{address(ordrIds=${orderId})}"><img th:src="@{images/index/xqq/right.png}" class="fill_img" /></a>
 				</li>
 			</ul>
 		</div>
@@ -49,14 +49,14 @@
  						<li th:each="merchandise:${data.goods}"> 
  							<div class="shop-info">
  								<h5 style="display:none" th:text="${merchandise.id}"></h5> 
- 								<div class="shop-info-img"><a href="#"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div> 
- 								<div class="shop-info-text"> 
+ 								<div class="shop-info-img" style="left:10px"><a th:href="@{goodsInfo(goodsId=${merchandise.goods.id})}"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div> 
+ 								<div class="shop-info-text" style="left:10px"> 
 									<h4 th:text="${merchandise.goods.title}"></h4> 
  									<div class="shop-brief"><span>运费:<i th:text="${merchandise.goods.carriage}"></i></span></div> 
  									<div class="shop-price"> 
  										<div class="shop-pices">￥<b class="price" th:text="${merchandise.goods.price}"></b></div> 
- 										<div class="shop-arithmetic"> 
- 											<div class="shop-brief"><span>x</span><span th:text="${merchandise.count}"></span></div> 
+ 										<div class="shop-arithmetic" style="border: none;"> 
+ 											<div class="shop-brief"><span style="font-size: 16px">x</span><span style="font-size: 16px" th:text="${merchandise.count}"></span></div> 
 										</div> 
  									</div> 
 								</div> 

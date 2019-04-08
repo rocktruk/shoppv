@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -96,8 +97,11 @@ public class CustomControl {
 	 * @return
 	 */
 	@RequestMapping("/addAddress")
-	public String addAddress(HttpServletRequest request)
+	public String addAddress(HttpServletRequest request,String orderId)
 	{
+		if(!StringUtils.isEmpty(orderId)) {
+			request.setAttribute("orderId", orderId);
+		}
 		return "user/addaddress";
 	}
 	
@@ -125,7 +129,11 @@ public class CustomControl {
 			recvAddr.setCounty(districts.length==3?districts[2]:"");
 			recvAddr.setCusId(user.getId());
 			recvAddr.setDetailedAddr(req.get("dtlAddress"));
-			recvAddr.setDftAddr(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_UNDFT));
+			if(recvService.getCount(user.getId())==0) {
+				recvAddr.setDftAddr(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_DFT));
+			}else {
+				recvAddr.setDftAddr(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_UNDFT));
+			}
 			recvAddr.setId(IdGenerater.INSTANCE.recvAddrIdGenerate());
 			recvAddr.setPhone(req.get("phone"));
 			recvAddr.setProvice(districts[0]);
