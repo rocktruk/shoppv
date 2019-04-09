@@ -10,6 +10,8 @@
 	<link rel="stylesheet" type="text/css" th:href="@{css/main.css}">
     <link th:href="@{css/address/layout.min.css}" rel="stylesheet" />
     <link th:href="@{css/address/scs.min.css}" rel="stylesheet" />
+    <!--<link th:href="@{css/font-awesome/css/font-awesome.min.css}" rel="stylesheet" />-->
+    <link th:href="@{css/circle.css}" rel="stylesheet" />
     <style>
     /*#myAddrs {
         width: 90%;
@@ -45,22 +47,6 @@
         				<input type="text" readonly placeholder="省、市、区" id="myAddrs" name="addr" data-key="1-36-37" value="" />
                      </p>
     			</div>
-				<!--<div class="selectarea">
-					<p>所在地区</p>
-					<p>
-						<select name="" id="" style="width: 100%;">
-							<option value="">选择省</option>
-						</select>
-					</p>
-					<p class="clearfix">
-						<select name="" id="" class="fl">
-							<option value="">选择市</option>
-						</select>
-						<select name="" id="" class="fr">
-							<option value="">选择县</option>
-						</select>
-					</p>
-				</div>-->
 				<div class="inputtxt">
 					<p>详细地址（街道、楼牌号等）</p>
 					<p>
@@ -68,10 +54,26 @@
 					</p>
 				</div>
 			</div>
-			<a href="javascript:;" class="btn-block" onclick="addRecvAddr()">保存</a>
+				<div class="sk-circle" style="display: none;float:left;left:37%">
+			        <div class="sk-circle1 sk-child"></div>
+			        <div class="sk-circle2 sk-child"></div>
+			        <div class="sk-circle3 sk-child"></div>
+			        <div class="sk-circle4 sk-child"></div>
+			        <div class="sk-circle5 sk-child"></div>
+			        <div class="sk-circle6 sk-child"></div>
+			        <div class="sk-circle7 sk-child"></div>
+			        <div class="sk-circle8 sk-child"></div>
+			        <div class="sk-circle9 sk-child"></div>
+			        <div class="sk-circle10 sk-child"></div>
+			        <div class="sk-circle11 sk-child"></div>
+			        <div class="sk-circle12 sk-child"></div>
+		      </div>
+			<a href="javascript:;" class="btn-block" style="background-color: cornflowerblue
+			" onclick="addRecvAddr()">保存</a>
 			<a id="recvhref" href="javascript:;" style="visibility: hidden;"><span id="spanId">收货地址管理页</span></a>
 		</div>
 	</div>
+	<div class="overlay" style="display: none"></div>
     <script th:src="@{js/address/jquery.min.js}"></script>
     <script th:src="@{js/address/jquery.scs.min.js}"></script>
     <script th:src="@{js/address/CNAddrArr.min.js}"></script>
@@ -222,8 +224,16 @@
     			init();
     		}
     	});
+    var btnabl = true;
     
     function addRecvAddr(){
+    	if(!btnabl){
+    		return;
+    	}else{
+    		btnabl = false;
+    	}
+    	$(".sk-circle").css("display","block");
+    	$(".overlay").css("display","block");
     	$.ajax({
     		data: JSON.stringify({"id":id,"cityCode":$('#myAddrs').attr("data-key"),"recvName":$('#recvName').val(),"phone":$('#phone').val(),"dtlAddress":$('#dtlAddress').val(),"district":$('#myAddrs').val()}),
     		url:  url,
@@ -243,6 +253,7 @@
     		},
     		error:function(msg)
     		{
+    			$(".btn-block").attr("disabled",true);
     			console.log(msg);
     		}
     	});
