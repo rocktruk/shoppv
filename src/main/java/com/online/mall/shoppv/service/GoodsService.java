@@ -63,6 +63,9 @@ public class GoodsService {
 		GoodsWithoutDetail goods = new GoodsWithoutDetail();
 		goods.setGoodsMenuId(menuId);
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("inventory","totalSales","monthSales","carriage");
+		if(menuId == -1) {
+			matcher.withIgnorePaths("goodsMenuId");
+		}
 		Example<GoodsWithoutDetail> example = Example.of(goods,matcher);
 		PageRequest page = null;
 		if(sort == null)
@@ -137,7 +140,10 @@ public class GoodsService {
 	 */
 	public void loadGoodsbyMenuIdWithSortAndPage(HttpServletRequest request)
 	{
-		int goods = Integer.parseInt(request.getParameter(ConfigConstants.GOODS_KIND));
+		int goods = -1;
+		if(request.getParameter(ConfigConstants.GOODS_KIND) != null) {
+			goods = Integer.parseInt(request.getParameter(ConfigConstants.GOODS_KIND));
+		}
 		String sort = request.getParameter(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT));
 		String isAsc = request.getParameter("isasc");
 		List<GoodsWithoutDetail> ls = new ArrayList<GoodsWithoutDetail>();
