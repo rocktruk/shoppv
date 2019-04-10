@@ -111,24 +111,25 @@ public class GoodsService {
 	public List<GoodsWithoutDetail> loadGoodsWithPage(int goodsMenu,String sort,String isAsc,int index)
 	{
 		List<GoodsWithoutDetail> ls = new ArrayList<GoodsWithoutDetail>();
+		int length = Integer.parseInt(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_LS_LENGTH));
 		if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_ALL).equals(sort))
 		{
-			ls = findGoodsByMenuWithSort(goodsMenu, null, index, 6);
+			ls = findGoodsByMenuWithSort(goodsMenu, null, index, length);
 		}else if (DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE).equals(sort))
 		{
 			if (DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE_ASC).equals(isAsc))
 			{
 				Sort s = new Sort(Direction.ASC,"price");
-				ls = findGoodsByMenuWithSort(goodsMenu, s, index, 6);
+				ls = findGoodsByMenuWithSort(goodsMenu, s, index, length);
 			}else
 			{
 				Sort s = new Sort(Direction.DESC,"price");
-				ls = findGoodsByMenuWithSort(goodsMenu, s, index, 6);
+				ls = findGoodsByMenuWithSort(goodsMenu, s, index, length);
 			}
 		}else
 		{
 			Sort s = new Sort(Direction.DESC,"monthSales");
-			ls = findGoodsByMenuWithSort(goodsMenu, s, index, 6);
+			ls = findGoodsByMenuWithSort(goodsMenu, s, index, length);
 		}
 		return ls;
 	}
@@ -146,11 +147,12 @@ public class GoodsService {
 		}
 		String sort = request.getParameter(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT));
 		String isAsc = request.getParameter("isasc");
+		int length = Integer.parseInt(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_LS_LENGTH));
 		List<GoodsWithoutDetail> ls = new ArrayList<GoodsWithoutDetail>();
 		if(StringUtils.isEmptyOrWhitespace(sort)||DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_ALL).equals(sort))
 		{
 			request.setAttribute(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT), DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_ALL));
-			ls = findGoodsByMenuWithSort(goods, null, 0, 6);
+			ls = findGoodsByMenuWithSort(goods, null, 0, length);
 		}else
 		{
 			request.setAttribute(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT), sort);
@@ -158,16 +160,16 @@ public class GoodsService {
 			{
 				request.setAttribute("isAsc", DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE_ASC));
 				Sort s = new Sort(Direction.ASC,"price");
-				ls = findGoodsByMenuWithSort(goods, s, 0, 6);
+				ls = findGoodsByMenuWithSort(goods, s, 0, length);
 			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE).equals(sort))
 			{
 				request.setAttribute("isAsc", DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE_DESC));
 				Sort s = new Sort(Direction.DESC,"price");
-				ls = findGoodsByMenuWithSort(goods, s, 0, 6);
+				ls = findGoodsByMenuWithSort(goods, s, 0, length);
 			}else
 			{
 				Sort s = new Sort(Direction.DESC,"monthSales");
-				ls = findGoodsByMenuWithSort(goods, s, 0, 6);
+				ls = findGoodsByMenuWithSort(goods, s, 0, length);
 			}
 		}
 		

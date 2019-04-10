@@ -88,6 +88,8 @@ public class ConfigConstants {
 	
 	public static final String TRXCODE_REFUND = "trxcode.refund";
 	
+	//商品列表分页查询，单页显示数量
+	public static final String GOODS_LS_LENGTH = "goods.ls.length";
 }
 
 
