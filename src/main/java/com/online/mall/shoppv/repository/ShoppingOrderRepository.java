@@ -23,6 +23,6 @@ public interface ShoppingOrderRepository extends IExpandJpaRepository<ShoppingOr
 	
 	List<ShoppingOrder> findShoppingOrderByTransNo(String traceNo);
 	
-	
-	
+	@Query("select s.* from ShoppingOrder s where s.cusId = ?1 and s.orderStatus = '00' and s.deliverStatus != '03' order by s.createTime limit ?2,?3")
+	List<ShoppingOrder> findShoppingOrderByStatusWithPage(long cusId,int start,int length);
 }

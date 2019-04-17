@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -90,6 +89,9 @@ public class ShoppingOrderService {
 		return orderRepos.findShoppingOrderByTransNo(traceNo);
 	}
 	
+	public List<ShoppingOrder> findAllOrderByUserWithPage(long cusId,int start,int length){
+		return findAllOrderByUserWithPage(cusId, null, null, start, length);
+	}
 	
 	/**
 	 * 根据客户号分页查询所有订单，按创建时间排序，
@@ -98,16 +100,32 @@ public class ShoppingOrderService {
 	 * @param length
 	 * @return
 	 */
-	@Cacheable(value="ShopCarToSettle",key="'findAllOrderByUserWithPage'+#cusId+#start+#length+#orderStatus")
 	public List<ShoppingOrder> findAllOrderByUserWithPage(long cusId,String orderStatus,int start,int length){
+		return findAllOrderByUserWithPage(cusId, orderStatus, null, start, length);
+	}
+	
+	@Cacheable(value="ShopCarToSettle",key="'findAllOrderByUserWithPage'+#cusId+#start+#length+#orderStatus+#deliverStatus+#flag")
+	public List<ShoppingOrder> findAllOrderByUserWithPage(long cusId,String orderStatus,String deliverStatus,int start,int length){
 		Sort sort = new Sort(Direction.DESC,"createTime");
 		ShoppingOrder order = new ShoppingOrder();
 		order.setCusId(cusId);
 		order.setOrderStatus(orderStatus);
+		order.setDeliverStatus(deliverStatus);
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("count");
 		Example<ShoppingOrder> example = Example.of(order,matcher);
 		PageRequest page = PageRequest.of(start, length, sort);
 		return orderRepos.findAll(example, page).getContent();
+	}
+	
+	/**
+	 * 获取已付款待收货的订单
+	 * @param cusId
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public List<ShoppingOrder> findOrderByWaitCollect(long cusId,int start,int length){
+		return orderRepos.findShoppingOrderByStatusWithPage(cusId,start*length,length);
 	}
 	
 	
