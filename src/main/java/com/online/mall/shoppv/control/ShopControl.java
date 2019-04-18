@@ -64,7 +64,7 @@ public class ShopControl {
 	@Autowired
 	private SessionUtil cacheUtil;
 	
-	@RequestMapping("/")
+	
 	/**
 	 * 科匠登录
 	 * @param request
@@ -74,6 +74,7 @@ public class ShopControl {
 	 * @param sign
 	 * @return
 	 */
+	@RequestMapping("/")
 	public String login(HttpServletRequest request,@Param("source") String source,
 			@Param("open_userid") String open_userid,@Param("phone") String phone,
 			@Param("sign") String sign)
@@ -83,7 +84,10 @@ public class ShopControl {
 		map.put("phone", phone);
 		map.put("open_userid", open_userid);
 		map.put("sign", sign);
-		userService.login(request, map);
+		boolean flag = userService.login(request, map);
+		if(!flag) {
+			return "404";
+		}
 		return "redirect:index";
 	}
 	

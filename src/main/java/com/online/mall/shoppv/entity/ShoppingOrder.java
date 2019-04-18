@@ -20,8 +20,8 @@ public class ShoppingOrder {
 	@Column(name="CUS_ID")
 	private long cusId;
 	
-//	@Column(name="GOODS_ID")
-//	private String goodsId;
+	@Column(name="REF_TRACE_NO")
+	private String refTraceNo;
 	
 	@Column(name="TRANS_NO")
 	private String transNo;
@@ -159,6 +159,14 @@ public class ShoppingOrder {
 
 	public void setGoods(GoodsWithoutDetail goods) {
 		this.goods = goods;
+	}
+
+	public String getRefTraceNo() {
+		return refTraceNo;
+	}
+
+	public void setRefTraceNo(String refTraceNo) {
+		this.refTraceNo = refTraceNo;
 	}
 
 	

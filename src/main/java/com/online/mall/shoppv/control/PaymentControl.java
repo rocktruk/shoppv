@@ -104,6 +104,8 @@ public class PaymentControl {
 				request.setAttribute("trxAmt", entity.getTrxAmt());
 				request.setAttribute("backChnnlTraceNo", order_number);
 				return "goods/paymentsuccess";
+			}else {
+				return "404";
 			}
 		} catch (NoSuchAlgorithmException e) {
 			log.error(e.getMessage(),e);
