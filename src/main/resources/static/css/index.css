@@ -117,7 +117,7 @@
 #slider{
 	width: 100%;
 	position: relative;
-	margin-top: 44px;
+	/*margin-top: 44px;*/
 	overflow: hidden;
 }
 #slider .swiper-container{

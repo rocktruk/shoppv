@@ -48,7 +48,7 @@
 		<div class="goods margin-top-3d9rem margin-bottom-6rem">
 			<ul class="xx-nav-tabs xx-nav">
 				<li class="text-center">
-					<a th:href="@{shopping/goodsls(sort=all,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
+					<a th:href="@{goodsls(sort=all,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
 				</li>
 				<!--<li class="text-center"><a th:href="@{shopping/goodsls}?sort=" class="xjp-inline-block font-size-1d2rem">人气</a></li>-->
 				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>

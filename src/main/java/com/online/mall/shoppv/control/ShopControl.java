@@ -1,8 +1,6 @@
 package com.online.mall.shoppv.control;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,9 +15,6 @@ import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.support.SimpleValueWrapper;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +32,7 @@ import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
 import com.online.mall.shoppv.service.GoodsMenuService;
 import com.online.mall.shoppv.service.GoodsService;
+import com.online.mall.shoppv.service.RcmndCommdidyService;
 import com.online.mall.shoppv.service.ReceivedAddrService;
 import com.online.mall.shoppv.service.ShoppingCarService;
 
@@ -60,6 +55,9 @@ public class ShopControl {
 	
 	@Autowired
 	private ReceivedAddrService recvAddrService;
+	
+	@Autowired
+	private RcmndCommdidyService rcmndService;
 	
 	@Autowired
 	private SessionUtil cacheUtil;
@@ -97,8 +95,11 @@ public class ShopControl {
 	{
 		List<GoodsMenu> ls = menuService.findAll();
 		request.setAttribute("menus", ls);
+		request.setAttribute("hotSales", rcmndService.hotSale());
+		request.setAttribute("rcmndCommdities", rcmndService.getRcmndCommdy());
 		return "indexwithsearch";
 	}
+	
 	
 	/**
 	 * 购物车

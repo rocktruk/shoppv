@@ -49,9 +49,8 @@
                         <i>￥</i>
                         <i th:text="${product.price}"></i>
                     </h2>
-                    <span th:text="${'¥'+product.oriPrice}" th:unless="${product.oriPrice == 0}"></span>
-                    <em th:unless="${product.oriPrice == 0}">6.9折</em>
-                    <em th:unless="${product.oriPrice == 0}">特价</em>
+                    <span th:text="${'¥'+product.oriPrice}" th:unless="${product.oriPrice == 0.00}"></span>
+                    <em th:unless="${product.oriPrice == 0.00}" th:text="${product.price/product.oriPrice+'.'+ product.price%product.oriPrice + '折'}"></em>
                 </div>
                 <div class="aui-product-title">
                     <h2 th:text="${product.title}"></h2>
@@ -123,7 +122,7 @@
                     </ul>
                 </div>
                 <div class="divHeight"></div>
-                <div class="aui-evaluate-box">
+               <!-- <div class="aui-evaluate-box">
                     <div class="aui-footer-flex aui-evaluate-item">
                         <div class="aui-footer-flex1 aui-evaluate-hd">商品评价(4599)</div>
                         <div class="aui-evaluate-fr">96.0%</div>
@@ -221,8 +220,8 @@
                             <div>5个回答</div>
                         </a>
                     </div>
-                </div>
-                <div class="divHeight"></div>
+                </div>-->
+               <!-- <div class="divHeight"></div>
                 <div class="aui-footer-flex aui-pp-box">
                     <div class="aui-footer-flex1 aui-evaluate-hd">
                         <div class="aui-footer-flex">
@@ -328,6 +327,7 @@
                         </ul>
                     </div>
                 </div>
+                -->
                 <div class="divHeight"></div>
                 <div class="aui-tab" data-ydui-tab>
                     <ul class="tab-nav">
@@ -349,110 +349,6 @@
                                                     <div class="aui-page-hd">
                                                         <img src="images/icon-page-005.png" alt="">
                                                         <span>9色可选</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-006.png" alt="">
-                                                        <span>五折起</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-007.png" alt="">
-                                                        <span>限时</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-008.png" alt="">
-                                                        <span>3色可选</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="aui-vertical">
-                                    <div class="aui-slide-list">
-                                        <ul class="aui-slide-item-list">
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-001.png" alt="">
-                                                        <span>9色可选</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-002.png" alt="">
-                                                        <span>五折起</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-003.png" alt="">
-                                                        <span>限时</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-004.png" alt="">
-                                                        <span>3色可选</span>
                                                     </div>
                                                     <div class="aui-page-bd">
                                                         <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
@@ -486,110 +382,6 @@
                                                     </div>
                                                 </a>
                                             </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-006.png" alt="">
-                                                        <span>五折起</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-007.png" alt="">
-                                                        <span>限时</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-008.png" alt="">
-                                                        <span>3色可选</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="aui-vertical">
-                                    <div class="aui-slide-list">
-                                        <ul class="aui-slide-item-list">
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-001.png" alt="">
-                                                        <span>9色可选</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-002.png" alt="">
-                                                        <span>五折起</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-003.png" alt="">
-                                                        <span>限时</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="aui-slide-item-item">
-                                                <a href="javascript:;" class="aui-link clearfix">
-                                                    <div class="aui-page-hd">
-                                                        <img src="images/icon-page-004.png" alt="">
-                                                        <span>3色可选</span>
-                                                    </div>
-                                                    <div class="aui-page-bd">
-                                                        <p>还好赶上活动买的 价格挺合适的 不过和原来的一双穿上感觉不一样 可能是新鞋的缘故吧</p>
-                                                        <p>
-                                                            <span class="aui-price">￥398</span>
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -597,7 +389,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="divHeight"></div>
+                <!--<div class="divHeight"></div>
                 <div class="aui-introduce">
                     <div class="aui-tab" data-ydui-tab>
                         <ul class="tab-nav">
@@ -679,8 +471,9 @@
                         </div>
                     </div>
                 </div>
+                -->
                 <div class="m-actionsheet" id="actionSheet">
-                    <!--<div class="aui-show-box">
+                    <div class="aui-show-box">
                         <div class="aui-show-box-title aui-footer-flex">
                             <div class="aui-footer-flex1">颜色、尺码</div>
                             <div>
@@ -779,7 +572,7 @@
                             </p>
                         </div>
                     </div>
-                </div>-->
+                </div>
                 <div class="m-actionsheet" id="actionSheet3">
                     <div class="aui-show-box">
                         <div class="aui-show-box-title aui-footer-flex">

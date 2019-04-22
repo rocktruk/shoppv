@@ -62,6 +62,7 @@ public class GoodsService {
 	{
 		GoodsWithoutDetail goods = new GoodsWithoutDetail();
 		goods.setGoodsMenuId(menuId);
+		goods.setStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_STATUS_STAYON));
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("inventory","totalSales","monthSales","carriage");
 		if(menuId == -1) {
 			matcher.withIgnorePaths("goodsMenuId");
