@@ -53,7 +53,7 @@ public class Trans {
 	private Date createTime;
 	
 	@Column(name="LST_UPD_TIME",insertable=false,updatable=false)
-	private Date LST_UPD_TIME;
+	private Date lstUpdTime;
 
 	public String getTraceNo() {
 		return traceNo;
@@ -135,12 +135,12 @@ public class Trans {
 		this.createTime = createTime;
 	}
 
-	public Date getLST_UPD_TIME() {
-		return LST_UPD_TIME;
+	public Date getLstUpdTime() {
+		return lstUpdTime;
 	}
 
-	public void setLST_UPD_TIME(Date lST_UPD_TIME) {
-		LST_UPD_TIME = lST_UPD_TIME;
+	public void setLstUpdTime(Date lstUpdTime) {
+		this.lstUpdTime = lstUpdTime;
 	}
 
 	public String getBackChannel() {

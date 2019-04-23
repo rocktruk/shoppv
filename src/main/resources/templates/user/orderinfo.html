@@ -101,6 +101,7 @@
                         <h4 th:if="${#strings.indexOf('00,03,06,07',order.orderStatus)}!=-1">周边通订单号: <em th:text="${order.trans.backChnlTraceNo}"></em></h4>
                         <h4 th:if="${#strings.indexOf('00,03,06,07',order.orderStatus)}!=-1">支付时间时间: <em th:text="${#strings.substringBefore(order.trans.createTime,'.')}"></em></h4>
                         <h4 th:if="${#strings.indexOf('06,07',order.orderStatus)}!=-1">退款发起时间: <em th:text="${#strings.substringBefore(order.refundEntity.createTime,'.')}"></em></h4>
+                        <h4 th:if="order.orderStatus eq '07'">退款完成时间: <em th:text="${#strings.substringBefore(order.refundEntity.lstUpdTime,'.')}"></em></h4>
                     </div>
                 </div>
             </section>
