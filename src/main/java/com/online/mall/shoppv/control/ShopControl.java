@@ -100,6 +100,10 @@ public class ShopControl {
 		return "indexwithsearch";
 	}
 	
+	@RequestMapping("404")
+	public String error() {
+		return "error";
+	}
 	
 	/**
 	 * 购物车

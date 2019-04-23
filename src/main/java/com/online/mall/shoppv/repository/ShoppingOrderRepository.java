@@ -20,9 +20,12 @@ public interface ShoppingOrderRepository extends IExpandJpaRepository<ShoppingOr
 	int insertOrder(String id,long cusId, String goodsId,String transNo,String orderStatus,String deliverStatus,
 			String addressId,BigDecimal totalOrdrAmt,BigDecimal discountAmt,BigDecimal payAmt);
 	
-	
+	@Query("select s from ShoppingOrder s where s.trans.traceNo=?1")
 	List<ShoppingOrder> findShoppingOrderByTransNo(String traceNo);
 	
-	@Query(value = "select * from shop_order s where s.CUS_ID = ?1 and s.ORDER_STATUS = '00' and s.DELIVER_STATUS != '03' order by s.CREATE_TIME limit ?2,?3",nativeQuery=true)
+	@Query(value = "select * from (select * from shop_order s where s.CUS_ID = ?1 and s.ORDER_STATUS = '00') t where t.DELIVER_STATUS != '03' order by t.CREATE_TIME desc limit ?2,?3",nativeQuery=true)
 	List<ShoppingOrder> findShoppingOrderByStatusWithPage(long cusId,int start,int length);
+	
+	@Query(value = "select * from (select * from shop_order s where s.CUS_ID = ?1) t where t.ORDER_STATUS in ('03','05') order by t.CREATE_TIME desc limit ?2,?3",nativeQuery=true)
+	List<ShoppingOrder> findShoppingOrderByInitStatusWithPage(long cusId,int start,int length);
 }

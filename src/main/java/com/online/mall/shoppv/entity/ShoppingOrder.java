@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name="SHOP_ORDER")
 @Entity
@@ -17,14 +18,16 @@ public class ShoppingOrder {
 	@Id
 	private String id;
 	
-	@Column(name="CUS_ID")
-	private long cusId;
+	@OneToOne
+	@JoinColumn(name="CUS_ID")
+	private Customer user;
 	
 	@Column(name="REF_TRACE_NO")
 	private String refTraceNo;
 	
-	@Column(name="TRANS_NO")
-	private String transNo;
+	@OneToOne
+	@JoinColumn(name="TRANS_NO")
+	private Trans trans;
 	
 	@Column(name="CREATE_TIME",insertable=false,updatable=false)
 	private Date createTime;
@@ -38,8 +41,9 @@ public class ShoppingOrder {
 	@Column(name="DELIVER_STATUS")
 	private String deliverStatus;
 	
-	@Column(name="ADDRESS_ID")
-	private String addressId;
+	@OneToOne
+	@JoinColumn(name="ADDRESS_ID")
+	private ReceiveAddress addr;
 	
 	@Column(name="COUNT")
 	private int count;
@@ -56,6 +60,9 @@ public class ShoppingOrder {
 	@OneToOne
 	@JoinColumn(name="GOODS_ID")
 	private GoodsWithoutDetail goods;
+	
+	@Transient
+	private Trans refundEntity;
 
 	public String getId() {
 		return id;
@@ -65,20 +72,20 @@ public class ShoppingOrder {
 		this.id = id;
 	}
 
-	public long getCusId() {
-		return cusId;
+	public Customer getUser() {
+		return user;
 	}
 
-	public void setCusId(long cusId) {
-		this.cusId = cusId;
+	public void setUser(Customer user) {
+		this.user = user;
 	}
 
-	public String getTransNo() {
-		return transNo;
+	public Trans getTrans() {
+		return trans;
 	}
 
-	public void setTransNo(String transNo) {
-		this.transNo = transNo;
+	public void setTrans(Trans trans) {
+		this.trans = trans;
 	}
 
 	public Date getCreateTime() {
@@ -113,12 +120,13 @@ public class ShoppingOrder {
 		this.deliverStatus = deliverStatus;
 	}
 
-	public String getAddressId() {
-		return addressId;
+
+	public ReceiveAddress getAddr() {
+		return addr;
 	}
 
-	public void setAddressId(String addressId) {
-		this.addressId = addressId;
+	public void setAddr(ReceiveAddress addr) {
+		this.addr = addr;
 	}
 
 	public int getCount() {
@@ -167,6 +175,14 @@ public class ShoppingOrder {
 
 	public void setRefTraceNo(String refTraceNo) {
 		this.refTraceNo = refTraceNo;
+	}
+
+	public Trans getRefundEntity() {
+		return refundEntity;
+	}
+
+	public void setRefundEntity(Trans refundEntity) {
+		this.refundEntity = refundEntity;
 	}
 
 	

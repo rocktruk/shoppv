@@ -26,6 +26,7 @@ import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.ReceiveAddress;
 import com.online.mall.shoppv.entity.ShoppingOrder;
+import com.online.mall.shoppv.entity.Trans;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
@@ -225,7 +226,7 @@ public class CustomControl {
 	public String order(HttpServletRequest request,HttpSession session) {
 		Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
 		List<ShoppingOrder> orders = orderService.findAllOrderByUserWithPage(user.getId(), 0, 10);
-		List<ShoppingOrder> watiPay = orderService.findAllOrderByUserWithPage(user.getId(), "03", 0, 10);
+		List<ShoppingOrder> watiPay = orderService.findShoppingOrderWaitPay(user.getId(), 0, 10);
 		List<ShoppingOrder> cancel = orderService.findAllOrderByUserWithPage(user.getId(), "04", 0, 10);
 		List<ShoppingOrder> complete = orderService.findAllOrderByUserWithPage(user.getId(), "00","03", 0, 10);
 		List<ShoppingOrder> waitCollect = orderService.findOrderByWaitCollect(user.getId(), 0, 10);
@@ -244,9 +245,16 @@ public class CustomControl {
 	 * @return
 	 */
 	@RequestMapping("/orderInfo")
-	public String orderInfo(HttpServletRequest request,@RequestBody Map<String,Object> params) {
-		List<ShoppingOrder> orders = orderService.getOrdersByTrans((String)params.get("traceNo"));
-		request.setAttribute("orders", orders);
+	public String orderInfo(HttpServletRequest request,String traceNo) {
+		Optional<ShoppingOrder> order = orderService.findById(traceNo);
+		order.ifPresent(o -> {
+			if("06,07".indexOf(o.getOrderStatus())!=-1)
+			{
+				Optional<Trans> refund = transDtlService.getTransById(o.getRefTraceNo());
+				o.setRefundEntity(refund.get());
+			}
+		});
+		request.setAttribute("order", order.get());
 		return "user/orderinfo";
 	}
 	

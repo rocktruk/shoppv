@@ -13,7 +13,7 @@
     <body>
 
 
-        <section class="aui-flexView" th:each="order:${orders}">
+        <section class="aui-flexView">
             <header class="aui-navBar aui-navBar-fixed">
                 <a href="javascript:;" class="aui-navBar-item">
                     <i class="icon icon-return"></i>
@@ -40,41 +40,42 @@
                         <img th:src="@{images/orderInfo/add.png}" alt="">
                     </div>
                     <div class="aui-flex-box">
-                        <h4>李嘉桦 18519232894</h4>
-                        <h5>北京市 海淀区 北三环西路43号2号院爱科技大厦6层</h5>
+                        <h4 th:text="${order.addr.recvName+' '+order.addr.phone}"></h4>
+                        <h5 th:text="${order.addr.provice+' '+order.addr.city+' '+order.addr.county+order.addr.detailedAddr}"></h5>
                     </div>
                 </div>
                 <div class="divHeight"></div>
                 <div class="aui-flex b-line">
                     <div class="aui-address-logo">
-                        <img th:src="@{images/orderInfo/user-logo-003.png}" alt="">
+                        <img th:src="@{images/favicon.jpg}" alt="">
                     </div>
                     <div class="aui-flex-box">
-                        <h5>自营旗舰店</h5>
+                        <h5>龙鑫商城</h5>
                     </div>
-                    <div class="aui-address-arrow"></div>
+                    <!--<div class="aui-address-arrow"></div>-->
                 </div>
-                <div class="aui-flex aui-flex-four">
-                    <div class="aui-flex-add">
-                        <img th:src="@{images/orderInfo/ad-001.png}" alt="">
-                    </div>
+                <a th:href="@{goodsInfo(goodsId=${order.goods.id})}">
+                	<div class="aui-flex aui-flex-four">
+	                    <div class="aui-flex-add">
+	                        <img th:src="@{images/orderInfo/ad-001.png}" alt="">
+	                    </div>
+	                    <div class="aui-flex-box">
+	                        <p th:text="${order.goods.title+' '+order.goods.desc}"></p>
+	                        <p class="b-line" style="color:#999" th:text="${'X'+ order.count}"></p>
+	                    </div>
+                	</div>
+                </a>
+                <div class="aui-flex aui-flex-four" th:if="${#strings.indexOf('06,07',order.orderStatus)} != -1" style="padding-top:0">
                     <div class="aui-flex-box">
-                        <p>烫金羽毛小清新晴雨伞二用学生黑胶韩国创意折叠防晒遮阳太阳伞女 黑色</p>
-                        <p class="b-line" style="color:#999">黑色 共1件</p>
-                    </div>
-                </div>
-                <div class="aui-flex aui-flex-four" style="padding-top:0">
-                    <div class="aui-flex-box">
-                        <button>申请退款</button>
-                        <button class="aui-btn-line">拼团详情</button>
+                        <button th:text="${(order.orderStatus ne '06')? '已退款':'退款中'}"></button>
                     </div>
                 </div>
                 <div class="aui-flex b-line">
                     <div class="aui-flex-box">
-                        <h6>需付款: <em>￥1</em> <i>(免运费)</i></h6>
+                        <h6><span th:text="${(#strings.indexOf('03,05',order.orderStatus)==-1)?'实付款':'应付款:'}"></span> <em th:text="${'¥'+order.payAmt}"></em> <i th:if="${order.goods.carriage==0}">(免运费)</i></h6>
                     </div>
                 </div>
-                <div class="aui-list-box">
+                <!--<div class="aui-list-box">
                     <a href="javascript:;" class="aui-flex aui-flex-right">
                         <div class="aui-flex-icon-img">
                             <img th:src="@{images/orderInfo/icon-news.png}" alt="">
@@ -91,14 +92,15 @@
                             <h4>拨打电话</h4>
                         </div>
                     </a>
-                </div>
+                </div>-->
                 <div class="divHeight"></div>
                 <div class="aui-flex">
                     <div class="aui-flex-box">
-                        <h4>订单编号: <em>78302164057630000088</em></h4>
-                        <h4>支付方式: <em>线上支付</em></h4>
-                        <h4>下单时间: <em>2018-11-22 23:12:22</em></h4>
-                        <h4>拼单时间: <em>2018-11-22 23:12:22</em></h4>
+                        <h4>订单编号: <em th:text="${order.id}"></em></h4>
+                        <h4>下单时间: <em th:text="${#strings.substringBefore(order.createTime,'.')}"></em></h4>
+                        <h4 th:if="${#strings.indexOf('00,03,06,07',order.orderStatus)}!=-1">周边通订单号: <em th:text="${order.trans.backChnlTraceNo}"></em></h4>
+                        <h4 th:if="${#strings.indexOf('00,03,06,07',order.orderStatus)}!=-1">支付时间时间: <em th:text="${#strings.substringBefore(order.trans.createTime,'.')}"></em></h4>
+                        <h4 th:if="${#strings.indexOf('06,07',order.orderStatus)}!=-1">退款发起时间: <em th:text="${#strings.substringBefore(order.refundEntity.createTime,'.')}"></em></h4>
                     </div>
                 </div>
             </section>

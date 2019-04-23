@@ -3,6 +3,7 @@ package com.online.mall.shoppv.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
@@ -21,9 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.DictConstantsUtil;
 import com.online.mall.shoppv.common.util.IdGenerater;
+import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.GoodsWithoutDetail;
+import com.online.mall.shoppv.entity.ReceiveAddress;
 import com.online.mall.shoppv.entity.ShoppingCar;
 import com.online.mall.shoppv.entity.ShoppingOrder;
+import com.online.mall.shoppv.entity.Trans;
 import com.online.mall.shoppv.eventbus.event.ShopOrderEvent;
 import com.online.mall.shoppv.repository.ShoppingCarRepository;
 import com.online.mall.shoppv.repository.ShoppingOrderRepository;
@@ -53,9 +57,13 @@ public class ShoppingOrderService {
 		for(ShoppingCar car : ls) {
 			ShoppingOrder order = new ShoppingOrder();
 			order.setId(IdGenerater.INSTANCE.orderIdGenerate());
-			order.setAddressId(addressId);
+			ReceiveAddress addr = new ReceiveAddress();
+			addr.setId(addressId);
+			order.setAddr(addr);
 			order.setCount(car.getCount());
-			order.setCusId(car.getCusId());
+			Customer user = new Customer();
+			user.setId(car.getCusId());
+			order.setUser(user);
 			order.setDeliverStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.DELIVER_STATUS_WAITSEND));
 			order.setDiscountAmt(BigDecimal.ZERO);
 			GoodsWithoutDetail goods = new GoodsWithoutDetail();
@@ -64,7 +72,9 @@ public class ShoppingOrderService {
 			order.setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_NOTPAY));
 			order.setPayAmt(car.getGoods().getPrice().multiply(new BigDecimal(car.getCount())));
 			order.setTotalOrdrAmt(order.getPayAmt().add(order.getDiscountAmt()));
-			order.setTransNo(traceNo);
+			Trans trans = new Trans();
+			trans.setTraceNo(traceNo);
+			order.setTrans(trans);
 			orders.add(order);
 		}
 		aysnSaveOrders(orders);
@@ -108,13 +118,26 @@ public class ShoppingOrderService {
 	public List<ShoppingOrder> findAllOrderByUserWithPage(long cusId,String orderStatus,String deliverStatus,int start,int length){
 		Sort sort = new Sort(Direction.DESC,"createTime");
 		ShoppingOrder order = new ShoppingOrder();
-		order.setCusId(cusId);
+		Customer user = new Customer();
+		user.setId(cusId);
+		order.setUser(user);
 		order.setOrderStatus(orderStatus);
 		order.setDeliverStatus(deliverStatus);
 		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("count");
 		Example<ShoppingOrder> example = Example.of(order,matcher);
 		PageRequest page = PageRequest.of(start, length, sort);
 		return orderRepos.findAll(example, page).getContent();
+	}
+	
+	/**
+	 * 查询用户所有待支付及未支付的订单
+	 * @param cusId
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public List<ShoppingOrder> findShoppingOrderWaitPay(long cusId,int start,int length){
+		return orderRepos.findShoppingOrderByInitStatusWithPage(cusId, start, length);
 	}
 	
 	/**
@@ -128,5 +151,9 @@ public class ShoppingOrderService {
 		return orderRepos.findShoppingOrderByStatusWithPage(cusId,start*length,length);
 	}
 	
+	
+	public Optional<ShoppingOrder> findById(String id){
+		return orderRepos.findById(id);
+	}
 	
 }

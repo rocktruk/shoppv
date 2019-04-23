@@ -12,6 +12,7 @@
 		<!--<link rel="shortcut icon" th:href="@{favicon.ico}"/>
    		<link rel="bookmark" th:href="@{favicon.ico}"/>-->
 		<link rel="stylesheet" th:href="@{css/reset.css}">	
+		<link rel="stylesheet" type="text/css" th:href="@{css/reset_m.css}">
 		<link rel="stylesheet" th:href="@{css/index.css}">	
 		<link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
 		<link rel="stylesheet" th:href="@{iconfont/list/iconfont.css}">
@@ -89,15 +90,21 @@
 				<p class="notice" style="display:none" id="loading"><i class="fa fa-refresh"><span>玩命加载中...</span></i></p>
 			</section>
 		</div>
-				<!--menu  start-->
+				<!--menu  start
 				<div id="menu">
-					<ul>
-						<li><a th:href="@{index}" class="red"><font class="iconfont">&#xe612;</font><span class="inco_txt">首页</span></a></li>
-						<li><a th:href="@{goodsls}"><font class="iconfont">&#xe660;</font><span class="inco_txt">全部商品</span></a></li>
-						<li><a th:href="@{shoppingCar}"><font class="iconfont index">&#xe63e;</font><span class="inco_txt">购物车</span></a></li>
-						<li><a th:href="@{user}"><font class="iconfont">&#xe62e;</font><span class="inco_txt">我的</span></a></li>
-					</ul>
-				</div> 
+		            <ul>
+		                <li><a th:href="@{index}"><font class="iconfont">&#xe612;</font><span class="inco_txt">首页</span></a></li>
+		                <li><a th:href="@{goodsls}"><font class="iconfont">&#xe660;</font><span class="inco_txt">全部商品</span></a></li>
+		                <li><a th:href="@{shoppingCar}"><font class="iconfont index">&#xe63e;</font><span class="inco_txt">购物车</span></a></li>
+		                <li><a th:href="@{user}"><font class="iconfont">&#xe62e;</font><span class="inco_txt">我的</span></a></li>
+		            </ul>
+			    </div>-->
+			    <div class="tab-bar tab-bottom" id="footer">
+					<a class="aui-active tab-button " th:href="@{index}"><i class="tab-button-icon icon icon-home"></i><span class="tab-button-txt">首页</span></a>
+					<a class="tab-button " th:href="@{goodsls}"><i class="tab-button-icon icon icon-post"></i><span class="tab-button-txt">全部商品</span></a>
+					<a class="tab-button " th:href="@{shoppingCar}"><i class="tab-button-icon icon icon-car"></i><span class="tab-button-txt">购物</span></a>
+					<a class="tab-button " th:href="@{user}"><i class="tab-button-icon icon icon-myme"></i><span class="tab-button-txt">我的</span></a>
+				</div>
 				<!--menu  end-->
 			</div>
 			<!--menu  end-->
@@ -110,6 +117,5 @@
 			<script type="text/javascript" th:src="@{js/index/swiper.min.js}" ></script>
 			<script type="text/javascript" th:src="@{js/index/index.js}" ></script>
 			<script type="text/javascript" th:src="@{js/index/top.js}" ></script>
-			<script type="text/javascript" th:src="@{js/menu.js}" ></script>
 	</body>
 </html>

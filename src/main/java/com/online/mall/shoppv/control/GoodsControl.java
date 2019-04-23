@@ -42,7 +42,7 @@ public class GoodsControl {
 	 * 商品详情
 	 * @return
 	 */
-	@RequestMapping("/goodsInfo")
+	@RequestMapping("goodsInfo")
 	public String goodsInfo(HttpServletRequest request,@Param("goodsId") String goodsId)
 	{
 		Optional<Goods> goods = goodsService.getProduct(goodsId);
