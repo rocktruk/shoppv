@@ -6,9 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -21,7 +26,9 @@ import org.thymeleaf.util.StringUtils;
 
 import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.DictConstantsUtil;
+import com.online.mall.shoppv.common.util.CacheUtil;
 import com.online.mall.shoppv.common.util.IdGenerater;
+import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Goods;
 import com.online.mall.shoppv.entity.GoodsMenu;
 import com.online.mall.shoppv.entity.GoodsWithoutDetail;
@@ -37,6 +44,10 @@ public class GoodsControl {
 	@Autowired
 	private GoodsService goodsService;
 	
+	@Autowired
+	private SessionUtil cacheUtil;
+	
+	private static final Logger log = LoggerFactory.getLogger(GoodsControl.class);
 	
 	/**
 	 * 商品详情
@@ -45,11 +56,8 @@ public class GoodsControl {
 	@RequestMapping("goodsInfo")
 	public String goodsInfo(HttpServletRequest request,@Param("goodsId") String goodsId)
 	{
-		Optional<Goods> goods = goodsService.getProduct(goodsId);
-		request.setAttribute("product", goods.map(g -> {
-			g.setBanners(g.getBanerImages().split(","));
-			return g;
-		}).orElse(new Goods()));
+		Optional<Goods> goods = goodsService.getGoods(goodsId);
+		request.setAttribute("product", goods.isPresent()?goods.get():new Goods());
 		return "goods/goodsinfo";
 	}
 	

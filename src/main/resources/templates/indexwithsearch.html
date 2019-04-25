@@ -37,7 +37,7 @@
 			</div>
 			<!--头部搜索框 end-->
 			<!--banner start-->
-			<div id="slider" style="height:200px">
+			<div id="slider" style="height:180px">
 				<div class="swiper-container clearfix" style="height:100%;">
 					<ul class="swiper-wrapper" style="height:100%">
 						<li class="swiper-slide" style="height:100%" th:each="hotsale:${hotSales}">
@@ -75,19 +75,20 @@
 				</nav>
 			</div>
 		<div class="container-fluid padding-0 ">
-			<section class="bg-f8 padding-top-bottom-1rem  clearfix" >
+			<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="padding-bottom: 43px">
 				<ul class="clearfix  goodslist  margin-auto" id="goods_list">
-					<li class="col-xs-6 padding-0 margin-bottom-d75rem" th:each="product:${rcmndCommdities}" >
+					<li class="col-xs-6 margin-bottom-d75rem" style="padding: 5px 15px 5px 15px" th:each="product:${rcmndCommdities}" >
 						<a th:href="@{goodsInfo(goodsId=${product.goods.getId()})}">
 							<img th:src="@{${product.goods.getImgPath()}}" th:alt="${product.goods.getTitle()}" th:title="${product.goods.getTitle()}">
 						</a>
 						<div class="font-size-1rem ">
-							<p class="margin-top-bottom-1rem "><a th:href='@{goodsInfo(goodsMenu=${product.goods.getId()})}' th:text="${product.goods.getTitle()}"></a></p>
+							<p class="margin-top-bottom-1rem " style="height:43px"><a th:href='@{goodsInfo(goodsMenu=${product.goods.getId()})}'>
+								<span style="white-space:pre-wrap;" th:text="${product.goods.getTitle()+' '+product.goods.desc}"></span>
+							</a></p>
 							<p class="text-red"><span class="font-size-d8rem">￥</span><span class="font-weight-700" th:text="${product.goods.getPrice()}"></span></p>
 						</div>
 					</li>
 				</ul>
-				<p class="notice" style="display:none" id="loading"><i class="fa fa-refresh"><span>玩命加载中...</span></i></p>
 			</section>
 		</div>
 				<!--menu  start

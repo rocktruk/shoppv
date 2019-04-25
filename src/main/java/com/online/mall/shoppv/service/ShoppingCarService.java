@@ -6,18 +6,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.online.mall.shoppv.common.ConfigConstants;
+import com.online.mall.shoppv.common.util.CacheUtil;
 import com.online.mall.shoppv.common.util.IdGenerater;
 import com.online.mall.shoppv.entity.Customer;
+import com.online.mall.shoppv.entity.Goods;
 import com.online.mall.shoppv.entity.ShoppingCar;
+import com.online.mall.shoppv.eventbus.event.GoodsUpdateByOrderEvent;
 import com.online.mall.shoppv.repository.ShoppingCarRepository;
 
 @Service
@@ -28,6 +38,11 @@ public class ShoppingCarService {
 	
 	@Autowired
 	private GoodsService goodsService;
+	
+	@Resource
+	private ApplicationContext context;
+	
+	private ReentrantLock lock = new ReentrantLock();
 	
 	private static final Logger log = LoggerFactory.getLogger(ShoppingCarService.class);
 	
@@ -91,33 +106,61 @@ public class ShoppingCarService {
 	}
 	
 	@Transactional
-	public boolean insertCar(Customer user,Map<String, Object> map) {
-		int n = carRepos.insertShoppingCar(IdGenerater.INSTANCE.shopIdGenerate(), user.getId(), null, new BigDecimal((Double)map.get("price")), (String)map.get("goodsId"), (Integer)map.get("count"));
-		if(n==1)
-		{
-			return true;
-		}else {
-			return false;
+	public boolean goodsInventoryUpd(String goodsId,int count,String opera) {
+		lock.lock();
+		try {
+			if(ConfigConstants.OPERA_GOODS_ADD.equals(opera)) {
+				
+				
+			}else {
+				
+			}
+			
+		}finally {
+			lock.unlock();
 		}
-	}
-	
-	@Transactional
-	public void updateShoppingCar(String id,int count) {
-		carRepos.updateShoppingCarWithId(id,count);
+		return true;
 	}
 	
 	
+	
+	
 	@Transactional
-	public void delShopCar(String ids) {
+	public boolean insertCar(Customer user,Map<String, Object> map) {
+		boolean flag = goodsService.updGoodsInventory((String)map.get("goodsId"), (Integer)map.get("count"), ConfigConstants.OPERA_GOODS_ADD);
+		if(flag) {
+			int n = carRepos.insertShoppingCar(IdGenerater.INSTANCE.shopIdGenerate(), user.getId(), null, new BigDecimal((Double)map.get("price")), (String)map.get("goodsId"), (Integer)map.get("count"));
+			if(n==1)
+			{
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return flag;
+	}
+	
+	@Transactional
+	public boolean updateShoppingCar(String id,int count) {
+		boolean flag = goodsService.updGoodsInventory(id, count, ConfigConstants.OPERA_GOODS_ADD);
+		if(flag) {
+			carRepos.updateShoppingCarWithId(id,count);
+		}
+		return flag;	
+	}
+	
+	/**
+	 * 购物车删除，根据删除来源，决定是否更新商品库存
+	 * @param ids 要删除的商品ID集合
+	 * @param source 1-购物车页面删除，2-创建订单删除（无需更新库存）
+	 */
+	@Transactional
+	public void delShopCar(String ids,String source) {
 		List<String> carGoods = Arrays.asList(ids.split(",")); 
-		List<ShoppingCar> shops = new ArrayList<ShoppingCar>();
-		carGoods.stream().map(g -> {
-			ShoppingCar car = new ShoppingCar();
-			car.setId(g);
-			shops.add(car);
-			return g;
-			}).collect(Collectors.toList());
-		carRepos.deleteInBatch(shops);
+		List<ShoppingCar> cars = carRepos.findShoppingCarByIdIn(carGoods);
+		GoodsUpdateByOrderEvent event = new GoodsUpdateByOrderEvent(this,cars);
+		context.publishEvent(event);
+		carRepos.deleteInBatch(cars);
 	}
 	
 }

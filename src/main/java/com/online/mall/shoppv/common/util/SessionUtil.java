@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 便于后续通过中间件缓存做session共享
- * @author kaka_lijian
  *
  */
 @Component
@@ -20,6 +19,8 @@ public class SessionUtil {
 	
 	@Resource
 	private ApplicationContext context;
+	
+	private CacheManager cacheManager = (CacheManager)context.getBean("caffeineCacheManager");
 	
 	public static void setAttribute(HttpSession session,String key,Object value)
 	{
@@ -34,7 +35,7 @@ public class SessionUtil {
 	
 	
 	public Object getCacheContent(String cacheName,String key) {
-		SimpleValueWrapper wrap = (SimpleValueWrapper)((CacheManager)context.getBean("caffeineCacheManager")).getCache(cacheName).get(key);
+		SimpleValueWrapper wrap = (SimpleValueWrapper)cacheManager.getCache(cacheName).get(key);
 		if(wrap != null) {
 			return wrap.get();
 		}else {
@@ -43,8 +44,21 @@ public class SessionUtil {
 		
 	}
 	
+	public synchronized Object putIfAbsent(String cacheName,String key,Object value) {
+		SimpleValueWrapper wrap = (SimpleValueWrapper)cacheManager.getCache(cacheName).putIfAbsent(key, value);
+		if(wrap != null) {
+			return wrap.get();
+		}else {
+			return null;
+		}
+	}
+	
+	public void remove(String cacheName,String key) {
+		cacheManager.getCache(cacheName).evict(key);
+	}
+	
 	public void setCacheContent(String cacheName,String key,Object value) {
-		((CacheManager)context.getBean("caffeineCacheManager")).getCache(cacheName).put(key, value);
+		cacheManager.getCache(cacheName).put(key, value);
 	}
 	
 }

@@ -7,20 +7,27 @@
 <title>龙鑫商城</title>
 <link type="text/css" rel="stylesheet" th:href="@{css/shopcar/base.css}" />
 <link type="text/css" rel="stylesheet" th:href="@{css/shopcar/module.css}"  />
+<link th:href="@{css/goodsinfo/style.css}" rel="stylesheet" type="text/css"/>
+<!--<link rel="stylesheet" th:href="@{css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{css/ui.css}"> -->
 </head>
 
 <body>
 <!--头部开始-->
 <div class="header">
+	<a href="javascript:;" onclick="backgo()" class="aui-navBar-item" style="padding-top: 12px">
+        <i class="icon icon-return"></i>
+    </a>
 	<h1>购物车</h1>
-	<a href="javascript:;" onclick="editor()" style="right:10px">编辑</a>
+	<a href="javascript:;" id="editor" onclick="editor()" style="right:10px">编辑</a>
+	<a href="javascript:;" id="complete" onclick="editorcomplete()" style="right:10px;display:none">完成</a>
 </div>
 <!--头部结束-->
 <div class="shopping">
 	
 	<div class="shop-group-item">
-		<div class="shop-name"> 
-			<input type="checkbox" style="display:none" class="check goods-check shopCheck">
+		<div class="shop-name" style="height: 0px"> 
+			<input type="checkbox" style="display:none;" class="check goods-check shopCheck">
 			<!--<h4><a href="#">苹果专卖店</a></h4>
 			<div class="coupons"><span>领券</span><em>|</em><span>编辑</span><span class="shop-total-amount ShopTotal">0</span></div>-->
 		</div>
@@ -109,19 +116,36 @@
 	<div class="all-checkbox"><input type="checkbox" class="check goods-check" id="delCheck">全选</div>
 	<a href="javascript:;" class="delete" style="border: none" onclick="delShopCar()">删除</a>
 </div>
+<!--<div class="tab-bar tab-bottom" id="footer">
+	<a class="tab-button " th:href="@{index}"><i class="tab-button-icon icon icon-home"></i><span class="tab-button-txt">首页</span></a>
+	<a class="tab-button " th:href="@{goodsls}"><i class="tab-button-icon icon icon-post"></i><span class="tab-button-txt">全部商品</span></a>
+	<a class="aui-active tab-button " th:href="@{shoppingCar}"><i class="tab-button-icon icon icon-car"></i><span class="tab-button-txt">购物</span></a>
+	<a class="tab-button " th:href="@{user}"><i class="tab-button-icon icon icon-myme"></i><span class="tab-button-txt">我的</span></a>
+</div>-->
 <script type="text/javascript" th:src="@{js/list/jquery-3.2.1.min.js}"></script>
 <script type="text/javascript" th:src="@{js/shopcar/shopping.js}"></script>
 <script type="text/javascript">
-	var editStat = "settle";
 	function editor(){
-		if(editStat == "settle"){
-			$(".payment-bar").css("display",'none');
-			$(".del-bar").css("display",'block');
-			editStat = "del";
-		}else{
-			$(".payment-bar").css("display",'block');
-			$(".del-bar").css("display",'none');
-			editStat = "settle";
+		$(".payment-bar").css("display",'none');
+		$(".del-bar").css("display",'block');
+		$("#editor").css("display",'none');
+		$("#complete").css("display",'block');
+		$('#delCheck').prop('checked',false);
+		var goods = $('.goodsCheck');
+		for(var n=0;n<goods.length;n++){
+			goods[n].checked = false;
+		}
+	}
+	
+	function editorcomplete(){
+		$(".payment-bar").css("display",'block');
+		$(".del-bar").css("display",'none');
+		$("#editor").css("display",'block');
+		$("#complete").css("display",'none');
+		$('#AllCheck').prop('checked',false);
+		var goods = $('.goodsCheck');
+		for(var n=0;n<goods.length;n++){
+			goods[n].checked = false;
 		}
 	}
 
@@ -133,7 +157,15 @@
 			contentType:"application/json",
 			success:function(data){
 				if(data.respcode=="000000"){
-					window.location.reload();
+					var goods = $('.goodsCheck');
+					for(var n=0;n<goods.length;n++){
+						if(goods[n].checked){
+							goods[n].closest('li').remove();
+						}
+					}
+					if($('.goodsCheck').length == 0){
+						window.location.reload();
+					}
 				}else{
 					alert(data.respmsg);
 				}
@@ -147,7 +179,7 @@
 
 	function submit(){
 		if(!$("#ids").text()||$("#ids").text()==""){
-			alert("请先选择结算商品");
+			//alert("请先选择结算商品");
 			return;
 		}
 		$.ajax({
@@ -170,6 +202,9 @@
 		});
 	}
 	
+	function backgo(){
+		self.location=document.referrer;
+	}
 </script>
 </body>
 </html>

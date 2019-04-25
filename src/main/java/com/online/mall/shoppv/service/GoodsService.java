@@ -1,16 +1,16 @@
 package com.online.mall.shoppv.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.hibernate.mapping.Array;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,8 @@ import org.thymeleaf.util.StringUtils;
 
 import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.DictConstantsUtil;
+import com.online.mall.shoppv.common.util.CacheUtil;
+import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Goods;
 import com.online.mall.shoppv.entity.GoodsWithoutDetail;
 import com.online.mall.shoppv.repository.GoodsRepository;
@@ -43,6 +45,10 @@ public class GoodsService {
 	@Autowired
 	private GoodsWithoutDetailRepository noDetailRepos;
 	
+	private ReentrantLock lock = new ReentrantLock();
+	
+	@Autowired
+	private SessionUtil cacheUtil;
 	
 	public List<GoodsWithoutDetail> findGoodsByMenu(int menuId)
 	{
@@ -63,10 +69,22 @@ public class GoodsService {
 		GoodsWithoutDetail goods = new GoodsWithoutDetail();
 		goods.setGoodsMenuId(menuId);
 		goods.setStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_STATUS_STAYON));
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("inventory","totalSales","monthSales","carriage");
+		String[] ignorePaths;
 		if(menuId == -1) {
-			matcher.withIgnorePaths("goodsMenuId");
+			ignorePaths = new String[5];
+			ignorePaths[0] = "inventory";
+			ignorePaths[1] = "totalSales";
+			ignorePaths[2] = "monthSales";
+			ignorePaths[3] = "carriage";
+			ignorePaths[4] = "goodsMenuId";
+		}else {
+			ignorePaths = new String[4];
+			ignorePaths[0] = "inventory";
+			ignorePaths[1] = "totalSales";
+			ignorePaths[2] = "monthSales";
+			ignorePaths[3] = "carriage";
 		}
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths(ignorePaths);
 		Example<GoodsWithoutDetail> example = Example.of(goods,matcher);
 		PageRequest page = null;
 		if(sort == null)
@@ -78,6 +96,7 @@ public class GoodsService {
 		}
 		return noDetailRepos.findAll(example,page).getContent();
 	}
+	
 	
 	
 	
@@ -176,6 +195,78 @@ public class GoodsService {
 		
 		request.setAttribute("goodsLs", ls);
 		request.setAttribute("goods", goods);
+	}
+	
+	/**
+	 * 根据商品ID获取商品详情
+	 * @param goodsId
+	 * @return
+	 */
+	public Optional<Goods> getGoods(String goodsId) {
+		try {
+			Future<Optional<Goods>> cacheGoods = (Future<Optional<Goods>>)cacheUtil.getCacheContent(CacheUtil.Caches.goodsTrace.name(),goodsId);
+			if(cacheGoods==null) {
+				Callable<Optional<Goods>> callable = new Callable<Optional<Goods>>() {
+					@Override
+					public Optional<Goods> call() throws Exception {
+						return getProduct(goodsId);
+					}
+				};
+				FutureTask<Optional<Goods>> task = new FutureTask<Optional<Goods>>(callable);
+				Object  o = cacheUtil.putIfAbsent(CacheUtil.Caches.goodsTrace.name(), goodsId, task);
+				if(o == null) {
+					cacheGoods = task;
+					task.run();
+				}
+			}
+			Optional<Goods> goods = cacheGoods.get();
+			goods.map(g -> {
+				if(g.getBanerImages()!=null) {
+					g.setBanners(g.getBanerImages().split(","));
+				}
+				cacheUtil.setCacheContent(CacheUtil.Caches.goodsTrace.name(), goodsId, g);
+				return g;
+			}).orElse(new Goods());
+			return goods;
+		}catch(Exception e) {
+			log.error(e.getMessage(),e);
+			cacheUtil.remove(CacheUtil.Caches.goodsTrace.name(), goodsId);
+		}
+		return Optional.empty();
+	}
+	
+	/**
+	 * 修改商品库存
+	 * @param goodsId 商品ID
+	 * @param count 修改商品库存数量
+	 * @param opera 订单的商品数量加减操作，add,minus
+	 * @return
+	 */
+	@Transactional
+	public boolean updGoodsInventory(String goodsId,int count,String opera) {
+			try {
+				if(lock.tryLock(1, TimeUnit.SECONDS)) {
+					Optional<Goods> goods = getGoods(goodsId);
+					if(goods.isPresent()) {
+						long inventory = goods.get().getInventory();
+						if(ConfigConstants.OPERA_GOODS_ADD.equals(opera)) {
+							if(inventory < count) {
+								return false;
+							}
+							goodRepository.updateGoodsSetInventoryWithId(goodsId, inventory - count);
+							return true;
+						}else {
+							goodRepository.updateGoodsSetInventoryWithId(goodsId, inventory + count);
+							return true;
+						}
+					}
+				}
+			}catch(Exception e) {
+				log.error(e.getMessage(),e);
+			}finally {
+				lock.unlock();
+			}
+		return false;
 	}
 	
 }

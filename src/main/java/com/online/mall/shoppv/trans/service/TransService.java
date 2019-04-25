@@ -116,6 +116,7 @@ public class TransService {
 			entity.setRefundableAmt(trxAmt);
 			entity.setRefundedAmt(BigDecimal.ZERO);
 			entity.setTrxAmt(trxAmt);
+			entity.setRespMsg(resp.getMsg());
 			entity.setTrxCode(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRXCODE_CONSUME));
 			/*--交易流水保存 end--*/
 			if(resp.getStatus()==0)
@@ -163,6 +164,7 @@ public class TransService {
 		Optional<Trans> trans = transService.getTransByOrderNum(notify.getSource(), notify.getOrder_number());
 		trans.ifPresent(t -> {
 			List<ShoppingOrder> orders = orderService.getOrdersByTrans(t.getTraceNo());
+			t.setRespMsg(notify.getRes_msg());
 			if("success".equals(notify.getRes_status())) {
 				t.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_SUC));
 				orders.stream().map(o -> {

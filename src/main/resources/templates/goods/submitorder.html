@@ -18,9 +18,9 @@
 <body>
 	<!--<div class="int_title"><span class="int_pic"><img th:src="@{images/index/jifen/left.png}"/></span>填写订单</div>-->
 	<header class="aui-navBar aui-navBar-fixed">
-       <!-- <a href="javascript:;" class="aui-navBar-item">
+      	<a href="javascript:;" onclick="backgo()"  class="aui-navBar-item">
             <i class="icon icon-return"></i>
-        </a>-->
+        </a>
         <div class="aui-center">
             <span class="aui-center-title" style="font-size:1.1rem;font-weight:400;">确认订单</span>
         </div>
@@ -126,7 +126,7 @@
 				function createOrder(addrId,ids){
 					$.ajax({
 		        		data: JSON.stringify({"addrId":addrId,"totalAmt":$('#AllTotal').text(),"ids":ids}),
-		        		url:  "/shopping/pay",
+		        		url:  "pay",
 		        		type: "POST",
 		        		contentType:"application/json",
 		        		success:function(data){
@@ -140,6 +140,10 @@
 		        			console.log(msg);
 		        		}
 		        	});
+				}
+				
+				function backgo(){
+					self.location=document.referrer;
 				}
 				
 			</script>

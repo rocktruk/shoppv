@@ -54,22 +54,27 @@
 				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>
 				<li class="text-center"><a th:href="@{goodsls(sort=price,goodsMenu=${goods},isasc=${isAsc})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'price'}? 'active' : ''">价格<i class="fa " th:classappend="${isAsc == null? 'fa-unsorted':(isAsc == 'asc'? 'fa-sort-asc':'fa-sort-desc')}"></i></a></li>
 			</ul>
-			<section class="bg-f8 padding-top-bottom-1rem  clearfix" >
+			<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="background-color: white;" >
 				<ul class="clearfix  goodslist  margin-auto" id="goods_list">
-					<li class="col-xs-6 padding-0 margin-bottom-d75rem" th:each="product:${goodsLs}" >
+					<li class="col-xs-6 padding-0 margin-bottom-d75rem" style="padding: 5px 15px 5px 15px" th:each="product:${goodsLs}" >
 						<a th:href="@{goodsInfo(goodsId=${product.getId()})}">
 							<img th:src="@{${product.getImgPath()}}" th:alt="${product.getTitle()}" th:title="${product.getTitle()}">
 						</a>
 						<div class="font-size-1rem ">
-							<p class="margin-top-bottom-1rem "><a th:href='@{goodsInfo(goodsMenu=${product.getId()})}' th:text="${product.getTitle()}"></a></p>
+							<p class="margin-top-bottom-1rem " style="height:43px"><a th:href='@{goodsInfo(goodsMenu=${product.getId()})}' th:text="${product.getTitle()+' '+product.desc}"></a></p>
 							<p class="text-red"><span class="font-size-d8rem">￥</span><span class="font-weight-700" th:text="${product.getPrice()}"></span></p>
 						</div>
 					</li>
 				</ul>
-				<p class="notice" style="display:none" id="loading"><i class="fa fa-refresh"><span>玩命加载中...</span></i></p>
+				<div id="loading" style="display:none;height: 60px;background-color: white;" class="row">
+					<div class="col-xs-4"></div>
+					<div class="col-xs-4">
+						<img th:src="@{images/loading.jpg}" style="height:100%;width:100%" alt=""/>
+					</div>
+					<div class="col-xs-4"></div>
+				</div>
 			</section>
 		</div>
-		
 		<!-- 商品列表 -->
 	<!-- ************************************************* -->
 		<div class="tab-bar tab-bottom" id="footer">
@@ -166,9 +171,9 @@
 		        				$("#hasNext").val('false');
 		        			}
 		        			for (k in data){
-		        				_container.append('<li class="col-xs-6 padding-0 margin-bottom-d75rem"><a href="goodsInfo?goodsId='+data[k].id+'"><img src="'+data[k].imgPath+'" alt="'+data[k].title+'" title="'+data[k].title+'"></a>'
-		        				+'<div class="font-size-1rem "><p class="margin-top-bottom-1rem "><a href="goodsInfo?goodsId='+data[k].id+'">'+data[k].title+'</a></p>'
-		        				+'<p class="text-red"><span class="font-size-d8rem">￥</span><span class="font-weight-700">'+data[k].price+'</span></p></div></li>');
+		        				_container.append('<li class="col-xs-6 padding-0 margin-bottom-d75rem"><a href="goodsInfo?goodsId='+data[k].id+'"><img src="'+data[k].imgPath+'" alt="'+data[k].title+'" title="'+data[k].title+'"></a>');
+		        				_container.append('<div class="font-size-1rem "><p class="margin-top-bottom-1rem "><a href="goodsInfo?goodsId='+data[k].id+'">'+data[k].title+'</a></p>');
+		        				_container.append('<p class="text-red"><span class="font-size-d8rem">￥</span><span class="font-weight-700">'+data[k].price+'</span></p></div></li>');
 		        			}
 		        		},
 		        		error:function(msg)

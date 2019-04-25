@@ -13,9 +13,13 @@ public class ConfigConstants {
 	
 	public static final String ORDER_STATUS_FAILED = "order.status.failed";
 	
-	public static final String ORDER_STATUS_REFUND = "order.status.refund";
+	public static final String ORDER_STATUS_REFUND = "order.status.refunded";
+	
+	public static final String ORDER_STATUS_REFUNDING = "order.status.refunding";
 	
 	public static final String ORDER_STATUS_CANCEL = "order.status.cancel";
+	
+	public static final String ORDER_STATUS_DEL = "order.status.del";
 	
 	//交易状态
 	public static final String TRX_STATUS_SUC = "trx.status.suc";
@@ -90,6 +94,15 @@ public class ConfigConstants {
 	
 	//商品列表分页查询，单页显示数量
 	public static final String GOODS_LS_LENGTH = "goods.ls.length";
+	
+	
+	public static final String OPERA_GOODS_ADD = "add";
+	
+	public static final String OPERA_GOODS_MINUS = "minus";
+	
+	public static final String SHOPCAR_DEL_FROM_CAR = "1";
+	
+	public static final String SHOPCAR_DEL_FROM_ORDER = "2";
 }
 
 

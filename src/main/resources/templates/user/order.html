@@ -15,7 +15,7 @@
 
 		<section class="aui-flexView">
             <header class="aui-navBar aui-navBar-fixed">
-                <a href="javascript:;" class="aui-navBar-item">
+                <a href="javascript:;" onclick="backgo()" class="aui-navBar-item">
                     <i class="icon icon-return"></i>
                 </a>
                 <div class="aui-center">
@@ -51,14 +51,14 @@
                         		<img th:src="@{images/noorder.jpg}" alt="" />
                         	</div>
                             <div class="tab-item" th:each="order:${allOrders}">
-                                <a th:href="@{index}" class="aui-well-item aui-well-item-clear">
+                                <a href="javascript:;" class="aui-well-item aui-well-item-clear">
                                     <div class="aui-well-item-hd">
                                         <img th:src="@{images/favicon.jpg}" style="padding-top: 2px" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
                                         <h3>龙鑫商城</h3>
                                     </div>
-                                    <span class="aui-well-item-fr" th:if="${order.orderStatus eq '04'}">已取消</span>
+                                    <span class="aui-well-item-fr" th:if="${order.orderStatus eq '04'}" th:onclick="delorder([[${order.id}]])">已取消</span>
                                     <span class="aui-well-wait" th:if="${order.orderStatus eq '03' || order.orderStatus eq '05'}">等待付款</span>
                                     <span class="aui-well-wait" th:if="${order.orderStatus eq '00' && (order.deliverStatus eq '02' || order.deliverStatus eq '01')}">等待收货</span>
                                     <span class="aui-well-item-fr" th:if="${order.deliverStatus eq '03'}"></span>
@@ -91,7 +91,7 @@
                         		<img th:src="@{images/noorder.jpg}" alt="" />
                         	</div>
                             <div class="tab-item" th:each="order:${watiPay}">
-                                <a th:href="@{index}" class="aui-well-item aui-well-item-clear">
+                                <a href="javascript:;" class="aui-well-item aui-well-item-clear">
                                      <div class="aui-well-item-hd">
                                         <img th:src="@{images/favicon.jpg}" style="padding-top: 2px" alt="">
                                     </div>
@@ -127,7 +127,7 @@
                         		<img th:src="@{images/noorder.jpg}" alt="" />
                         	</div>
                             <div class="tab-item" th:each="order:${waitCollect}">
-                                <a th:href="@{index}" class="aui-well-item aui-well-item-clear">
+                                <a href="javascript:;" class="aui-well-item aui-well-item-clear">
                                      <div class="aui-well-item-hd">
                                         <img th:src="@{images/favicon.jpg}" style="padding-top: 2px" alt="">
                                     </div>
@@ -203,14 +203,14 @@
                         		<img th:src="@{images/noorder.jpg}" alt="" />
                         	</div>
                             <div class="tab-item" th:each="order:${cancel}">
-                                <a th:href="@{index}" class="aui-well-item aui-well-item-clear">
+                                <a href="javascript:;" class="aui-well-item aui-well-item-clear">
                                      <div class="aui-well-item-hd">
                                         <img th:src="@{images/favicon.jpg}" style="padding-top: 2px" alt="">
                                     </div>
                                     <div class="aui-well-item-bd">
                                         <h3>龙鑫商城</h3>
                                     </div>
-                                    <span class="aui-well-item-fr">已取消</span>
+                                    <span class="aui-well-item-fr" th:onclick="delorder(this,[[${order.id}]])">已取消</span>
                                 </a>
                                 <div class="aui-mail-product">
                                     <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-product-item">
@@ -238,5 +238,30 @@
                 </div>
             </section>
         </section>
+        <script type="text/javascript">
+        	
+        	function delorder(d,id){
+        		$.ajax({
+		        		data: JSON.stringify({"id":id}),
+		        		url:  "delOrder",
+		        		type: "POST",
+		        		contentType:"application/json",
+		        		success:function(data){
+		        			if(data.respcode=="000000"){
+		        				d.closest('.tab-item').remove();
+		        			}
+		        		},
+		        		error:function(msg)
+		        		{
+		        			console.log(msg);
+		        		}
+	        		});
+        	}
+        	
+        	function backgo(){
+				self.location=document.referrer;
+			}
+        </script>
+        
     </body>
 </html>

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.util.CacheUtil;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.entity.Customer;
@@ -178,7 +179,7 @@ public class ShopControl {
 	public Map<String,Object> delShopCar(HttpServletRequest request,@RequestBody Map<String,String> ids){
 		Map<String,Object> result = new HashMap<String, Object>();
 		try {
-			carService.delShopCar(ids.get("ids"));
+			carService.delShopCar(ids.get("ids"),ConfigConstants.SHOPCAR_DEL_FROM_CAR);
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
 		}catch(Exception e) {
@@ -230,11 +231,6 @@ public class ShopControl {
 		return "goods/submitorder";
 	}
 	
-	@RequestMapping("/payment")
-	public String payment()
-	{
-		return "goods/submitorder";
-	}
 	
 	
 	/**

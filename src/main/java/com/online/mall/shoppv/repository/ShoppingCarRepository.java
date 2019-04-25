@@ -1,6 +1,7 @@
 package com.online.mall.shoppv.repository;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,4 +32,7 @@ public interface ShoppingCarRepository extends IExpandJpaRepository<ShoppingCar,
 	
 	
 	Optional<ShoppingCar> findShoppingCarByCusIdAndGoodsId(long cusId,String goodsId);
+	
+	@Query("select s from ShoppingCar s where s.id in (?1)")
+	List<ShoppingCar> findShoppingCarByIdIn(Collection<String> ids);
 }

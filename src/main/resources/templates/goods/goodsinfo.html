@@ -8,27 +8,46 @@
         <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
         <meta content="telephone=no" name="format-detection"/>
         <link th:href="@{css/goodsinfo/style.css}" rel="stylesheet" type="text/css"/>
+        <style type="text/css">
+.icon-myme {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAADHklEQVRoge1b7XHqMBCkBEqgBDqIO3h08NxBVhXEHYQOQgfQgekAdwAd4A7yfljO+Jm7s75OIjPsjH5kEt/uWjrpJDmr1QsvRMMY8wfAF4DWtm/bLvbnozHmL4B1aa3BALAFcJyYc21HAFVp/c4AsLG96Wt03tqnNw6gBnBPYPanGWPeS/siAeDD0UQP4Gxb7/jMV2l//wHAfkHwAcCOm5Ts7/YLL+CY2xcJO4wloxuPWGsAjRBvr2jFSeBWGLZ1ZFyut3cJLXgLaxmz2wSx1wA6Iv6dSw1VCEM5WQ8IPd2k4vARc80hhHmxeXuZyd1eSwSGJWzOV2twcQKoZQiKfDuC76TFRwmghvNGmfMhlzX55uRzs10GzgPBW2nzjpuDhwIjAy9VkFTavCsAVYllgsljtXljSlzKcBHekoap9VidlzOsvkQwOZynriaIrxk4TwRvdM3uSt7lJif4sq7DVKXVKPJR+Zu10toSAu5a1Rboyq7W4JJEUAV98mMYDHjYqKTmcRFCzdZJ37zA0aTi8BVE9XIS0zZtqCPfW7zycFEb8GdPnxFxpYPBKqGFIHE7QdzVR6Adwq0QT792dsFCj3xjuDT7NMa8YXYqYox5M8a827+RYhwK2aPhYDqmlT2P5mAnmltCoz1KnkNLQLpbw3lri09UUygapYzn2SwIZkOvR2+gNyAu7aOE0TXcb/fPGFAJ8bb25Z0cY16Q6yDeml1aQnoMG3ZvUTZ+jeXJ764+xG1PXDWMMnyAfGesZ9qhZzsNcsvL1ex6phfMnrRzCvJXBtek/Atkh2REyzqkaq5NRcLtSbOaneiRXn785kIYyp32MBY0UfdMYz6HawL/gUlfyuxEW5d81IFfgorvSxdSbRMSkJsgzsnVB0LI5yYkWMsEq5IrDwSGNbqncjkk0FP37ghhAqt8gnDDuVZTHgjwH8c1PkGot5b/8NsRoEvPS2yAg57kOGDAQy/7BPgVw3mEsES51QrMw2WPVxYQPHExk8DT5u8I0KcllcuD1NpWqyuOBB4/RL35DOm1zYvm2YfyFFY3rPbf+y9BL0TgH4Pwh1jrAtKfAAAAAElFTkSuQmCC');
+  background-size: 18px;
+  width: 22px;
+  height: 26px;
+  display: block;
+  background-repeat: no-repeat;
+}
+.icon-home {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAB6klEQVRoge3a3W2DMBSG4YyQERghI2SDZgQ26MsEZYRukGyQEcoGYYOOkG5AL+JWR4mND8FgO/KRfJEfjr9HIECYzaZUqVKllAVsm6Z5B76AAbgCZ+AQO1vwAnbAt4HaxhnYxs4ZpAz2OoL9G5fs0ROw+aOfwOaL9mB/gA7oXwLtwfZAJf5bZ41WYB8AHvQxhkNVisPYubeyQyuwO0WPPNDAFvdNhQoreqWNNthLCKzomSZ6CazonRZ6SayYIw30GlgxV1z0mlgxZxx0DKyYe110TKzIsA46BazIsiw6JazI1C6CThErsp2Coj3YAWjDMyZndGUbgHpKIx82B7AOrcTmAvajuT0u1TRqV1GNZ9XkHHA99zZ7V9ukXZdnzavN2rkauMB9RmDb2bsba3K/QY39uteuJnNnfQCb7+8N40s5AlmZz1mBzW8Hk3v/TOPswHMbF3AB27erzHrwx5TRNM0bihWHpMDmpKG9TtqGd5klNbDm9tQ3yAk8F/vUHAUcGdyOjO7lwLHnUFcBF/D8MDmAP0OGyQF8CRlmKhjYLwl2Pe0/It7IudtmMbDBWu/k5ms3/+9v2MCpjT4I2KBtNwapjTokOPW9HG7vCnTNbU0pNu4By1Jv7AEVt6eCKcD7oIdxqVKlSpWKXL9hpxflzBoimgAAAABJRU5ErkJggg==');
+  background-size: 22px;
+  width: 22px;
+  height: 26px;
+  display: block;
+  background-repeat: no-repeat;
+}
+        	
+        </style>
     </head>
     <body>
 
         <section class="aui-flexView">
             <header class="aui-navBar aui-navBar-fixed">
-                <a href="javascript:;" class="aui-navBar-item">
+                <a href="javascript:;" onclick="backgo()" class="aui-navBar-item">
                     <i class="icon icon-return"></i>
                 </a>
                 <div class="aui-center">
                     <span class="aui-center-title"></span>
                 </div>
-                <a href="javascript:;" class="aui-navBar-item">
+               <!-- <a href="javascript:;" class="aui-navBar-item">
                     <i class="icon icon-xin"></i>
                     <i class="icon icon-shr"></i>
-                </a>
+                </a>-->
             </header>
             <div id="scrollBg" style="display: none;">
                 <div class="aui-link-me">
                     <a href="#commodity">商品</a>
-                    <a href="#">评价</a>
-                    <a href="#">详情</a>
+                   <!-- <a href="#">评价</a>
+                    <a href="#">详情</a>-->
                 </div>
             </div>
             <section class="aui-scrollView">
@@ -53,7 +72,7 @@
                     <em th:unless="${product.oriPrice == 0.00}" th:text="${product.price/product.oriPrice+'.'+ product.price%product.oriPrice + '折'}"></em>
                 </div>
                 <div class="aui-product-title">
-                    <h2 th:text="${product.title}"></h2>
+                    <h2 th:text="${product.title+' '+product.desc}"></h2>
                 </div>
                 <div class="aui-product-title aui-product-title-text">
                     <h2 th:text="${product.title}"></h2>
@@ -109,20 +128,20 @@
                                 </div>
                             </div>
                         </li>-->
-                        <li class="aui-footer-flex" data-ydui-actionsheet="{target:'#actionSheet3',closeElement:'#cancel3'}">
+                        <li class="aui-footer-flex">
                             <div class="aui-module-hd">运费</div>
-                            <div class="aui-module-bd">免运费</div>
-                            <div class="aui-module-fr aui-footer-flex1"></div>
+                            <div class="aui-module-bd" th:text="${product.carriage>0?('运费'+product.carriage+'元'):'免运费'}"></div>
+                           <!-- <div class="aui-module-fr aui-footer-flex1"></div>-->
                         </li>
                         <li class="aui-footer-flex" data-ydui-actionsheet="{target:'#actionSheet4',closeElement:'#cancel4'}">
-                            <div class="aui-module-hd">说明</div>
-                            <div class="aui-module-bd">假一赔十 | 7天无忧退货 | 自营发货|dafhuwefuiwehfiaskjcakdhkf</div>
+                            <div class="aui-module-hd">规格</div>
+                            <div class="aui-module-bd" th:text="${product.specification}"></div>
                             <div class="aui-module-fr aui-footer-flex1"></div>
                         </li>
                     </ul>
                 </div>
-                <div class="divHeight"></div>
-               <!-- <div class="aui-evaluate-box">
+                <!--<div class="divHeight"></div>
+                <div class="aui-evaluate-box">
                     <div class="aui-footer-flex aui-evaluate-item">
                         <div class="aui-footer-flex1 aui-evaluate-hd">商品评价(4599)</div>
                         <div class="aui-evaluate-fr">96.0%</div>
@@ -328,7 +347,7 @@
                     </div>
                 </div>
                 -->
-                <div class="divHeight"></div>
+               <!-- <div class="divHeight"></div>
                 <div class="aui-tab" data-ydui-tab>
                     <ul class="tab-nav">
                         <li class="tab-nav-item tab-active">
@@ -388,7 +407,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <!--<div class="divHeight"></div>
                 <div class="aui-introduce">
                     <div class="aui-tab" data-ydui-tab>
@@ -484,7 +503,7 @@
                         </div>
                         <div class="aui-show-box-cp aui-footer-flex">
                             <div class="aui-show-box-img">
-                                <img src="images/pd-001.jpg" alt="">
+                               <!-- <img th:src="@{images/order/pd-001.jpg}" alt=""> -->
                             </div>
                             <div class="aui-show-box-text">
                                 <h2>
@@ -556,7 +575,7 @@
                         <div class="aui-show-box-title aui-footer-flex">
                             <div class="aui-footer-flex1">配送至</div>
                             <div>
-                                <a href="javascript:;" id="cancel2" class="">
+                                <a href="javascript:;" id="cancel2" onclick="closesheet()" class="">
                                     <i class="icon icon-close"></i>
                                 </a>
                             </div>
@@ -578,7 +597,7 @@
                         <div class="aui-show-box-title aui-footer-flex">
                             <div class="aui-footer-flex1">运费说明</div>
                             <div>
-                                <a href="javascript:;" id="cancel3" class="">
+                                <a href="javascript:;" onclick="closesheet()" id="cancel3" class="">
                                     <i class="icon icon-close"></i>
                                 </a>
                             </div>
@@ -592,9 +611,9 @@
                 <div class="m-actionsheet" id="actionSheet4">
                     <div class="aui-show-box">
                         <div class="aui-show-box-title aui-footer-flex">
-                            <div class="aui-footer-flex1">商品说明</div>
+                            <div class="aui-footer-flex1">商品规格</div>
                             <div>
-                                <a href="javascript:;" id="cancel5" class="">
+                                <a href="javascript:;" id="cancel4" class="">
                                     <i class="icon icon-close"></i>
                                 </a>
                             </div>
@@ -608,15 +627,21 @@
             </section>
             <footer class="aui-footer-button aui-footer-flex aui-footer-fixed">
                 <div class="aui-footer-wrap">
-                    <i class="icon-shop"></i>
-                    <span>店铺</span>
+                   <!-- <i class="icon-shop"></i>-->
+                   <a th:href="@{index}" id="shopcar">
+                    	<i class="icon-home"></i>
+                   </a>
+                    <span>首页</span>
                 </div>
                 <div class="aui-footer-wrap">
-                    <i class="icon-service"></i>
-                    <span>客服</span>
+                    <!--<i class="icon-service"></i>-->
+                    <a th:href="@{user}" id="shopcar">
+                    	<i class="icon-myme"></i>
+                    </a>
+                    <span>我的</span>
                 </div>
                 <div class="aui-footer-wrap">
-                	<a th:href="@{shoppingCar}">
+                	<a th:href="@{shoppingCar}" id="shopcar">
 	                    <i class="icon-car"></i>
 	                    <span>购物车</span>
                 	</a>
@@ -624,7 +649,7 @@
                 <div class="aui-footer-group aui-footer-flex1">
                     <div class="aui-footer-flex">
                         <div class="aui-btn aui-btn-gray">
-                            <span onclick="addShoppingCar()">加入购物车</span>
+                            <span class="addcar">加入购物车</span>
                         </div>
                         <div class="aui-btn aui-btn-red">
                             <span>立即购买</span>
@@ -634,6 +659,7 @@
             </footer>
         </section>
         <script type="text/javascript" th:src="@{js/jquery-1.11.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{js/jquery.fly.min.js}"></script>
         <script type="text/javascript" th:src="@{js/goodsinfo/tab.js}"></script>
         <script type="text/javascript" th:src="@{js/goodsinfo/layer.js}"></script>
         <script type="text/javascript" th:src="@{js/goodsinfo/touchSlider.js}"></script>
@@ -676,12 +702,53 @@
                     }
                 });
             });
+            
+            function backgo(){
+				self.location=document.referrer;
+			}
+			
+			function closesheet(){
+				$(this).closest('.m-actionsheet').removeClass('actionsheet-toggle');
+			
+			}
 		</script>
 		<script th:inline="javascript">
 			/*<![CDATA[*/
 			    var price = [[${product.price}]];
 			    var goodsId = [[${product.id}]];
+			    var src = [[${product.imgPath}]];
 			/*]]>*/
+			$(function() {
+				flyCar();
+			});	
+				
+			 function flyCar(){
+            	var offset = $("#shopcar").offset(); 
+			    $(".addcar").click(function(event){ 
+			    	addShoppingCar();
+			        var addcar = $(this); 
+			       // var img = addcar.parent().find('img').attr('src'); 
+			        var flyer = $('<div style="height:50px;width:50px"><img class="u-flyer" src="'+src+'" style="height:100%;width:100%;" alt=""></div>'); 
+			        flyer.fly({ 
+			            start: { 
+			                left: 300, //开始位置（必填）#fly元素会被设置成position: fixed 
+			                top:  100//开始位置（必填） 
+			            }, 
+			            end: { 
+			                left: offset.left+18, //结束位置（必填） 
+			                top: offset.top+100, //结束位置（必填） 
+			                width: 0, //结束时宽度 
+			                height: 0 //结束时高度 
+			            }, 
+			            onEnd: function(){ //结束回调 
+			               // $("#msg").show().animate({width: '250px'}, 200).fadeOut(1000); //提示信息 
+			             //   addcar.css("cursor","default").removeClass('orange').unbind('click'); 
+			               // this.destory(); //移除dom 
+			            } 
+			        }); 
+			    }); 
+            }
+			
 			function addShoppingCar(){
 				$.ajax({
 		        		data: JSON.stringify({"price":price,"goodsId":goodsId,"count":1}),
@@ -689,8 +756,8 @@
 		        		type: "POST",
 		        		contentType:"application/json",
 		        		success:function(data){
-		        			if(data.respcode=="000000"){
-		        				
+		        			if(data.respcode!="000000"){
+		        				alert(data.respmsg);
 		        			}
 		        		},
 		        		error:function(msg)

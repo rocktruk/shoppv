@@ -253,11 +253,39 @@ public class CustomControl {
 				Optional<Trans> refund = transDtlService.getTransById(o.getRefTraceNo());
 				o.setRefundEntity(refund.get());
 			}
+			if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_SUC).equals(o.getOrderStatus())) {
+				request.setAttribute("msg", "交易成功");
+			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_REFUND).equals(o.getOrderStatus())) {
+				request.setAttribute("msg", "退款成功");
+			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_REFUNDING).equals(o.getOrderStatus())) {
+				request.setAttribute("msg", "退款中");
+			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_NOTPAY).equals(o.getOrderStatus())) {
+				request.setAttribute("msg", "未支付");
+			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_CANCEL).equals(o.getOrderStatus())) {
+				request.setAttribute("msg", "已取消");
+			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_WAITPAY).equals(o.getOrderStatus())) {
+				request.setAttribute("msg", "支付中");
+			}
 		});
 		request.setAttribute("order", order.get());
 		return "user/orderinfo";
 	}
 	
+	@RequestMapping("delOrder")
+	@ResponseBody
+	public Map<String,Object> orderDel(HttpServletRequest request,@RequestBody Map<String,String> req) {
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			orderService.delOrder(req.get("id"));	
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e) {
+			log.error(e.getMessage(),e);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
+		}
+		return result;
+	}
 	
 	
 	

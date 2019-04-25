@@ -46,6 +46,9 @@ public class Trans {
 	@Column(name="REFUNDABLE_AMT")
 	private BigDecimal refundableAmt;
 	
+	@Column(name="RESP_MSG")
+	private String respMsg;
+	
 	@Column(name="BACK_CHNL_TRACE_NO")
 	private String backChnlTraceNo;
 	
@@ -157,6 +160,14 @@ public class Trans {
 
 	public void setRefTraceNo(String refTraceNo) {
 		this.refTraceNo = refTraceNo;
+	}
+
+	public String getRespMsg() {
+		return respMsg;
+	}
+
+	public void setRespMsg(String respMsg) {
+		this.respMsg = respMsg;
 	}
 
 	

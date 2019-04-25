@@ -28,4 +28,9 @@ public interface ShoppingOrderRepository extends IExpandJpaRepository<ShoppingOr
 	
 	@Query(value = "select * from (select * from shop_order s where s.CUS_ID = ?1) t where t.ORDER_STATUS in ('03','05') order by t.CREATE_TIME desc limit ?2,?3",nativeQuery=true)
 	List<ShoppingOrder> findShoppingOrderByInitStatusWithPage(long cusId,int start,int length);
+	
+	@Modifying
+	@Transactional
+	@Query("update ShoppingOrder s set s.orderStatus = ?2 where s.id = ?1")
+	int updateShoppingOrderState(String id,String state);
 }

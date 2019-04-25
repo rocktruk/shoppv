@@ -23,6 +23,7 @@ import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.DictConstantsUtil;
 import com.online.mall.shoppv.common.util.IdGenerater;
 import com.online.mall.shoppv.entity.Customer;
+import com.online.mall.shoppv.entity.Goods;
 import com.online.mall.shoppv.entity.GoodsWithoutDetail;
 import com.online.mall.shoppv.entity.ReceiveAddress;
 import com.online.mall.shoppv.entity.ShoppingCar;
@@ -41,6 +42,9 @@ public class ShoppingOrderService {
 	
 	@Autowired
 	private ShoppingCarRepository carRepo;
+	
+	@Autowired
+	private GoodsService godsService;
 	
 	@Resource
 	private ApplicationContext context;
@@ -154,6 +158,18 @@ public class ShoppingOrderService {
 	
 	public Optional<ShoppingOrder> findById(String id){
 		return orderRepos.findById(id);
+	}
+	
+	/**
+	 * 更新订单状态为删除
+	 * @param id
+	 */
+	@Transactional
+	public void delOrder(String id) {
+		Optional<ShoppingOrder> order = findById(id);
+		GoodsWithoutDetail goods = order.get().getGoods();
+		godsService.updGoodsInventory(goods.getId(), order.get().getCount(), ConfigConstants.OPERA_GOODS_MINUS);
+		orderRepos.updateShoppingOrderState(id, DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_DEL));
 	}
 	
 }

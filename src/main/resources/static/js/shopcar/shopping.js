@@ -31,14 +31,17 @@ $(function(){
       Shops.prop('checked', true); //店铺全选按钮被选中
       if ($(".shopCheck").length == $(".shopCheck:checked").length) { //如果店铺被选中的数量等于所有店铺的数量
         $("#AllCheck").prop('checked', true); //全选按钮被选中
+        $("#delCheck").prop('checked', true);
         TotalPrice();
       } else {
         $("#AllCheck").prop('checked', false); //else全选按钮不被选中 
+        $("#delCheck").prop('checked', false);
         TotalPrice();
       }
     } else { //如果选中的商品不等于所有商品
       Shops.prop('checked', false); //店铺全选按钮不被选中
       $("#AllCheck").prop('checked', false); //全选按钮也不被选中
+      $("#delCheck").prop('checked', false);
       // 计算
       TotalPrice();
       // 计算
@@ -63,14 +66,17 @@ $(function(){
       $(this).parents(".shop-group-item").find(".goods-check").prop('checked', true); //店铺内的所有商品按钮也被选中
       if ($(".shopCheck").length == $(".shopCheck:checked").length) { //如果店铺被选中的数量等于所有店铺的数量
         $("#AllCheck").prop('checked', true); //全选按钮被选中
+        $("#delCheck").prop('checked', true);
         TotalPrice();
       } else {
         $("#AllCheck").prop('checked', false); //else全选按钮不被选中
+        $("#delCheck").prop('checked', false);
         TotalPrice();
       }
     } else { //如果店铺按钮不被选中
       $(this).parents(".shop-group-item").find(".goods-check").prop('checked', false); //店铺内的所有商品也不被全选
       $("#AllCheck").prop('checked', false); //全选按钮也不被选中
+      $("#delCheck").prop('checked', false);
       TotalPrice();
     }
   });
