@@ -137,6 +137,21 @@ public class ShopControl {
 		}
 	}
 	
+	
+	@RequestMapping("buyAgain")
+	public String buyAgain(HttpServletRequest request,String goodsId) {
+		Map<String,Object> param = new HashMap<String, Object>();
+		param.put("goodsId", goodsId);
+		param.put("count", 1);
+		boolean flag = carService.addShoppingCar((Customer)SessionUtil.getAttribute(request.getSession(), SessionUtil.USER), param);
+		if(flag) {
+			return "redirect:shoppingCar";
+		}else {
+			return "redirect:goodsInfo?goodsId="+goodsId;
+		}
+	}
+	
+	
 	/**
 	 * 提交结算订单
 	 * @param request

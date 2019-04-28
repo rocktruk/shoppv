@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.DictConstantsUtil;
 import com.online.mall.shoppv.common.util.CacheUtil;
@@ -115,7 +116,8 @@ public class GoodsService {
 	@Cacheable(value="GoodsCacheWithId",key="'getProductWithDetail'+#goodsId")
 	public Optional<GoodsWithoutDetail> getProductWithDetail(String goodsId)
 	{
-		return noDetailRepos.findById(goodsId);
+		GoodsWithoutDetail goods = JSON.parseObject(JSON.toJSONString(getGoods(goodsId).get()), GoodsWithoutDetail.class);
+		return Optional.of(goods);
 	}
 	
 	
@@ -202,6 +204,7 @@ public class GoodsService {
 	 * @param goodsId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public Optional<Goods> getGoods(String goodsId) {
 		try {
 			Future<Optional<Goods>> cacheGoods = (Future<Optional<Goods>>)cacheUtil.getCacheContent(CacheUtil.Caches.goodsTrace.name(),goodsId);
@@ -209,7 +212,14 @@ public class GoodsService {
 				Callable<Optional<Goods>> callable = new Callable<Optional<Goods>>() {
 					@Override
 					public Optional<Goods> call() throws Exception {
-						return getProduct(goodsId);
+						Optional<Goods> goods = getProduct(goodsId);
+						goods.map(g -> {
+							if(g.getBanerImages()!=null) {
+								g.setBanners(g.getBanerImages().split(","));
+							}
+							return g;
+						}).orElse(new Goods());
+						return goods;
 					}
 				};
 				FutureTask<Optional<Goods>> task = new FutureTask<Optional<Goods>>(callable);
@@ -220,13 +230,6 @@ public class GoodsService {
 				}
 			}
 			Optional<Goods> goods = cacheGoods.get();
-			goods.map(g -> {
-				if(g.getBanerImages()!=null) {
-					g.setBanners(g.getBanerImages().split(","));
-				}
-				cacheUtil.setCacheContent(CacheUtil.Caches.goodsTrace.name(), goodsId, g);
-				return g;
-			}).orElse(new Goods());
 			return goods;
 		}catch(Exception e) {
 			log.error(e.getMessage(),e);
@@ -236,7 +239,7 @@ public class GoodsService {
 	}
 	
 	/**
-	 * 修改商品库存
+	 * 修改商品库存,获取锁5s超时
 	 * @param goodsId 商品ID
 	 * @param count 修改商品库存数量
 	 * @param opera 订单的商品数量加减操作，add,minus
@@ -245,7 +248,7 @@ public class GoodsService {
 	@Transactional
 	public boolean updGoodsInventory(String goodsId,int count,String opera) {
 			try {
-				if(lock.tryLock(1, TimeUnit.SECONDS)) {
+				if(lock.tryLock(5, TimeUnit.SECONDS)) {
 					Optional<Goods> goods = getGoods(goodsId);
 					if(goods.isPresent()) {
 						long inventory = goods.get().getInventory();
@@ -260,6 +263,8 @@ public class GoodsService {
 							return true;
 						}
 					}
+				}else {
+					log.warn(goodsId+"|更新库存获取锁超时，超时时间5s|"+count+"|"+opera);
 				}
 			}catch(Exception e) {
 				log.error(e.getMessage(),e);

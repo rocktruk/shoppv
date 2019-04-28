@@ -1,5 +1,6 @@
 package com.online.mall.shoppv.control;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.assertj.core.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ import com.online.mall.shoppv.service.CustomerService;
 import com.online.mall.shoppv.service.ReceivedAddrService;
 import com.online.mall.shoppv.service.ShoppingOrderService;
 import com.online.mall.shoppv.service.TransactionService;
+import com.online.mall.shoppv.trans.bean.CreateOrderResponse;
+import com.online.mall.shoppv.trans.service.TransService;
 
 
 @Controller
@@ -52,6 +56,8 @@ public class CustomControl {
 	@Autowired
 	private ShoppingOrderService orderService;
 	
+	@Autowired
+	private TransService transService;
 	/**
 	 * 我的页面
 	 * @param request
@@ -288,5 +294,38 @@ public class CustomControl {
 	}
 	
 	
+	/**
+	 * 我的订单页面支付
+	 * @param request
+	 * @param req 订单ID
+	 * @return
+	 */
+	@RequestMapping("orderPayment")
+	@ResponseBody
+	public Map<String,Object> orderPayment(HttpServletRequest request,@RequestBody Map<String, String> req){
+		Map<String,Object> result = new HashMap<String, Object>();
+		Optional<ShoppingOrder> order = orderService.findById(req.get("id"));
+		Optional<ReceiveAddress> recvaddr = recvService.getAddrById(order.get().getId());
+		String traceNo = IdGenerater.INSTANCE.transIdGenerate();
+		//创建订单
+		Optional<CreateOrderResponse> orderResp = transService.zbtCreateOrder((Customer)SessionUtil.getAttribute(request.getSession(), SessionUtil.USER), recvaddr.get(), order.get().getGoods().getTitle(), order.get().getPayAmt(), traceNo);
+		order.ifPresent(o -> {
+			Trans trans = new Trans();
+			trans.setTraceNo(traceNo);
+			o.setTrans(trans);
+		});
+		//更新订单状态
+		orderResp.ifPresent(r -> {
+			if(r.getStatus() == 0) {
+				order.get().setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_WAITPAY));
+			}else {
+				order.get().setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_FAILED));
+			}
+		});
+		List<ShoppingOrder> orders = new ArrayList<ShoppingOrder>();
+		orders.add(order.get());
+		orderService.saveOrders(orders);
+		return result;
+	}
 	
 }

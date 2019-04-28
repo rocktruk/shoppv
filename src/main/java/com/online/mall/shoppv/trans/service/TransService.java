@@ -89,38 +89,13 @@ public class TransService {
 		String traceNo = IdGenerater.INSTANCE.transIdGenerate();
 		Customer user = (Customer)SessionUtil.getAttribute(session,SessionUtil.USER);
 		BigDecimal trxAmt = new BigDecimal((String)params.get("totalAmt")).setScale(2);
-		/*--创建订单开始 --*/
-		CreateOrderRequest order = new CreateOrderRequest();
-		order.setSource(user.getChannelType());
-		order.setCity_codes(recvaddr.getCityCode().replace("-", ""));
-		order.setApp_id(appId);
-		order.setConsignee_address(new StringJoiner("").add(recvaddr.getProvice())
-				.add(recvaddr.getCity()).add(recvaddr.getCounty())
-				.add(recvaddr.getDetailedAddr()).toString());
-		order.setNotify_url(host+contextPath+"/resultNotify");
-		order.setOpen_userid(user.getOpenId());
-		order.setOrder_title((String)params.get("orderTitle"));
-		order.setOut_order_number(traceNo);
-		order.setPush_type(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.PUSHTYPE_FORMURLENCODED));
-		order.setReturn_url(host+contextPath+"/paymentResult");
-		order.setTotal_amount(trxAmt);
-		order.setType_status(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDRTYPE_NORMAL));
+		String orderTitle = (String)params.get("orderTitle");
 		try {
-			String result = HttpUtil.post(createOrderUrl, order.pack());
-			log.info("创建订单返回报文："+result);
-			CreateOrderResponse resp = JSON.parseObject(result, CreateOrderResponse.class);
-			/*--交易流水保存 start--*/
-			Trans entity = new Trans();
-			entity.setTraceNo(traceNo);
-			entity.setCusId(user.getId());
-			entity.setRefundableAmt(trxAmt);
-			entity.setRefundedAmt(BigDecimal.ZERO);
-			entity.setTrxAmt(trxAmt);
-			entity.setRespMsg(resp.getMsg());
-			entity.setTrxCode(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRXCODE_CONSUME));
-			/*--交易流水保存 end--*/
-			if(resp.getStatus()==0)
+			/*--创建订单开始 --*/
+			Optional<CreateOrderResponse> orderResp = zbtCreateOrder(user, recvaddr, orderTitle, trxAmt, traceNo);
+			if(orderResp.isPresent() && orderResp.get().getStatus()==0)
 			{
+				CreateOrderResponse resp = orderResp.get();
 				payReq.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 				payReq.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
 				//拼装支付页面跳转url
@@ -134,26 +109,77 @@ public class TransService {
 				String msg = payment.pack();
 				url.append("?").append(msg);
 				payReq.put("url", url.toString());
-				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_WAITPAY));
-				entity.setBackChnlTraceNo(resp.getData().getOrder_number());
-				entity.setBackChannel(resp.getData().getSource());
-//				cache.caffeineCacheManager().getCache(CacheUtil.Caches.ShopCarToSettle.name()).put(entity.getBackChnlTraceNo(), entity);
-				cacheUtil.setCacheContent(CacheUtil.Caches.ShopCarToSettle.name(), entity.getBackChnlTraceNo(), entity);
 			}else {
-				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_FAIL));
+				log.warn("创建订单失败|"+traceNo);
 				payReq.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_FAIL));
 				payReq.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_CREATEORDR_FAIL));
 			}
-			transService.saveTransEntity(entity);
 			//查询购物车结算商品，并插入订单表,删除购物车商品
 			orderService.insertOrderByShoppingCar(ordrs,recvaddr.getId(),traceNo);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error(e.getMessage(),e);
 			payReq.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
 			payReq.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
 		}
 		return payReq;
 	}
+	
+	/**
+	 * 周边通订单创建，并保存交易流水信息
+	 * @param user
+	 * @param recvaddr
+	 * @param orderTitle
+	 * @param trxAmt
+	 * @param traceNo
+	 * @return
+	 */
+	public Optional<CreateOrderResponse> zbtCreateOrder(Customer user,ReceiveAddress recvaddr,String orderTitle,BigDecimal trxAmt,String traceNo) {
+		CreateOrderRequest order = new CreateOrderRequest();
+		order.setSource(user.getChannelType());
+		order.setCity_codes(recvaddr.getCityCode().replace("-", ""));
+		order.setApp_id(appId);
+		order.setConsignee_address(new StringJoiner("").add(recvaddr.getProvice())
+				.add(recvaddr.getCity()).add(recvaddr.getCounty())
+				.add(recvaddr.getDetailedAddr()).toString());
+		order.setNotify_url(host+contextPath+"/resultNotify");
+		order.setOpen_userid(user.getOpenId());
+		order.setOrder_title(orderTitle);
+		order.setOut_order_number(traceNo);
+		order.setPush_type(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.PUSHTYPE_FORMURLENCODED));
+		order.setReturn_url(host+contextPath+"/paymentResult");
+		order.setTotal_amount(trxAmt);
+		order.setType_status(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDRTYPE_NORMAL));
+		/*--交易流水保存 start--*/
+		Trans entity = new Trans();
+		entity.setTraceNo(traceNo);
+		entity.setCusId(user.getId());
+		entity.setRefundableAmt(trxAmt);
+		entity.setRefundedAmt(BigDecimal.ZERO);
+		entity.setTrxAmt(trxAmt);
+		entity.setTrxCode(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRXCODE_CONSUME));
+		/*--交易流水保存 end--*/
+		try {
+			String result = HttpUtil.post(createOrderUrl, order.pack());
+			log.info("创建订单返回报文："+result);
+			CreateOrderResponse resp = JSON.parseObject(result, CreateOrderResponse.class);
+			if(resp.getStatus() == 0) {
+				entity.setRespMsg(resp.getMsg());
+				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_WAITPAY));
+				entity.setBackChnlTraceNo(resp.getData().getOrder_number());
+				entity.setBackChannel(resp.getData().getSource());
+				cacheUtil.setCacheContent(CacheUtil.Caches.ShopCarToSettle.name(), entity.getBackChnlTraceNo(), entity);
+			}else {
+				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_FAIL));
+			}
+			return Optional.of(resp);
+		}catch(Exception e) {
+			log.error(e.getMessage(),e);
+			entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_FAIL));
+		}
+		transService.saveTransEntity(entity);
+		return Optional.empty();
+	}
+	
 	
 	/**
 	 * 更新交易状态

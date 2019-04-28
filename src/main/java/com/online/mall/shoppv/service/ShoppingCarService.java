@@ -127,9 +127,10 @@ public class ShoppingCarService {
 	
 	@Transactional
 	public boolean insertCar(Customer user,Map<String, Object> map) {
+		Optional<Goods> goods = goodsService.getGoods((String)map.get("goodsId"));
 		boolean flag = goodsService.updGoodsInventory((String)map.get("goodsId"), (Integer)map.get("count"), ConfigConstants.OPERA_GOODS_ADD);
 		if(flag) {
-			int n = carRepos.insertShoppingCar(IdGenerater.INSTANCE.shopIdGenerate(), user.getId(), null, new BigDecimal((Double)map.get("price")), (String)map.get("goodsId"), (Integer)map.get("count"));
+			int n = carRepos.insertShoppingCar(IdGenerater.INSTANCE.shopIdGenerate(), user.getId(), null, goods.get().getPrice(), (String)map.get("goodsId"), (Integer)map.get("count"));
 			if(n==1)
 			{
 				return true;
@@ -140,9 +141,15 @@ public class ShoppingCarService {
 		return flag;
 	}
 	
+	/**
+	 * 购物车商品数量更新，每次变动固定为1
+	 * @param id
+	 * @param count
+	 * @return
+	 */
 	@Transactional
 	public boolean updateShoppingCar(String id,int count) {
-		boolean flag = goodsService.updGoodsInventory(id, count, ConfigConstants.OPERA_GOODS_ADD);
+		boolean flag = goodsService.updGoodsInventory(id, 1, ConfigConstants.OPERA_GOODS_ADD);
 		if(flag) {
 			carRepos.updateShoppingCarWithId(id,count);
 		}

@@ -20,7 +20,7 @@ public class SessionUtil {
 	@Resource
 	private ApplicationContext context;
 	
-	private CacheManager cacheManager = (CacheManager)context.getBean("caffeineCacheManager");
+	private CacheManager cacheManager;
 	
 	public static void setAttribute(HttpSession session,String key,Object value)
 	{
@@ -33,9 +33,15 @@ public class SessionUtil {
 		return session.getAttribute(key);
 	}
 	
+	private CacheManager getCacheBean() {
+		if(cacheManager == null) {
+			cacheManager = (CacheManager)context.getBean("caffeineCacheManager");
+		}
+		return cacheManager;
+	}
 	
 	public Object getCacheContent(String cacheName,String key) {
-		SimpleValueWrapper wrap = (SimpleValueWrapper)cacheManager.getCache(cacheName).get(key);
+		SimpleValueWrapper wrap = (SimpleValueWrapper)getCacheBean().getCache(cacheName).get(key);
 		if(wrap != null) {
 			return wrap.get();
 		}else {
@@ -45,7 +51,7 @@ public class SessionUtil {
 	}
 	
 	public synchronized Object putIfAbsent(String cacheName,String key,Object value) {
-		SimpleValueWrapper wrap = (SimpleValueWrapper)cacheManager.getCache(cacheName).putIfAbsent(key, value);
+		SimpleValueWrapper wrap = (SimpleValueWrapper)getCacheBean().getCache(cacheName).putIfAbsent(key, value);
 		if(wrap != null) {
 			return wrap.get();
 		}else {
@@ -54,11 +60,11 @@ public class SessionUtil {
 	}
 	
 	public void remove(String cacheName,String key) {
-		cacheManager.getCache(cacheName).evict(key);
+		getCacheBean().getCache(cacheName).evict(key);
 	}
 	
 	public void setCacheContent(String cacheName,String key,Object value) {
-		cacheManager.getCache(cacheName).put(key, value);
+		getCacheBean().getCache(cacheName).put(key, value);
 	}
 	
 }

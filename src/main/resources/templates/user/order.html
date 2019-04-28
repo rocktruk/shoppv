@@ -80,7 +80,9 @@
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a th:href="@{goodsInfo(goodsId=${order.goods.id})}">再次购买</a>
+                                	<a href="javascript:;" th:if="${order.orderStatus eq '00' && (order.deliverStatus eq '02' || order.deliverStatus eq '01')}">等待收货</a>
+                                    <a th:href="@{buyAgain(goodsId=${order.goods.id})}" th:unless="${order.orderStatus eq '03' || order.orderStatus eq '05'}" class="aui-df-color">再次购买</a>
+                                    <a href="javascript:;" th:if="${order.orderStatus eq '03' || order.orderStatus eq '05'}" th:onclick="payment([[${order.id}]])">去支付</a>
                                     <!--<a href="javascript:;" class="aui-df-color">评价晒单</a>-->
                                 </div>
                                 <div class="divHeight"></div>
@@ -117,7 +119,7 @@
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a href="javascript:;">去支付</a>
+                                    <a href="javascript:;" th:onclick="payment([[${order.id}]])">去支付</a>
                                 </div>
                                 <div class="divHeight"></div>
                             </div>
@@ -154,7 +156,7 @@
                                 </a>
                                 <div class="aui-mail-button">
                                     <a href="javascript:;">等待收货</a>
-                                    <a href="javascript:;" class="aui-df-color">再次购买</a>
+                                    <a th:href="@{buyAgain(goodsId=${order.goods.id})}" class="aui-df-color">再次购买</a>
                                    <!-- <a href="javascript:;" class="aui-df-color">查看物流</a>-->
                                 </div>
                                 <div class="divHeight"></div>
@@ -191,7 +193,7 @@
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a href="javascript:;">再次购买</a>
+                                    <a th:href="@{buyAgain(goodsId=${order.goods.id})}">再次购买</a>
                                     <!--<a href="javascript:;" class="aui-df-color">评价晒单</a>-->
                                    <!-- <a href="javascript:;" class="aui-df-color">查看发票</a>-->
                                 </div>
@@ -229,7 +231,7 @@
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a th:href="@{goodsInfo(goodsId=${order.goods.id})}">再次购买</a>
+                                    <a th:href="@{buyAgain(goodsId=${order.goods.id})}">再次购买</a>
                                 </div>
                                 <div class="divHeight"></div>
                             </div>
@@ -257,6 +259,24 @@
 		        		}
 	        		});
         	}
+        	
+        	function payment(){
+        		$.ajax({
+		        		data: JSON.stringify({"id":id}),
+		        		url:  "orderPayment",
+		        		type: "POST",
+		        		contentType:"application/json",
+		        		success:function(data){
+		        			if(data.respcode!="000000"){
+		        				alert(data.respmsg);
+		        			}
+		        		},
+		        		error:function(msg)
+		        		{
+		        			console.log(msg);
+		        		}
+	        		});	
+    		}
         	
         	function backgo(){
 				self.location=document.referrer;
