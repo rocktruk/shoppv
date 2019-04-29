@@ -30,10 +30,14 @@ public class ReceivedAddrService {
 		return recvAddrRepo.count(example);
 	}
 	
-	
+	/**
+	 * 查询用户有效收货地址
+	 * @param userId
+	 * @return
+	 */
 	public List<ReceiveAddress> getAddrLs(long userId)
 	{
-		return recvAddrRepo.findReceiveAddressByCusId(userId);
+		return recvAddrRepo.findReceiveAddressByCusIdAndStatus(userId,"1");
 	}
 	
 	
@@ -48,8 +52,12 @@ public class ReceivedAddrService {
 		return recvAddrRepo.findReceiveAddressByCusIdAndDftAddr(userId,"1");
 	}
 	
+	/**
+	 * 更新收货地址状态为2
+	 * @param id
+	 */
 	@Transactional
 	public void delAddr(String id) {
-		recvAddrRepo.deleteById(id);;
+		recvAddrRepo.deleteReceiveAddressById(id);;
 	}
 }

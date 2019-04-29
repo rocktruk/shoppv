@@ -45,9 +45,6 @@ public class CustomControl {
 	private static final Logger log = LoggerFactory.getLogger(CustomControl.class);
 	
 	@Autowired
-	private CustomerService cusService;
-	
-	@Autowired
 	private ReceivedAddrService recvService;
 	
 	@Autowired
@@ -251,8 +248,8 @@ public class CustomControl {
 	 * @return
 	 */
 	@RequestMapping("/orderInfo")
-	public String orderInfo(HttpServletRequest request,String traceNo) {
-		Optional<ShoppingOrder> order = orderService.findById(traceNo);
+	public String orderInfo(HttpServletRequest request,String orderId) {
+		Optional<ShoppingOrder> order = orderService.findById(orderId);
 		order.ifPresent(o -> {
 			if("06,07".indexOf(o.getOrderStatus())!=-1)
 			{

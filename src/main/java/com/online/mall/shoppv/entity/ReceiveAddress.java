@@ -44,7 +44,8 @@ public class ReceiveAddress {
 	@Column(name="CITY_CODE")
 	private String cityCode;
 	
-	
+	@Column(name="status")
+	private String status;
 
 	public String getId() {
 		return id;
@@ -132,6 +133,14 @@ public class ReceiveAddress {
 
 	public void setCityCode(String cityCode) {
 		this.cityCode = cityCode;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

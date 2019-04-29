@@ -63,6 +63,16 @@ public class CustomerService {
 	}
 	
 	/**
+	 * 根据第三方openID及channelType获取用户信息
+	 * @param openId
+	 * @param source
+	 * @return
+	 */
+	public Optional<Customer> findUserByOpenId(String openId,String source){
+		return repository.getCustomerWithOpenId(openId, source);
+	}
+	
+	/**
 	 * 用户登陆，校验签名，并保存用户信息
 	 * @param request
 	 * @param req
@@ -90,6 +100,7 @@ public class CustomerService {
 		}
 		
 		CustomerEvent event = new CustomerEvent(this, user,session);
+		SessionUtil.setAttribute(session,SessionUtil.USER, user);
 		//异步保存用户信息
 		context.publishEvent(event);
 		return flag;

@@ -14,7 +14,7 @@ import com.online.mall.shoppv.entity.ReceiveAddress;
 public interface ReceiveAddressRepository extends IExpandJpaRepository<ReceiveAddress, String> {
 
 
-	List<ReceiveAddress> findReceiveAddressByCusId(long cusId);
+	List<ReceiveAddress> findReceiveAddressByCusIdAndStatus(long cusId,String status);
 	
 	
 	Optional<ReceiveAddress> findReceiveAddressByCusIdAndDftAddr(long cusId,String dftAddr);
@@ -22,6 +22,6 @@ public interface ReceiveAddressRepository extends IExpandJpaRepository<ReceiveAd
 	
 	@Modifying
 	@Transactional
-	@Query(value="delete from receive_address c where c.id = ?1",nativeQuery=true)
+	@Query(value="update ReceiveAddress d set d.status='2' where d.id = ?1")
 	int deleteReceiveAddressById(String id);
 }

@@ -33,4 +33,5 @@ public interface ShoppingOrderRepository extends IExpandJpaRepository<ShoppingOr
 	@Transactional
 	@Query("update ShoppingOrder s set s.orderStatus = ?2 where s.id = ?1")
 	int updateShoppingOrderState(String id,String state);
+	
 }

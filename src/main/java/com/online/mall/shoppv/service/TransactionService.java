@@ -30,4 +30,9 @@ public class TransactionService {
 		return transRepo.findById(traceNo);
 	}
 	
+	
+	public Optional<Trans> getTraceNoByBackTraceNo(String backtraceNo) {
+		return transRepo.findTraceNoByBackTraceNo(backtraceNo);
+	}
+	
 }

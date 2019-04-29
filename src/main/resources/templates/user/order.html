@@ -64,7 +64,7 @@
                                     <span class="aui-well-item-fr" th:if="${order.deliverStatus eq '03'}"></span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
                                             <img th:src="@{${order.goods.imgPath}}" alt="">
                                         </div>
@@ -73,7 +73,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-payment">
+                                <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-payment">
                                     <p>
                                         共<em th:text="${order.count}"></em>
                                         件商品 <span th:text="${order.orderStatus eq '00'?'实付款:':'应付款'}"></span> ￥<i th:text="${order.totalOrdrAmt}"></i>
@@ -103,7 +103,7 @@
                                     <span class="aui-well-wait">等待付款</span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
                                             <img th:src="@{${order.goods.imgPath}}" alt="">
                                         </div>
@@ -112,7 +112,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-payment">
+                                <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-payment">
                                     <p>
                                         共<em th:text="${order.count}"></em>
                                         件商品 实付款: ￥<i th:text="${order.totalOrdrAmt}"></i>
@@ -139,7 +139,7 @@
                                     <span class="aui-well-wait">等待收货</span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
                                             <img th:src="@{${order.goods.imgPath}}" alt="">
                                         </div>
@@ -148,7 +148,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-payment">
+                                <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-payment">
                                     <p>
                                         共<em th:text="${order.count}"></em>
                                         件商品 实付款: ￥<i th:text="${order.totalOrdrAmt}"></i>
@@ -177,7 +177,7 @@
                                     <span class="aui-well-item-fr"></span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
                                             <img th:src="@{${order.goods.imgPath}}" alt="">
                                         </div>
@@ -186,7 +186,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-payment">
+                                <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-payment">
                                     <p>
                                         共<em th:text="${order.count}"></em>
                                         件商品 实付款: ￥<i th:text="${order.totalOrdrAmt}"></i>
@@ -215,7 +215,7 @@
                                     <span class="aui-well-item-fr" th:onclick="delorder(this,[[${order.id}]])">已取消</span>
                                 </a>
                                 <div class="aui-mail-product">
-                                    <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-product-item">
+                                    <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-product-item">
                                         <div class="aui-mail-product-item-hd">
                                             <img th:src="@{${order.goods.imgPath}}" alt="">
                                         </div>
@@ -224,7 +224,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <a th:href="@{orderInfo(traceNo=${order.id})}" class="aui-mail-payment">
+                                <a th:href="@{orderInfo(orderId=${order.id})}" class="aui-mail-payment">
                                     <p>
                                         共<em th:text="${order.count}"></em>
                                         件商品 应付款: ￥<i th:text="${order.totalOrdrAmt}"></i>

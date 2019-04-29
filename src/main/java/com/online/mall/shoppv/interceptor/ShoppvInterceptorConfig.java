@@ -17,8 +17,7 @@ public class ShoppvInterceptorConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(accessIntcpt).addPathPatterns("/**").excludePathPatterns("/static/**",uploadPath,"/404","/","/images/**","/css/**","/js/**");
-		
+		registry.addInterceptor(accessIntcpt).addPathPatterns("/**").excludePathPatterns("/static/**",uploadPath,"/404","/","/images/**","/css/**","/js/**","/resultNotify","/zbt/**");
 	}
 	
 }

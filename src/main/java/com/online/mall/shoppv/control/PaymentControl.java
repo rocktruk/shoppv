@@ -30,9 +30,11 @@ import com.online.mall.shoppv.common.util.SignatureUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.ReceiveAddress;
 import com.online.mall.shoppv.entity.ShoppingCar;
+import com.online.mall.shoppv.entity.ShoppingOrder;
 import com.online.mall.shoppv.entity.Trans;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
+import com.online.mall.shoppv.service.CustomerService;
 import com.online.mall.shoppv.service.ReceivedAddrService;
 import com.online.mall.shoppv.service.ShoppingCarService;
 import com.online.mall.shoppv.service.ShoppingOrderService;
@@ -56,6 +58,12 @@ public class PaymentControl {
 	
 	@Autowired
 	private TransactionService transDtlService;
+	
+	@Autowired
+	private ShoppingOrderService orderService;
+	
+	@Autowired
+	private CustomerService userService;
 	
 	@Autowired
 	private SessionUtil cacheUtil;
@@ -119,7 +127,7 @@ public class PaymentControl {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/resultNotify")
+	@RequestMapping("resultNotify")
 	@ResponseBody
 	public Map<String,Object> notifyPayment(HttpServletRequest request,String source,String open_userid,String res_status,
 			String res_msg,String order_number,String total_amount,String sign)
@@ -213,11 +221,29 @@ public class PaymentControl {
 	 * 订单详情
 	 * @return
 	 */
-	@RequestMapping("/zbt/orderInfo")
+	@RequestMapping("zbt/orderInfo")
 	public String orderInfo(HttpServletRequest request,
 			String source,String open_userid,String phone,String order_number,
 			String sign)
 	{
-		return "user/orderinfo";
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("source", source);
+		map.put("phone", phone);
+		map.put("open_userid", open_userid);
+		map.put("order_number", order_number);
+		map.put("sign", sign);
+		try {
+			boolean flag = SignatureUtil.INTANCE.checkSign(map);
+			if(!flag) {
+				return "404";
+			}
+			Map<String,Object> orders = transHandler.findShopOrderByBckTraceNo(order_number);
+			Optional<Customer> user = userService.findUserByOpenId(open_userid,source);
+			user.ifPresent(u -> SessionUtil.setAttribute(request.getSession(), SessionUtil.USER, u));
+			request.setAttribute("params", orders);
+		} catch (NoSuchAlgorithmException e) {
+			log.error(e.getMessage(),e);
+		}
+		return "user/zbtorderinfo";
 	}
 }

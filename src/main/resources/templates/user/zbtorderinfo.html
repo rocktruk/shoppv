@@ -8,7 +8,7 @@
         <meta content="yes" name="apple-mobile-web-app-capable"/>
         <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
         <meta content="telephone=no" name="format-detection"/>
-        <link th:href="@{css/orderInfo/style.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/orderInfo/style.css}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
@@ -28,36 +28,36 @@
             <section class="aui-scrollView">
                 <div class="aui-flex aui-flex-context">
                     <div class="aui-flex-box">
-                        <h2 th:text="${msg}"></h2>
+                        <h2 th:text="${params.msg}"></h2>
                         <!--<h3><span th:text="${order.desc}" th:unless="${order.desc!=null}"></span></h3>-->
                     </div>
                     <div class="aui-assemble-img">
-                        <img th:src="@{images/orderInfo/time.png}" alt="">
+                        <img th:src="@{/images/orderInfo/time.png}" alt="">
                     </div>
                 </div>
                 <div class="aui-flex">
                     <div class="aui-address-img">
-                        <img th:src="@{images/orderInfo/add.png}" alt="">
+                        <img th:src="@{/images/orderInfo/add.png}" alt="">
                     </div>
                     <div class="aui-flex-box">
-                        <h4 th:text="${order.addr.recvName+' '+order.addr.phone}"></h4>
-                        <h5 th:text="${order.addr.provice+' '+order.addr.city+' '+order.addr.county+order.addr.detailedAddr}"></h5>
+                        <h4 th:text="${params.addr.recvName+' '+params.addr.phone}"></h4>
+                        <h5 th:text="${params.addr.provice+' '+params.addr.city+' '+params.addr.county+params.addr.detailedAddr}"></h5>
                     </div>
                 </div>
                 <div class="divHeight"></div>
                 <div class="aui-flex b-line">
                     <div class="aui-address-logo">
-                        <img th:src="@{images/favicon.jpg}" alt="">
+                        <img th:src="@{/images/favicon.jpg}" alt="">
                     </div>
                     <div class="aui-flex-box">
                         <h5>龙鑫商城</h5>
                     </div>
                     <!--<div class="aui-address-arrow"></div>-->
                 </div>
-                <a th:href="@{goodsInfo(goodsId=${order.goods.id})}">
+                <a th:each="order:${params.orders}" th:href="@{/goodsInfo(goodsId=${order.goods.id})}">
                 	<div class="aui-flex aui-flex-four">
 	                    <div class="aui-flex-add">
-	                        <img th:src="@{${order.goods.imgPath}}" alt="">
+	                        <img th:src="@{'/'+${order.goods.imgPath}}" alt="">
 	                    </div>
 	                    <div class="aui-flex-box">
 	                        <p th:text="${order.goods.title+' '+order.goods.desc}"></p>
@@ -65,14 +65,14 @@
 	                    </div>
                 	</div>
                 </a>
-                <div class="aui-flex aui-flex-four" th:if="${#strings.indexOf('06,07',order.orderStatus)} != -1" style="padding-top:0">
+                <div class="aui-flex aui-flex-four" th:if="${#strings.indexOf('06,11',params.trans.trxStatus)} != -1" style="padding-top:0">
                     <div class="aui-flex-box">
-                        <button th:text="${(order.orderStatus ne '06')? '已退款':'退款中'}"></button>
+                        <button th:text="${(params.trans.trxStatus ne '06')? '已退款':'部分退款'}"></button>
                     </div>
                 </div>
                 <div class="aui-flex b-line">
                     <div class="aui-flex-box">
-                        <h6><span th:text="${(#strings.indexOf('03,05',order.orderStatus)==-1)?'实付款':'应付款:'}"></span> <em th:text="${'¥'+order.payAmt}"></em> <i th:if="${order.goods.carriage==0}">(免运费)</i></h6>
+                        <h6><span th:text="${(#strings.indexOf('00,06,11',params.trans.trxStatus)==-1)?'应付款':'实付款:'}"></span> <em th:text="${'¥'+params.trans.trxAmt}"></em> </h6>
                     </div>
                 </div>
                 <!--<div class="aui-list-box">
@@ -96,12 +96,9 @@
                 <div class="divHeight"></div>
                 <div class="aui-flex">
                     <div class="aui-flex-box">
-                        <h4>订单编号: <em th:text="${order.id}"></em></h4>
-                        <h4>下单时间: <em th:text="${#strings.substringBefore(order.createTime,'.')}"></em></h4>
-                        <h4 th:if="${#strings.indexOf('00,03,06,07',order.orderStatus)}!=-1">周边通订单号: <em th:text="${order.trans.backChnlTraceNo}"></em></h4>
-                        <h4 th:if="${#strings.indexOf('00,03,06,07',order.orderStatus)}!=-1">支付时间时间: <em th:text="${#strings.substringBefore(order.trans.createTime,'.')}"></em></h4>
-                        <h4 th:if="${#strings.indexOf('06,07',order.orderStatus)}!=-1">退款发起时间: <em th:text="${#strings.substringBefore(order.refundEntity.createTime,'.')}"></em></h4>
-                        <h4 th:if="order.orderStatus eq '07'">退款完成时间: <em th:text="${#strings.substringBefore(order.refundEntity.lstUpdTime,'.')}"></em></h4>
+                        <h4>交易流水号: <em th:text="${params.trans.traceNo}"></em></h4>
+                        <h4>交易创建时间: <em th:text="${#strings.substringBefore(params.trans.createTime,'.')}"></em></h4>
+                        <h4>周边通订单号: <em th:text="${params.trans.backChnlTraceNo}"></em></h4>
                     </div>
                 </div>
             </section>

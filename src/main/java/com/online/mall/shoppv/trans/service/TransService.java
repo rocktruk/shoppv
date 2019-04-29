@@ -2,6 +2,7 @@ package com.online.mall.shoppv.trans.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.online.mall.shoppv.common.ConfigConstants;
@@ -35,6 +37,7 @@ import com.online.mall.shoppv.entity.ShoppingOrder;
 import com.online.mall.shoppv.entity.Trans;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
+import com.online.mall.shoppv.service.ReceivedAddrService;
 import com.online.mall.shoppv.service.ShoppingOrderService;
 import com.online.mall.shoppv.service.TransactionService;
 import com.online.mall.shoppv.trans.bean.CreateOrderRequest;
@@ -133,6 +136,7 @@ public class TransService {
 	 * @param traceNo
 	 * @return
 	 */
+	@Transactional
 	public Optional<CreateOrderResponse> zbtCreateOrder(Customer user,ReceiveAddress recvaddr,String orderTitle,BigDecimal trxAmt,String traceNo) {
 		CreateOrderRequest order = new CreateOrderRequest();
 		order.setSource(user.getChannelType());
@@ -158,10 +162,11 @@ public class TransService {
 		entity.setTrxAmt(trxAmt);
 		entity.setTrxCode(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRXCODE_CONSUME));
 		/*--交易流水保存 end--*/
+		CreateOrderResponse resp = null;
 		try {
 			String result = HttpUtil.post(createOrderUrl, order.pack());
 			log.info("创建订单返回报文："+result);
-			CreateOrderResponse resp = JSON.parseObject(result, CreateOrderResponse.class);
+			resp = JSON.parseObject(result, CreateOrderResponse.class);
 			if(resp.getStatus() == 0) {
 				entity.setRespMsg(resp.getMsg());
 				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_WAITPAY));
@@ -171,13 +176,12 @@ public class TransService {
 			}else {
 				entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_FAIL));
 			}
-			return Optional.of(resp);
-		}catch(Exception e) {
+		}catch(IOException e) {
 			log.error(e.getMessage(),e);
 			entity.setTrxStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_FAIL));
 		}
 		transService.saveTransEntity(entity);
-		return Optional.empty();
+		return Optional.of(resp);
 	}
 	
 	
@@ -212,4 +216,29 @@ public class TransService {
 	}
 	
 	
+	public Map<String,Object> findShopOrderByBckTraceNo(String bckTraceNo){
+		Map<String,Object> result = new HashMap<String, Object>();
+		Optional<Trans> trans = transService.getTraceNoByBackTraceNo(bckTraceNo);
+		if(!trans.isPresent()) {
+			return result;
+		}
+		List<ShoppingOrder> orders = orderService.getOrdersByTrans(trans.get().getTraceNo());
+		if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_SUC).equals(trans.get().getTrxStatus())) {
+			result.put("msg", "交易成功");
+		}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_REFUND).equals(trans.get().getTrxStatus())) {
+			result.put("msg", "退款成功");
+		}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_WAITPAY).equals(trans.get().getTrxStatus())) {
+			result.put("msg", "待支付");
+		}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_PARTIALREFUND).equals(trans.get().getTrxStatus())) {
+			result.put("msg", "已部分退款");
+		}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_CLOSE).equals(trans.get().getTrxStatus())) {
+			result.put("msg", "交易已关闭");
+		}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.TRX_STATUS_INITIAL).equals(trans.get().getTrxStatus())) {
+			result.put("msg", "支付中");
+		}
+		result.put("addr", orders.get(0).getAddr());
+		result.put("trans", trans.get());
+		result.put("orders", orders);
+		return result;
+	}
 }

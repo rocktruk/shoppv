@@ -32,6 +32,8 @@ public class ConfigConstants {
 	
 	public static final String TRX_STATUS_REFUND = "trx.status.refund";
 	
+	public static final String TRX_STATUS_PARTIALREFUND = "trx.status.partialrefund";
+	
 	public static final String TRX_STATUS_INITIAL = "trx.status.initial";
 	
 	public static final String TRX_STATUS_FAIL = "trx.status.fail";
