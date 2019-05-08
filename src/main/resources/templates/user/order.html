@@ -240,6 +240,7 @@
                 </div>
             </section>
         </section>
+        <a id="payment" href="javascript:;" style="visibility: hidden;"><span id="spanId">支付</span></a>
         <script type="text/javascript">
         	
         	function delorder(d,id){
@@ -260,7 +261,7 @@
 	        		});
         	}
         	
-        	function payment(){
+        	function payment(id){
         		$.ajax({
 		        		data: JSON.stringify({"id":id}),
 		        		url:  "orderPayment",
@@ -269,6 +270,9 @@
 		        		success:function(data){
 		        			if(data.respcode!="000000"){
 		        				alert(data.respmsg);
+		        			}else{
+		        				$("#payment").attr("href",data.url);
+		        				$("#spanId").click();
 		        			}
 		        		},
 		        		error:function(msg)

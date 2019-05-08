@@ -168,6 +168,14 @@ public class ShopControl {
 			log.debug("session timeout maxidle"+session.getMaxInactiveInterval());
 			Map<String,Object> data = new HashMap<String, Object>();
 			data.put("total", BigDecimal.ZERO);
+			//商品详情页面立即购买，现在购物车添加
+			if(ids.get("buyflag")!=null) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("goodsId", ids.get("ids"));
+				map.put("count", 1);
+				carService.addShoppingCar((Customer)SessionUtil.getAttribute(session, SessionUtil.USER), map);
+				ids.put("ids",map.get("carId").toString());
+			}
 			//查询需要结算的购物订单
 			List<ShoppingCar> ls = carService.getShoppingCarAndGoods(ids.get("ids"));
 			//计算总价

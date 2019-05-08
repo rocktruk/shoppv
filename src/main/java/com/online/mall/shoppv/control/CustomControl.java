@@ -15,6 +15,7 @@ import org.assertj.core.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ import com.online.mall.shoppv.service.ReceivedAddrService;
 import com.online.mall.shoppv.service.ShoppingOrderService;
 import com.online.mall.shoppv.service.TransactionService;
 import com.online.mall.shoppv.trans.bean.CreateOrderResponse;
+import com.online.mall.shoppv.trans.bean.PaymentRequest;
 import com.online.mall.shoppv.trans.service.TransService;
 
 
@@ -55,6 +57,13 @@ public class CustomControl {
 	
 	@Autowired
 	private TransService transService;
+	
+	@Value(value="${appid}")
+	private String appId;
+	
+	@Value(value="${payment.url}")
+	private String paymentUrl;
+	
 	/**
 	 * 我的页面
 	 * @param request
@@ -301,27 +310,46 @@ public class CustomControl {
 	@ResponseBody
 	public Map<String,Object> orderPayment(HttpServletRequest request,@RequestBody Map<String, String> req){
 		Map<String,Object> result = new HashMap<String, Object>();
-		Optional<ShoppingOrder> order = orderService.findById(req.get("id"));
-		Optional<ReceiveAddress> recvaddr = recvService.getAddrById(order.get().getId());
-		String traceNo = IdGenerater.INSTANCE.transIdGenerate();
-		//创建订单
-		Optional<CreateOrderResponse> orderResp = transService.zbtCreateOrder((Customer)SessionUtil.getAttribute(request.getSession(), SessionUtil.USER), recvaddr.get(), order.get().getGoods().getTitle(), order.get().getPayAmt(), traceNo);
-		order.ifPresent(o -> {
-			Trans trans = new Trans();
-			trans.setTraceNo(traceNo);
-			o.setTrans(trans);
-		});
-		//更新订单状态
-		orderResp.ifPresent(r -> {
-			if(r.getStatus() == 0) {
-				order.get().setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_WAITPAY));
-			}else {
-				order.get().setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_FAILED));
-			}
-		});
-		List<ShoppingOrder> orders = new ArrayList<ShoppingOrder>();
-		orders.add(order.get());
-		orderService.saveOrders(orders);
+		try {
+			Optional<ShoppingOrder> order = orderService.findById(req.get("id"));
+			Optional<ReceiveAddress> recvaddr = recvService.getAddrById(order.get().getAddr().getId());
+			String traceNo = IdGenerater.INSTANCE.transIdGenerate();
+			//创建订单
+			Optional<CreateOrderResponse> orderResp = transService.zbtCreateOrder((Customer)SessionUtil.getAttribute(request.getSession(), SessionUtil.USER), recvaddr.get(), order.get().getGoods().getTitle(), order.get().getPayAmt(), traceNo);
+			order.ifPresent(o -> {
+				Trans trans = new Trans();
+				trans.setTraceNo(traceNo);
+				o.setTrans(trans);
+			});
+			//更新订单状态
+			orderResp.ifPresent(r -> {
+				if(r.getStatus() == 0) {
+					order.get().setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_WAITPAY));
+					//拼装支付页面跳转url
+					StringBuilder url = new StringBuilder();
+					url.append(paymentUrl);
+					PaymentRequest payment = new PaymentRequest();
+					payment.setApp_id(appId);
+					payment.setSource(r.getData().getSource());
+					payment.setOpen_userid(r.getData().getOpen_userid());
+					payment.setOrder_number(r.getData().getOrder_number());
+					String msg = payment.pack();
+					url.append("?").append(msg);
+					result.put("url", url.toString());
+				}else {
+					order.get().setOrderStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.ORDER_STATUS_FAILED));
+				}
+			});
+			List<ShoppingOrder> orders = new ArrayList<ShoppingOrder>();
+			orders.add(order.get());
+			orderService.saveOrders(orders);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e) {
+			log.error("订单页面发起支付失败"+e.getMessage(),e);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
+		}
 		return result;
 	}
 	

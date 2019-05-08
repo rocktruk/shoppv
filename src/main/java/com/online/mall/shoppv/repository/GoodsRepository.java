@@ -15,4 +15,10 @@ public interface GoodsRepository extends IExpandJpaRepository<Goods, String> {
 	@Transactional
 	@Query("update Goods g set g.inventory = ?2 where g.id = ?1")
 	int updateGoodsSetInventoryWithId(String id,long count);
+	
+	@Modifying
+	@Transactional
+	@Query("update Goods g set g.monthSales = ?2,g.totalSales = ?3 where g.id = ?1")
+	int updateGoodsSetSales(String id,long monthSale,long totalSale);
+	
 }

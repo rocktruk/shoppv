@@ -98,6 +98,7 @@ public class ShoppingCarService {
 		Optional<ShoppingCar> car = carRepos.findShoppingCarByCusIdAndGoodsId(user.getId(), goodsId);
 		//购物车已经有该商品则更新记录，否则插入一条新记录
 		if(car.isPresent()) {
+			map.put("carId", car.get().getId());
 			updateShoppingCar(car.get().getId(),car.get().getCount()+1);
 			return true;
 		}else {
@@ -128,9 +129,11 @@ public class ShoppingCarService {
 	@Transactional
 	public boolean insertCar(Customer user,Map<String, Object> map) {
 		Optional<Goods> goods = goodsService.getGoods((String)map.get("goodsId"));
+		String carId = IdGenerater.INSTANCE.shopIdGenerate();
+		map.put("carId", carId);
 		boolean flag = goodsService.updGoodsInventory((String)map.get("goodsId"), (Integer)map.get("count"), ConfigConstants.OPERA_GOODS_ADD);
 		if(flag) {
-			int n = carRepos.insertShoppingCar(IdGenerater.INSTANCE.shopIdGenerate(), user.getId(), null, goods.get().getPrice(), (String)map.get("goodsId"), (Integer)map.get("count"));
+			int n = carRepos.insertShoppingCar(carId, user.getId(), null, goods.get().getPrice(), (String)map.get("goodsId"), (Integer)map.get("count"));
 			if(n==1)
 			{
 				return true;

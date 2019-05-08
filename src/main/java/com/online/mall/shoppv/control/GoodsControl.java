@@ -44,9 +44,6 @@ public class GoodsControl {
 	@Autowired
 	private GoodsService goodsService;
 	
-	@Autowired
-	private SessionUtil cacheUtil;
-	
 	private static final Logger log = LoggerFactory.getLogger(GoodsControl.class);
 	
 	/**
@@ -92,10 +89,7 @@ public class GoodsControl {
 	public List<GoodsWithoutDetail> getGoodsListWithPageIndex(@RequestBody Map<String, String> req)
 	{
 		int goodsId = -1;
-		if(req.get("goodsMenu")!=null) {
-			goodsId = Integer.parseInt(req.get("goodsMenu"));
-		}
-		return goodsService.loadGoodsWithPage(goodsId, req.get("sort"), req.get("isAsc"), Integer.parseInt(req.get("index")));
+		return goodsService.loadGoodsWithPage(goodsId,req.get("desc"), req.get("sort"), req.get("isAsc"), Integer.parseInt(req.get("index")));
 	}
 	
 	

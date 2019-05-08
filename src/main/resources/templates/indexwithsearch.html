@@ -28,9 +28,9 @@
 			<div class="wf-search" id="search">
 				<header>
 					<div class="search">
-						<form>	
+						<form action="">	
 							<span class="sprite-icon"></span>
-							<input type="search" placeholder="搜索商品">
+							<input id="query" type="search" placeholder="搜索商品">
 						</form>
 					</div>
 				</header>
@@ -112,11 +112,24 @@
 			<div id="back_top">
 				<a href="#"><img th:src="@{images/index/xqq/the_top.png}" /></a>
 			</div>
+			<a id="goodls" href="javascript:;" style="visibility: hidden;"><span id="spanId">搜索</span></a>
 			<script type="text/javascript" th:src='@{js/list/jquery-3.2.1.min.js}'></script>
 			<script type="text/javascript" th:src='@{js/list/bootstrap.min.js}'></script>
 			<!--<script type="text/javascript" th:src="@{js/index/rem.js}" ></script>-->
 			<script type="text/javascript" th:src="@{js/index/swiper.min.js}" ></script>
 			<script type="text/javascript" th:src="@{js/index/index.js}" ></script>
 			<script type="text/javascript" th:src="@{js/index/top.js}" ></script>
+			<script type="text/javascript">
+				$("#query").on('keypress',function(e) {
+                var keycode = e.keyCode;
+                var searchName = $(this).val();
+                if(keycode=='13') {
+                    e.preventDefault();  
+                    //请求搜索接口
+                    $("#goodls").attr("href",'goodsls?goodsMenu=-1&sort=all&desc='+$('#query').val());
+		        	$("#spanId").click();
+                }
+         });
+			</script>
 	</body>
 </html>

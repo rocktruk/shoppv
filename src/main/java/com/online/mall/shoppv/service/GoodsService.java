@@ -1,6 +1,8 @@
 package com.online.mall.shoppv.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -65,11 +68,17 @@ public class GoodsService {
 	 * @param num 每次查询的记录数
 	 * @return
 	 */
-	public List<GoodsWithoutDetail> findGoodsByMenuWithSort(int menuId,Sort sort,int index,int num)
+	public List<GoodsWithoutDetail> findGoodsByMenuWithSort(int menuId,String desc,Sort sort,int index,int num)
 	{
 		GoodsWithoutDetail goods = new GoodsWithoutDetail();
 		goods.setGoodsMenuId(menuId);
 		goods.setStatus(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_STATUS_STAYON));
+		if(!StringUtils.isEmptyOrWhitespace(desc))
+		{
+//			goods.setBrand(desc);
+			goods.setTitle(desc);
+//			goods.setDesc(desc);
+		}
 		String[] ignorePaths;
 		if(menuId == -1) {
 			ignorePaths = new String[5];
@@ -85,7 +94,10 @@ public class GoodsService {
 			ignorePaths[2] = "monthSales";
 			ignorePaths[3] = "carriage";
 		}
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths(ignorePaths);
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths(ignorePaths)
+				//.withMatcher("brand", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+				.withMatcher("title", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+				//.withMatcher("desc", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		Example<GoodsWithoutDetail> example = Example.of(goods,matcher);
 		PageRequest page = null;
 		if(sort == null)
@@ -121,6 +133,7 @@ public class GoodsService {
 	}
 	
 	
+	
 	/**
 	 * 分页查询商品列表
 	 * @param goodsMenu
@@ -129,29 +142,29 @@ public class GoodsService {
 	 * @param index
 	 * @return
 	 */
-	@Cacheable(value="getGoodsWithPage",key="'getGoodsWithPage'+#goodsMenu+#sort+#isAsc+#index")
-	public List<GoodsWithoutDetail> loadGoodsWithPage(int goodsMenu,String sort,String isAsc,int index)
+	@Cacheable(value="getGoodsWithPage",key="'getGoodsWithPage'+#goodsMenu+#desc+#sort+#isAsc+#index")
+	public List<GoodsWithoutDetail> loadGoodsWithPage(int goodsMenu,String desc,String sort,String isAsc,int index)
 	{
 		List<GoodsWithoutDetail> ls = new ArrayList<GoodsWithoutDetail>();
 		int length = Integer.parseInt(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_LS_LENGTH));
 		if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_ALL).equals(sort))
 		{
-			ls = findGoodsByMenuWithSort(goodsMenu, null, index, length);
+			ls = findGoodsByMenuWithSort(goodsMenu, desc, null, index, length);
 		}else if (DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE).equals(sort))
 		{
 			if (DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE_ASC).equals(isAsc))
 			{
 				Sort s = new Sort(Direction.ASC,"price");
-				ls = findGoodsByMenuWithSort(goodsMenu, s, index, length);
+				ls = findGoodsByMenuWithSort(goodsMenu,desc, s, index, length);
 			}else
 			{
 				Sort s = new Sort(Direction.DESC,"price");
-				ls = findGoodsByMenuWithSort(goodsMenu, s, index, length);
+				ls = findGoodsByMenuWithSort(goodsMenu,desc, s, index, length);
 			}
 		}else
 		{
 			Sort s = new Sort(Direction.DESC,"monthSales");
-			ls = findGoodsByMenuWithSort(goodsMenu, s, index, length);
+			ls = findGoodsByMenuWithSort(goodsMenu,desc, s, index, length);
 		}
 		return ls;
 	}
@@ -167,6 +180,7 @@ public class GoodsService {
 		if(request.getParameter(ConfigConstants.GOODS_KIND) != null) {
 			goods = Integer.parseInt(request.getParameter(ConfigConstants.GOODS_KIND));
 		}
+		String desc = request.getParameter("desc");
 		String sort = request.getParameter(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT));
 		String isAsc = request.getParameter("isasc");
 		int length = Integer.parseInt(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODS_LS_LENGTH));
@@ -174,7 +188,7 @@ public class GoodsService {
 		if(StringUtils.isEmptyOrWhitespace(sort)||DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_ALL).equals(sort))
 		{
 			request.setAttribute(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT), DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_ALL));
-			ls = findGoodsByMenuWithSort(goods, null, 0, length);
+			ls = findGoodsByMenuWithSort(goods,desc, null, 0, length);
 		}else
 		{
 			request.setAttribute(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT), sort);
@@ -182,21 +196,22 @@ public class GoodsService {
 			{
 				request.setAttribute("isAsc", DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE_ASC));
 				Sort s = new Sort(Direction.ASC,"price");
-				ls = findGoodsByMenuWithSort(goods, s, 0, length);
+				ls = findGoodsByMenuWithSort(goods,desc, s, 0, length);
 			}else if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE).equals(sort))
 			{
 				request.setAttribute("isAsc", DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.GOODSLS_SORT_PRICE_DESC));
 				Sort s = new Sort(Direction.DESC,"price");
-				ls = findGoodsByMenuWithSort(goods, s, 0, length);
+				ls = findGoodsByMenuWithSort(goods,desc, s, 0, length);
 			}else
 			{
 				Sort s = new Sort(Direction.DESC,"monthSales");
-				ls = findGoodsByMenuWithSort(goods, s, 0, length);
+				ls = findGoodsByMenuWithSort(goods,desc, s, 0, length);
 			}
 		}
 		
 		request.setAttribute("goodsLs", ls);
 		request.setAttribute("goods", goods);
+		request.setAttribute("title", desc);
 	}
 	
 	/**
@@ -272,6 +287,43 @@ public class GoodsService {
 				lock.unlock();
 			}
 		return false;
+	}
+	
+	
+	/**
+	 * 更新商品的销量
+	 * @param goodsId
+	 * @param count
+	 * @return
+	 */
+	@Transactional
+	public boolean updSales(String goodsId,int count) {
+		try {
+			if(lock.tryLock(5, TimeUnit.SECONDS)) {
+				Optional<Goods> goods = getGoods(goodsId);
+				if(goods.isPresent()) {
+					SimpleDateFormat spd = new SimpleDateFormat("yyyyMMdd");
+					String current = spd.format(new Date());
+					long monthSales = count;
+					//没有跑批，暂时先根据月份判断，月销量归零更新
+					if(goods.get().getLstUpdDate()!=null) {
+						String lstUpdDate = spd.format(goods.get().getLstUpdDate());
+						if(lstUpdDate.substring(4, 6).equals(current.substring(4, 6))) {
+							monthSales = goods.get().getMonthSales()+count;
+						}
+					}
+					long totalSales = goods.get().getTotalSales()+count;
+					goodRepository.updateGoodsSetSales(goodsId, monthSales, totalSales);
+				}
+			}else {
+				log.warn(goodsId+"|更新销量获取锁超时，超时时间5s|"+count);
+			}
+		}catch(Exception e) {
+			log.error(e.getMessage(),e);
+		}finally {
+			lock.unlock();
+		}
+	return false;
 	}
 	
 }

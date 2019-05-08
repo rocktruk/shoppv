@@ -1,6 +1,7 @@
 package com.online.mall.shoppv.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +50,11 @@ public class GoodsWithoutDetail {
 	@Column(name="TOTAL_SALES")
 	private long totalSales;
 	
+	@Column(name="CREATE_TIME",columnDefinition="timestamp",insertable=false,updatable=false)
+	private Date createTime;
+	
+	@Column(name="LST_UPD_DATE",insertable=false,updatable=false)
+	private Date lstUpdDate;
 	
 	@Column(name="CARRIAGE")
 	private int carriage;
@@ -169,4 +175,13 @@ public class GoodsWithoutDetail {
 		this.oriPrice = oriPrice;
 	}
 
+	public Date getLstUpdDate() {
+		return lstUpdDate;
+	}
+
+	public void setLstUpdDate(Date lstUpdDate) {
+		this.lstUpdDate = lstUpdDate;
+	}
+
+	
 }

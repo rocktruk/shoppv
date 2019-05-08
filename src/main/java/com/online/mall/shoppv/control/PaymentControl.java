@@ -15,33 +15,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.online.mall.shoppv.common.ConfigConstants;
 import com.online.mall.shoppv.common.util.CacheUtil;
 import com.online.mall.shoppv.common.util.SessionUtil;
 import com.online.mall.shoppv.common.util.SignatureUtil;
 import com.online.mall.shoppv.entity.Customer;
 import com.online.mall.shoppv.entity.ReceiveAddress;
 import com.online.mall.shoppv.entity.ShoppingCar;
-import com.online.mall.shoppv.entity.ShoppingOrder;
 import com.online.mall.shoppv.entity.Trans;
 import com.online.mall.shoppv.respcode.util.IRespCodeContants;
 import com.online.mall.shoppv.respcode.util.RespConstantsUtil;
 import com.online.mall.shoppv.service.CustomerService;
 import com.online.mall.shoppv.service.ReceivedAddrService;
-import com.online.mall.shoppv.service.ShoppingCarService;
-import com.online.mall.shoppv.service.ShoppingOrderService;
 import com.online.mall.shoppv.service.TransactionService;
-import com.online.mall.shoppv.trans.bean.CreateOrderResponse;
 import com.online.mall.shoppv.trans.bean.PaymentNotifyRequest;
-import com.online.mall.shoppv.trans.bean.PaymentRequest;
 import com.online.mall.shoppv.trans.service.TransService;
 
 @Controller
@@ -51,16 +43,10 @@ public class PaymentControl {
 	private TransService transHandler;
 	
 	@Autowired
-	private ShoppingCarService carService;
-	
-	@Autowired
 	private ReceivedAddrService recvService;
 	
 	@Autowired
 	private TransactionService transDtlService;
-	
-	@Autowired
-	private ShoppingOrderService orderService;
 	
 	@Autowired
 	private CustomerService userService;
@@ -111,15 +97,15 @@ public class PaymentControl {
 				request.setAttribute("traceNo", entity.getTraceNo());
 				request.setAttribute("trxAmt", entity.getTrxAmt());
 				request.setAttribute("backChnnlTraceNo", order_number);
-				return "goods/paymentsuccess";
+				if("success".equals(res_status))
+					return "goods/paymentsuccess";
 			}else {
 				return "404";
 			}
 		} catch (NoSuchAlgorithmException e) {
 			log.error(e.getMessage(),e);
 		}
-		
-		return "goods/paymentsuccess";
+		return "404";
 	}
 	
 	/**

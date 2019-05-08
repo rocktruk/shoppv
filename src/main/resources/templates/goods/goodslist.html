@@ -37,7 +37,7 @@
 					<div class="search">
 						<form action="">	
 							<span class="sprite-icon"></span>
-							<input id="query" type="search" placeholder="搜索商品">
+							<input id="query" type="search" th:value="${title}" placeholder="搜索商品">
 						</form>
 					</div>
 				</header>
@@ -48,11 +48,11 @@
 		<div class="goods margin-top-3d9rem margin-bottom-6rem">
 			<ul class="xx-nav-tabs xx-nav">
 				<li class="text-center">
-					<a th:href="@{goodsls(sort=all,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
+					<a th:href="@{goodsls(sort=all,goodsMenu=${goods},desc=${title})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'all'}? 'active' : ''"><span>综合</span></a>
 				</li>
 				<!--<li class="text-center"><a th:href="@{shopping/goodsls}?sort=" class="xjp-inline-block font-size-1d2rem">人气</a></li>-->
-				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>
-				<li class="text-center"><a th:href="@{goodsls(sort=price,goodsMenu=${goods},isasc=${isAsc})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'price'}? 'active' : ''">价格<i class="fa " th:classappend="${isAsc == null? 'fa-unsorted':(isAsc == 'asc'? 'fa-sort-asc':'fa-sort-desc')}"></i></a></li>
+				<li class="text-center"><a th:href="@{goodsls(sort=sales,goodsMenu=${goods},desc=${title})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'sales'}? 'active' : ''">销量</a></li>
+				<li class="text-center"><a th:href="@{goodsls(sort=price,goodsMenu=${goods},isasc=${isAsc},desc=${title})}" class="xjp-inline-block font-size-1d2rem" th:classappend="${sort == 'price'}? 'active' : ''">价格<i class="fa " th:classappend="${isAsc == null? 'fa-unsorted':(isAsc == 'asc'? 'fa-sort-asc':'fa-sort-desc')}"></i></a></li>
 			</ul>
 			<section class="bg-f8 padding-top-bottom-1rem  clearfix" style="background-color: white;" >
 				<ul class="clearfix  goodslist  margin-auto" id="goods_list">
@@ -88,6 +88,7 @@
 	<div id="back_top">
 		<a href="#"><img th:src="@{images/index/xqq/the_top.png}" /></a>
 	</div>
+	<a id="goodlshref" href="javascript:;" style="visibility: hidden;"><span id="spanId">搜索</span></a>
 	<input id="sort" type="hidden" th:value="${sort}"/>
 	<input id="goodsMenu" type="hidden" th:value="${goods}"/>
 	<input id="isasc" type="hidden" th:value="${isAsc}"/>
@@ -108,7 +109,8 @@
                 if(keycode=='13') {
                     e.preventDefault();  
                     //请求搜索接口
-                    
+                    $("#goodlshref").attr("href",'goodsls?goodsMenu=-1&sort=all&desc='+$('#query').val());
+		        	$("#spanId").click();
                 }
          });
          (function(window) {
@@ -154,7 +156,7 @@
 		    function fetchData() {
 		        setTimeout(function() {
 		        	var index = $('#index').val();
-		        	var data = {"sort":$('#sort').val(),"goodsMenu":$('#goodsMenu').val(),"isAsc":$('#isasc').val(),"index":index};
+		        	var data = {"sort":$('#sort').val(),"goodsMenu":$('#goodsMenu').val(),"isAsc":$('#isasc').val(),"index":index,"desc":$('#query').val()};
 		        	$.ajax({
 		        		data: JSON.stringify(data),
 		        		url:  "/shopping/loadGoods",

@@ -212,6 +212,7 @@ public class TransService {
 			transService.saveTransEntity(t);
 			//异步更新订单状态
 			orderService.aysnSaveOrders(orders);
+			
 		});
 	}
 	

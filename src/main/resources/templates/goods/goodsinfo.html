@@ -652,12 +652,13 @@
                             <span class="addcar">加入购物车</span>
                         </div>
                         <div class="aui-btn aui-btn-red">
-                            <span>立即购买</span>
+                            <span class="buynow">立即购买</span>
                         </div>
                     </div>
                 </div>
             </footer>
         </section>
+        <a th:href="@{fillOrder}" id="settlea" style="display:none"><span id="settle">结算</span></a>
         <script type="text/javascript" th:src="@{js/jquery-1.11.1.min.js}"></script>
         <script type="text/javascript" th:src="@{js/jquery.fly.min.js}"></script>
         <script type="text/javascript" th:src="@{js/goodsinfo/tab.js}"></script>
@@ -677,7 +678,6 @@
                         $(".img_font span").hide().eq(e.current - 1).show();
                     }
                 });
-
             });
             $(function() {
                 $(window).bind("scroll", function() {
@@ -720,6 +720,26 @@
 			/*]]>*/
 			$(function() {
 				flyCar();
+				$('.buynow').click(function(e){
+					$.ajax({
+						data: JSON.stringify({"ids":goodsId,"buyflag":'goodsinfo'}),
+						url:  "orderSubmit",
+						type: "POST",
+						contentType:"application/json",
+						success:function(data){
+							if(data.respcode=="000000"){
+								$("#settlea").attr("href","fillOrder?orderId="+data.orderId);
+								$("#settle").click();
+							}else{
+							    alert(data.respmsg);
+							}
+						},
+						error:function(msg)
+						{
+							console.log(msg);
+						}
+					});
+				});
 			});	
 				
 			 function flyCar(){

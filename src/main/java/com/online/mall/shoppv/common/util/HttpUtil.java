@@ -97,7 +97,6 @@ public class HttpUtil {
 		MessageConstraints messageConstraints = MessageConstraints.custom().setMaxHeaderCount(100).setMaxLineLength(2000).build();
 		ConnectionConfig connectionConfig = ConnectionConfig.custom().setCharset(Consts.UTF_8).setMessageConstraints(messageConstraints).build();
 		connManager.setDefaultConnectionConfig(connectionConfig);
-		
 		connManager.setMaxTotal(100);
 		connManager.setDefaultMaxPerRoute(100);
 //		HttpHost proxy = new HttpHost(ConfigUtils.getProperty("proxy.host"),Integer.parseInt(ConfigUtils.getProperty("proxy.port")), "http");    

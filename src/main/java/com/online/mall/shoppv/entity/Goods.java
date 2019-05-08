@@ -1,6 +1,7 @@
 package com.online.mall.shoppv.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -67,6 +68,12 @@ public class Goods {
 	
 	@Column(name="ORI_PRICE")
 	private BigDecimal oriPrice;
+	
+	@Column(name="CREATE_TIME",columnDefinition="timestamp",insertable=false,updatable=false)
+	private Date createTime;
+	
+	@Column(name="LST_UPD_DATE",insertable=false,updatable=false)
+	private Date lstUpdDate;
 	
 	@Transient
 	private String[] banners;
@@ -207,6 +214,22 @@ public class Goods {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+	public Date getLstUpdDate() {
+		return lstUpdDate;
+	}
+
+	public void setLstUpdDate(Date lstUpdDate) {
+		this.lstUpdDate = lstUpdDate;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 	
 	

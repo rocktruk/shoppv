@@ -31,8 +31,9 @@ public class CacheUtil {
         GoodsCacheWithId(1800,1000),
     	ShopCarToSettle(600,4000),
     	SettleOrder(1800,3000),
-    	goodsTrace(1800,1000);
-        ;
+    	goodsTrace(1800,1000),
+    	GoodsCacheWithTitle(1800,1000);
+    	
         Caches() {
         }
         Caches(int ttl) {
