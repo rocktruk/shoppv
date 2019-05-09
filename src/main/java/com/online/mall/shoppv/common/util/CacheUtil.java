@@ -32,6 +32,7 @@ public class CacheUtil {
     	ShopCarToSettle(600,4000),
     	SettleOrder(1800,3000),
     	goodsTrace(1800,1000),
+    	recvAddr(1800,500),
     	GoodsCacheWithTitle(1800,1000);
     	
         Caches() {

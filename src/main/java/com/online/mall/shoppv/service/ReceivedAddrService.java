@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ public class ReceivedAddrService {
 	 * @param userId
 	 * @return
 	 */
+	@Cacheable(value="recvAddr",key="'recvaddr'+#userId")
 	public List<ReceiveAddress> getAddrLs(long userId)
 	{
 		return recvAddrRepo.findReceiveAddressByCusIdAndStatus(userId,"1");
@@ -59,5 +61,15 @@ public class ReceivedAddrService {
 	@Transactional
 	public void delAddr(String id) {
 		recvAddrRepo.deleteReceiveAddressById(id);;
+	}
+	
+	/**
+	 * 更新收货地址默认地址
+	 * @param id
+	 * @param dft
+	 */
+	@Transactional
+	public void updDftAddr(String id,String dft) {
+		recvAddrRepo.updateDefaultAddr(id, dft);
 	}
 }

@@ -1,7 +1,5 @@
 package com.online.mall.shoppv.respcode.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,7 +35,7 @@ public class RespConstantsUtil {
 	{
 		Properties dict = new Properties();
 		try {
-			dict.load(new InputStreamReader(new FileInputStream(new File(RespConstantsUtil.class.getResource("/respcode.properties").getFile()))));
+			dict.load(new InputStreamReader(RespConstantsUtil.class.getClassLoader().getResourceAsStream("respcode.properties")));
 			for(Entry<Object, Object> entry : dict.entrySet())
 			{
 				if(entry.getKey().toString().startsWith(IRespCodeContants.RESP_CODE))

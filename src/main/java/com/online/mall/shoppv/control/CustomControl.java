@@ -227,6 +227,39 @@ public class CustomControl {
 		return result;
 	}
 	
+	/**
+	 * 更新默认地址
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("updDftAddr")
+	@ResponseBody
+	public Map<String,Object> updDftAddr(HttpSession session,@RequestBody Map<String,String> req){
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			Customer user = (Customer)SessionUtil.getAttribute(session, SessionUtil.USER);
+			List<ReceiveAddress> addrs = recvService.getAddrLs(user.getId());
+			String dftid = "";
+			for(ReceiveAddress addr : addrs) {
+				if(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_DFT).equals(addr.getDftAddr())) {
+					dftid = addr.getId();
+					addr.setDftAddr(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_UNDFT));
+				}else if(req.get("id").equals(addr.getId())) {
+					addr.setDftAddr(DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_DFT));
+				}
+			}
+			recvService.updDftAddr(dftid, DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_UNDFT));
+			recvService.updDftAddr(req.get("id"), DictConstantsUtil.INSTANCE.getDictVal(ConfigConstants.RECV_ADDR_DFT));
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
+		}catch(Exception e) {
+			log.error(e.getMessage(),e);
+			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SYSERR));
+			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SYSERR));
+		}
+		return result;
+	}
+	
 	
 	/**
 	 * 跳转订单页

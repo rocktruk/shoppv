@@ -37,7 +37,7 @@
             <div class="cardcell clearfix fontsmall">
                 <label class="fl">
                     <div class="radios">
-                        <input type="radio" name="moren" th:checked="${address.dftAddr} eq '1'">
+                        <input type="radio" name="moren" th:onchange="dftAddr([[${address.id}]])" th:checked="${address.dftAddr} eq '1'">
                     </div>
                     <span>默认地址</span>
                 </label>
@@ -69,9 +69,12 @@
     
     	//删除地址信息
     	function delRecvAddr(id){
+    		if(!$(this).val()){
+    			return;
+    		}
     		$.ajax({
     			data: JSON.stringify({"id":id}),
-	    		url:  "/shopping/delAddr",
+	    		url:  "delAddr",
 	    		type: "POST",
 	    		contentType:"application/json",
 	    		success:function(data){
@@ -86,6 +89,27 @@
 	    			console.log(msg);
 	    		}
 	    	});
+    	}
+    	
+    	
+    	function dftAddr(id){
+    		$.ajax({
+    			data: JSON.stringify({"id":id}),
+	    		url:  "updDftAddr",
+	    		type: "POST",
+	    		contentType:"application/json",
+	    		success:function(data){
+	    			if(data.respcode!="000000"){
+	    				console.log(data.respmsg);
+	    			}else{
+	    				console.log(data.respmsg);
+	    			}
+	    		},
+	    		error:function(msg) {
+	    			console.log(msg);
+	    		}
+	    	});
+    	
     	}
     
     </script>
