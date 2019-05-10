@@ -43,7 +43,7 @@
                 </label>
                 <div class="fr">
                     <a th:href="@{updateAddr(id=${address.id})}" class="operate" >编辑</a>
-                    <a href="javascript:;" class="operate" th:onclick="delRecvAddr([[${address.id}]])">删除</a>
+                    <a href="javascript:;" class="operate" th:if="${address.dftAddr} ne '1'" th:onclick="delRecvAddr([[${address.id}]])">删除</a>
                 </div>
             </div>
              <div class="blockH"></div>
