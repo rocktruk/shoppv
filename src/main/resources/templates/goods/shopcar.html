@@ -36,6 +36,7 @@
 				<div class="shop-info">
 					<input type="checkbox" class="check goods-check goodsCheck" style="border: none">
 					<h5 style="display:none" th:text="${merchandise.id}"></h5>
+					<h1 style="display:none" th:text="${merchandise.goods.id}"></h1>
 					<div class="shop-info-img"><a th:href="@{goodsInfo(goodsId=${merchandise.goods.id})}"><img th:src="@{${merchandise.goods.imgPath}}" /></a></div>
 					<div class="shop-info-text">
 						<h4 th:text="${merchandise.goods.title}"></h4>

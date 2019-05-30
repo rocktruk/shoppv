@@ -152,6 +152,7 @@ public class CustomControl {
 			recvAddr.setProvice(districts[0]);
 			recvAddr.setRecvName(req.get("recvName"));
 			recvAddr.setCityCode(req.get("cityCode"));
+			recvAddr.setStatus("1");
 			recvService.saveRecvAddr(recvAddr);
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
@@ -163,6 +164,12 @@ public class CustomControl {
 		return result;
 	}
 	
+	/**
+	 * 编辑按钮获取收货地址信息
+	 * @param request
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/updateAddr")
 	public String updateAddr(HttpServletRequest request,String id){
 		Map<String,Object> result = new HashMap<String, Object>();
@@ -198,6 +205,7 @@ public class CustomControl {
 			recvAddr.setRecvName(req.get("recvName"));
 			recvAddr.setCityCode(req.get("cityCode"));
 			recvAddr.setId(req.get("id"));
+			recvAddr.setStatus("1");
 			recvService.saveRecvAddr(recvAddr);
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));

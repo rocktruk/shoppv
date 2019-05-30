@@ -292,7 +292,9 @@ public class ShopControl {
 	public Map<String,Object> updateShoppingCar(HttpServletRequest request,@RequestBody Map<String, Object> req){
 		Map<String,Object> result = new HashMap<String, Object>();
 		try {
-			carService.updateShoppingCar((String)req.get("id"),Integer.parseInt((String)req.get("count")));
+			String opera = (String)req.get("method");
+			String goodsId = (String)req.get("goodsId");
+			carService.updateShoppingCar(goodsId,(String)req.get("id"),Integer.parseInt((String)req.get("count")),opera);
 			result.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_SUC));
 			result.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_SUC));
 		}catch(Exception e)

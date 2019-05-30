@@ -113,7 +113,7 @@ public class TransService {
 				url.append("?").append(msg);
 				payReq.put("url", url.toString());
 			}else {
-				log.warn("创建订单失败|"+traceNo);
+				log.info("创建订单失败|"+traceNo);
 				payReq.put(IRespCodeContants.RESP_CODE, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPCODE_CREATEORDR_FAIL));
 				payReq.put(IRespCodeContants.RESP_MSG, RespConstantsUtil.INSTANCE.getDictVal(IRespCodeContants.RESPMSG_CREATEORDR_FAIL));
 			}

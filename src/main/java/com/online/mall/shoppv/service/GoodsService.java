@@ -263,7 +263,7 @@ public class GoodsService {
 	@Transactional
 	public boolean updGoodsInventory(String goodsId,int count,String opera) {
 			try {
-				if(lock.tryLock(5, TimeUnit.SECONDS)) {
+				synchronized (goodsId) {
 					Optional<Goods> goods = getGoods(goodsId);
 					if(goods.isPresent()) {
 						long inventory = goods.get().getInventory();
@@ -278,13 +278,9 @@ public class GoodsService {
 							return true;
 						}
 					}
-				}else {
-					log.warn(goodsId+"|更新库存获取锁超时，超时时间5s|"+count+"|"+opera);
 				}
 			}catch(Exception e) {
 				log.error(e.getMessage(),e);
-			}finally {
-				lock.unlock();
 			}
 		return false;
 	}
@@ -299,7 +295,7 @@ public class GoodsService {
 	@Transactional
 	public boolean updSales(String goodsId,int count) {
 		try {
-			if(lock.tryLock(5, TimeUnit.SECONDS)) {
+			synchronized (goodsId) {
 				Optional<Goods> goods = getGoods(goodsId);
 				if(goods.isPresent()) {
 					SimpleDateFormat spd = new SimpleDateFormat("yyyyMMdd");
@@ -314,14 +310,11 @@ public class GoodsService {
 					}
 					long totalSales = goods.get().getTotalSales()+count;
 					goodRepository.updateGoodsSetSales(goodsId, monthSales, totalSales);
+					return true;
 				}
-			}else {
-				log.warn(goodsId+"|更新销量获取锁超时，超时时间5s|"+count);
 			}
 		}catch(Exception e) {
 			log.error(e.getMessage(),e);
-		}finally {
-			lock.unlock();
 		}
 	return false;
 	}

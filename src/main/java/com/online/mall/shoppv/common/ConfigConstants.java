@@ -98,7 +98,7 @@ public class ConfigConstants {
 	public static final String GOODS_LS_LENGTH = "goods.ls.length";
 	
 	
-	public static final String OPERA_GOODS_ADD = "add";
+	public static final String OPERA_GOODS_ADD = "plus";
 	
 	public static final String OPERA_GOODS_MINUS = "minus";
 	

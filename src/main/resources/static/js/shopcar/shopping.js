@@ -3,22 +3,24 @@ $(function(){
 	$(".minus").click(function() {
 		var t = $(this).parent().find('.num');
 		var id = $(this).parent().parent().parent().parent().find("h5");
+		var goodsId = $(this).parent().parent().parent().parent().find("h1");
 		t.text(parseInt(t.text()) - 1);
 		if (t.text() <= 1) {
 			t.text(1);
 		}
-		updateShopCar(id.text(),t.text(),'minus');
+		updateShopCar(goodsId.text(),id.text(),t.text(),'minus',t);
 		TotalPrice();
 	});
 	// 数量加
 	$(".plus").click(function() {
 		var t = $(this).parent().find('.num');
 		var id = $(this).parent().parent().parent().parent().find("h5");
+		var goodsId = $(this).parent().parent().parent().parent().find("h1");
 		t.text(parseInt(t.text()) + 1);
 		if (t.text() <= 1) {
 			t.text(1);
 		}
-		updateShopCar(id.text(),t.text(),'plus');
+		updateShopCar(goodsId.text(),id.text(),t.text(),'plus',t);
 		TotalPrice();
 	});
 	/******------------分割线-----------------******/
@@ -134,17 +136,29 @@ $(function(){
   });
   
   //更新购物车
-  function updateShopCar(id,c,m){
+  function updateShopCar(goodsId,id,c,m,t){
 	  $.ajax({
-  		data: JSON.stringify({"id":id,"count":c,"method":m}),
+  		data: JSON.stringify({"id":id,"count":c,"method":m,"goodsId":goodsId}),
   		url:  "updateCar",
   		type: "POST",
   		contentType:"application/json",
   		success:function(data){
-  			console.log(data.returncode);
+  			console.log(data.respcode);
+  			if(data.respcode != '000000'){
+  				if('plus' == m){
+  					t.text(c-1);
+  				}else{
+  					t.text(c+1);
+  				}
+  			}
   		},
   		error:function(msg)
   		{
+			if('plus' == m){
+				t.text(c-1);
+			}else{
+				t.text(c+1);
+			}
   			console.log(msg);
   		}
   	});
